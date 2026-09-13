@@ -1,33 +1,157 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>لعبتي</title>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #222;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+let car = {
+  x: 0,
+  y: 0,
+  width: 55,
+  height: 90
+};
+
+let roadWidth = 280;
+let obstacles = [];
+let score = 0;
+let gameOver = false;
+
+function resetGame() {
+  roadWidth = Math.min(320, canvas.width * 0.75);
+  car.x = canvas.width / 2 - car.width / 2;
+  car.y = canvas.height - 130;
+  obstacles = [];
+  score = 0;
+  gameOver = false;
+}
+
+canvas.addEventListener("touchmove", function(e) {
+  e.preventDefault();
+  if (gameOver) return;
+
+  const touch = e.touches[0];
+  car.x = touch.clientX - car.width / 2;
+
+  const left = (canvas.width - roadWidth) / 2;
+  const right = left + roadWidth - car.width;
+
+  car.x = Math.max(left, Math.min(right, car.x));
+}, { passive: false });
+
+canvas.addEventListener("click", function() {
+  if (gameOver) resetGame();
+});
+
+function drawRoad() {
+  ctx.fillStyle = "#333";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const left = (canvas.width - roadWidth) / 2;
+
+  ctx.fillStyle = "#555";
+  ctx.fillRect(left, 0, roadWidth, canvas.height);
+
+  ctx.strokeStyle = "#fff";
+  ctx.lineWidth = 5;
+  ctx.setLineDash([30, 25]);
+
+  ctx.beginPath();
+  ctx.moveTo(canvas.width / 2, 0);
+  ctx.lineTo(canvas.width / 2, canvas.height);
+  ctx.stroke();
+
+  ctx.setLineDash([]);
+}
+
+function drawCar() {
+  ctx.fillStyle = "red";
+  ctx.fillRect(car.x, car.y, car.width, car.height);
+
+  ctx.fillStyle = "black";
+  ctx.fillRect(car.x + 8, car.y + 12, 39, 20);
+  ctx.fillRect(car.x + 8, car.y + 55, 39, 20);
+}
+
+function addObstacle() {
+  const left = (canvas.width - roadWidth) / 2;
+  const x = left + Math.random() * (roadWidth - 45);
+
+  obstacles.push({
+    x: x,
+    y: -80,
+    width: 45,
+    height: 70
+  });
+}
+
+function drawObstacles() {
+  ctx.fillStyle = "blue";
+
+  obstacles.forEach(o => {
+    ctx.fillRect(o.x, o.y, o.width, o.height);
+  });
+}
+
+function update() {
+  if (gameOver) return;
+
+  obstacles.forEach(o => {
+    o.y += 5;
+  });
+
+  obstacles = obstacles.filter(o => {
+    if (o.y > canvas.height) {
+      score++;
+      return false;
     }
+    return true;
+  });
 
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
+  for (const o of obstacles) {
+    if (
+      car.x < o.x + o.width &&
+      car.x + car.width > o.x &&
+      car.y < o.y + o.height &&
+      car.y + car.height > o.y
+    ) {
+      gameOver = true;
     }
-  </style>
-</head>
+  }
 
-<body>
+  if (Math.random() < 0.025) {
+    addObstacle();
+  }
+}
 
-  <canvas id="game"></canvas>
+function drawScore() {
+  ctx.fillStyle = "white";
+  ctx.font = "24px Arial";
+  ctx.fillText("النقاط: " + score, 15, 35);
+}
 
-  <script src="game _ js"></script>
+function gameLoop() {
+  drawRoad();
+  update();
+  drawObstacles();
+  drawCar();
+  drawScore();
 
-</body>
-</html>
+  if (gameOver) {
+    ctx.fillStyle = "white";
+    ctx.font = "32px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("انتهت اللعبة", canvas.width / 2, canvas.height / 2);
+    ctx.font = "20px Arial";
+    ctx.fillText("اضغط لإعادة اللعب", canvas.width / 2, canvas.height / 2 + 40);
+    ctx.textAlign = "left";
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+resetGame();
+gameLoop();
