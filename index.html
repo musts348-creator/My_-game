@@ -6,9 +6,7 @@
 <title>ربح</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -26,7 +24,7 @@ body{
 
 .header h1{
     margin:0;
-    font-size:32px;
+    font-size:34px;
 }
 
 .container{
@@ -43,17 +41,21 @@ body{
     box-shadow:0 3px 12px #ddd;
 }
 
+h2{
+    margin-top:0;
+}
+
+.user{
+    text-align:center;
+    font-size:18px;
+}
+
 .balance{
     text-align:center;
     font-size:34px;
     font-weight:bold;
     color:#1677ff;
     margin:20px 0;
-}
-
-.user{
-    text-align:center;
-    font-size:18px;
 }
 
 .counter{
@@ -95,6 +97,7 @@ input{
     width:100%;
     padding:14px;
     margin-top:8px;
+    margin-bottom:8px;
     border:1px solid #ccc;
     border-radius:10px;
     font-size:17px;
@@ -114,8 +117,21 @@ input{
     padding:12px 0;
 }
 
-.history:last-child{
-    border-bottom:0;
+.history:first-child{
+    border-top:0;
+}
+
+.small{
+    color:#666;
+    font-size:14px;
+}
+
+.warning{
+    background:#fff3cd;
+    padding:12px;
+    border-radius:10px;
+    margin-top:10px;
+    font-size:14px;
 }
 </style>
 </head>
@@ -130,186 +146,187 @@ input{
 <div class="container">
 
 <!-- تسجيل الدخول -->
-
 <div class="card" id="loginCard">
 
     <h2>👤 تسجيل الدخول</h2>
 
     <label>اسم المستخدم:</label>
-
-    <input
-        id="username"
-        type="text"
-        placeholder="اكتب اسم المستخدم"
-    >
+    <input id="username" type="text" placeholder="اكتب اسم المستخدم">
 
     <label>كلمة المرور:</label>
+    <input id="password" type="password" placeholder="اكتب كلمة المرور">
 
-    <input
-        id="password"
-        type="password"
-        placeholder="اكتب كلمة المرور"
-    >
-
-    <button onclick="login()">
-        🔐 دخول
-    </button>
+    <button onclick="login()">🔐 دخول</button>
 
     <div id="loginMessage" class="message"></div>
+
+    <div class="warning">
+        ℹ️ الحساب في هذه النسخة تجريبي ومحفوظ على هذا الجهاز فقط.
+    </div>
 
 </div>
 
 
 <!-- التطبيق -->
-
 <div id="app" style="display:none;">
 
-<div class="card">
+    <!-- الحساب -->
+    <div class="card">
 
-    <div class="user">
-        👋 أهلاً بك
-        <b id="userDisplay"></b>
-    </div>
+        <div class="user">
+            👋 أهلاً بك <b id="userDisplay"></b>
+        </div>
 
-    <div class="balance">
-        <span id="balance">0</span>
-        نقطة
-    </div>
+        <div class="balance">
+            <span id="balance">0</span> نقطة
+        </div>
 
-    <button class="logout" onclick="logout()">
-        🚪 تسجيل الخروج
-    </button>
-
-</div>
-
-
-<!-- المهام -->
-
-<div class="card">
-
-    <h2>📋 المهام اليومية</h2>
-
-    <div class="counter">
-        المهام المتبقية اليوم:
-        <span id="remaining">3</span>
-    </div>
-
-
-    <div class="task">
-
-        <h3>🎁 المهمة الأولى</h3>
-
-        <p>احصل على 10 نقاط.</p>
-
-        <button id="task1" onclick="completeTask(1)">
-            احصل على 10 نقاط
+        <button class="logout" onclick="logout()">
+            🚪 تسجيل الخروج
         </button>
 
     </div>
 
 
-    <div class="task">
+    <!-- المهام -->
+    <div class="card">
 
-        <h3>🎁 المهمة الثانية</h3>
+        <h2>📋 المهام اليومية</h2>
 
-        <p>احصل على 20 نقطة.</p>
+        <div class="counter">
+            المهام المتبقية اليوم:
+            <span id="remaining">3</span>
+        </div>
 
-        <button id="task2" onclick="completeTask(2)">
-            احصل على 20 نقطة
+
+        <div class="task">
+
+            <h3>🎁 المهمة الأولى</h3>
+
+            <p>
+                احصل على 10 نقاط.
+            </p>
+
+            <button id="task1" onclick="completeTask(1)">
+                احصل على 10 نقاط
+            </button>
+
+        </div>
+
+
+        <div class="task">
+
+            <h3>🎁 المهمة الثانية</h3>
+
+            <p>
+                احصل على 20 نقطة.
+            </p>
+
+            <button id="task2" onclick="completeTask(2)">
+                احصل على 20 نقطة
+            </button>
+
+        </div>
+
+
+        <div class="task">
+
+            <h3>🎁 المهمة الثالثة</h3>
+
+            <p>
+                احصل على 30 نقطة.
+            </p>
+
+            <button id="task3" onclick="completeTask(3)">
+                احصل على 30 نقطة
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- السحب -->
+    <div class="card">
+
+        <h2>💵 طلب السحب</h2>
+
+        <p>
+            الحد الأدنى للسحب:
+            <b>100 نقطة</b>
+        </p>
+
+
+        <h3>🟢 زين كاش</h3>
+
+        <input
+            id="zainNumber"
+            type="tel"
+            placeholder="07xxxxxxxxx"
+        >
+
+        <button onclick="withdrawZain()">
+            💵 طلب سحب عبر زين كاش
         </button>
 
-    </div>
+
+        <hr style="margin:25px 0;border:0;border-top:1px solid #ddd;">
 
 
-    <div class="task">
+        <h3>💳 Mastercard</h3>
 
-        <h3>🎁 المهمة الثالثة</h3>
+        <input
+            id="mastercard"
+            type="tel"
+            maxlength="19"
+            placeholder="0000 0000 0000 0000"
+        >
 
-        <p>احصل على 30 نقطة.</p>
-
-        <button id="task3" onclick="completeTask(3)">
-            احصل على 30 نقطة
+        <button onclick="withdrawMastercard()">
+            💳 طلب سحب عبر Mastercard
         </button>
 
+
+        <div id="message" class="message"></div>
+
+        <div class="warning">
+            ⚠️ لا تدخل رقم بطاقة Mastercard حقيقي في هذه النسخة التجريبية.
+        </div>
+
     </div>
 
-</div>
 
+    <!-- سجل السحب -->
+    <div class="card">
 
-<!-- السحب -->
+        <h2>📊 سجل طلبات السحب</h2>
 
-<div class="card">
+        <div id="history">
+            لا توجد طلبات سحب حتى الآن.
+        </div>
 
-    <h2>💵 طلب السحب</h2>
-
-    <p>
-        الحد الأدنى للسحب:
-        <b>100 نقطة</b>
-    </p>
-
-
-    <h3>🟢 زين كاش</h3>
-
-    <input
-        id="zainNumber"
-        type="tel"
-        placeholder="07xxxxxxxxx"
-    >
-
-    <button onclick="withdrawZain()">
-        💵 طلب سحب عبر زين كاش
-    </button>
-
-
-    <hr style="margin:25px 0;border:0;border-top:1px solid #ddd;">
-
-
-    <h3>💳 Mastercard</h3>
-
-    <input
-        id="mastercard"
-        type="tel"
-        maxlength="19"
-        placeholder="0000 0000 0000 0000"
-    >
-
-    <button onclick="withdrawMastercard()">
-        💳 طلب سحب عبر Mastercard
-    </button>
-
-
-    <div id="message" class="message"></div>
-
-</div>
-
-
-<!-- سجل الطلبات -->
-
-<div class="card">
-
-    <h2>📊 سجل طلبات السحب</h2>
-
-    <div id="history">
-        لا توجد طلبات سحب حتى الآن.
     </div>
 
-</div>
 
+    <!-- معلومات -->
+    <div class="card">
 
-<div class="card">
+        <h3>📌 معلومات التطبيق</h3>
 
-    <h3>📌 ملاحظة</h3>
+        <p>
+            التطبيق حاليًا نسخة تجريبية.
+        </p>
 
-    <p>
-        هذه نسخة تجريبية.
-        السحب لا يحوّل أموالًا حقيقية حاليًا.
-    </p>
+        <p>
+            النقاط والمهام محفوظة على الجهاز.
+        </p>
 
-    <p>
-        تسجيل الدخول والرصيد محفوظان على هذا الجهاز.
-    </p>
+        <p>
+            طلبات السحب تظهر في السجل بحالة:
+            <b>قيد المراجعة</b>
+        </p>
 
-</div>
+    </div>
 
 </div>
 
@@ -318,10 +335,10 @@ input{
 
 <script>
 
-let currentUser =
-    localStorage.getItem("currentUser");
+let currentUser = localStorage.getItem("currentUser");
 
 
+/* مفتاح بيانات المستخدم */
 function userKey(type){
 
     return currentUser + "_" + type;
@@ -329,6 +346,7 @@ function userKey(type){
 }
 
 
+/* تسجيل الدخول */
 function login(){
 
     const username =
@@ -371,6 +389,7 @@ function login(){
 }
 
 
+/* عرض التطبيق */
 function showApp(){
 
     document.getElementById("loginCard").style.display =
@@ -389,6 +408,7 @@ function showApp(){
 }
 
 
+/* تسجيل الخروج */
 function logout(){
 
     localStorage.removeItem("currentUser");
@@ -398,6 +418,7 @@ function logout(){
 }
 
 
+/* الحصول على الرصيد */
 function getBalance(){
 
     return Number(
@@ -409,6 +430,7 @@ function getBalance(){
 }
 
 
+/* تغيير الرصيد */
 function setBalance(value){
 
     localStorage.setItem(
@@ -422,6 +444,7 @@ function setBalance(value){
 }
 
 
+/* تحميل بيانات المستخدم */
 function loadUserData(){
 
     let today =
@@ -464,6 +487,7 @@ function loadUserData(){
                 "task" + task
             );
 
+
         if(button){
 
             button.disabled = true;
@@ -487,6 +511,7 @@ function loadUserData(){
 }
 
 
+/* عداد المهام */
 function updateCounter(){
 
     let completedTasks =
@@ -507,6 +532,7 @@ function updateCounter(){
 }
 
 
+/* إكمال المهمة */
 function completeTask(task){
 
     let completedTasks =
@@ -538,9 +564,7 @@ function completeTask(task){
     if(task === 3) points = 30;
 
 
-    let balance =
-        getBalance();
-
+    let balance = getBalance();
 
     balance += points;
 
@@ -581,11 +605,10 @@ function completeTask(task){
 }
 
 
+/* سحب زين كاش */
 function withdrawZain(){
 
-    let balance =
-        getBalance();
-
+    let balance = getBalance();
 
     const number =
         document.getElementById(
@@ -628,10 +651,10 @@ function withdrawZain(){
 }
 
 
+/* سحب Mastercard */
 function withdrawMastercard(){
 
-    let balance =
-        getBalance();
+    let balance = getBalance();
 
 
     const card =
@@ -654,7 +677,7 @@ function withdrawMastercard(){
     if(!/^[0-9]{16}$/.test(card)){
 
         showMessage(
-            "❌ أدخل رقم Mastercard مكوّنًا من 16 رقمًا."
+            "❌ أدخل 16 رقمًا تجريبيًا."
         );
 
         return;
@@ -680,7 +703,8 @@ function withdrawMastercard(){
 }
 
 
-function addHistory(method, account){
+/* إضافة سجل السحب */
+function addHistory(method,account){
 
     let history =
         JSON.parse(
@@ -698,7 +722,11 @@ function addHistory(method, account){
 
         points: getBalance(),
 
-        date: new Date().toLocaleString("ar-IQ")
+        date:
+            new Date().toLocaleString("ar-IQ"),
+
+        status:
+            "قيد المراجعة"
 
     };
 
@@ -717,6 +745,7 @@ function addHistory(method, account){
 }
 
 
+/* عرض السجل */
 function loadHistory(){
 
     let history =
@@ -728,7 +757,9 @@ function loadHistory(){
 
 
     const box =
-        document.getElementById("history");
+        document.getElementById(
+            "history"
+        );
 
 
     if(history.length === 0){
@@ -755,19 +786,25 @@ function loadHistory(){
 
 
         div.innerHTML =
+
             "💵 <b>" +
             item.method +
             "</b><br>" +
+
             "الحساب: " +
             item.account +
             "<br>" +
+
             "النقاط: " +
             item.points +
             "<br>" +
+
             "التاريخ: " +
             item.date +
             "<br>" +
-            "⏳ الحالة: قيد المراجعة";
+
+            "⏳ الحالة: " +
+            item.status;
 
 
         box.appendChild(div);
@@ -777,10 +814,13 @@ function loadHistory(){
 }
 
 
+/* رسالة التطبيق */
 function showMessage(text){
 
     const message =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
 
 
     message.textContent =
@@ -793,10 +833,13 @@ function showMessage(text){
 }
 
 
+/* رسالة تسجيل الدخول */
 function showLoginMessage(text){
 
     const message =
-        document.getElementById("loginMessage");
+        document.getElementById(
+            "loginMessage"
+        );
 
 
     message.textContent =
@@ -809,6 +852,7 @@ function showLoginMessage(text){
 }
 
 
+/* تشغيل الحساب المحفوظ */
 if(currentUser){
 
     showApp();
