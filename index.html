@@ -3,93 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ربح</title>
+<title>ربح - Zain Cash</title>
 
 <style>
+*{box-sizing:border-box}
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f2f5f8;
-    text-align:center;
-    color:#222;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f6f9;
+  color:#222;
 }
 .header{
-    background:#1677ff;
-    color:white;
-    padding:25px 10px;
-    font-size:28px;
-    font-weight:bold;
+  background:#1677ff;
+  color:white;
+  padding:25px 10px;
+  text-align:center;
 }
+.header h1{margin:0;font-size:30px}
+.container{padding:15px}
 .card{
-    background:white;
-    margin:20px;
-    padding:25px;
-    border-radius:18px;
-    box-shadow:0 3px 12px #ccc;
+  background:white;
+  margin:15px 0;
+  padding:22px;
+  border-radius:18px;
+  box-shadow:0 3px 12px #ddd;
 }
 .balance{
-    font-size:32px;
-    color:#1677ff;
-    font-weight:bold;
-    margin:15px;
+  text-align:center;
+  font-size:32px;
+  font-weight:bold;
+  color:#1677ff;
+  margin:12px;
 }
 button{
-    width:90%;
-    padding:16px;
-    margin:8px;
-    border:0;
-    border-radius:12px;
-    background:#1677ff;
-    color:white;
-    font-size:18px;
+  width:100%;
+  padding:15px;
+  margin-top:10px;
+  border:0;
+  border-radius:12px;
+  background:#1677ff;
+  color:white;
+  font-size:18px;
 }
-button:active{
-    transform:scale(.98);
+input{
+  width:100%;
+  padding:14px;
+  margin-top:8px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  font-size:17px;
+  direction:ltr;
 }
-.info{
-    font-size:16px;
-    line-height:1.8;
+.message{
+  margin-top:15px;
+  padding:12px;
+  border-radius:10px;
+  display:none;
+  background:#eef5ff;
 }
 </style>
 </head>
 
 <body>
 
-<div class="header">💰 تطبيق ربح</div>
-
-<div class="card">
-    <div>رصيدك الحالي</div>
-    <div class="balance"><span id="balance">0</span> نقطة</div>
-
-    <button onclick="earn()">🎁 احصل على نقاط</button>
-    <button onclick="withdraw()">💵 طلب سحب</button>
+<div class="header">
+  <h1>💰 تطبيق ربح</h1>
+  <div>اكسب النقاط واطلب السحب</div>
 </div>
 
-<div class="card info">
-    <h2>طريقة الاستخدام</h2>
-    <p>اضغط على زر الحصول على نقاط لزيادة رصيدك.</p>
-    <p>عند وصول الرصيد إلى الحد المطلوب يمكنك طلب السحب.</p>
+<div class="container">
+
+  <div class="card">
+    <h2>رصيدك</h2>
+    <div class="balance">
+      <span id="balance">0</span> نقطة
+    </div>
+
+    <button onclick="earnPoints()">
+      🎁 احصل على 10 نقاط
+    </button>
+  </div>
+
+  <div class="card">
+    <h2>💵 طلب سحب عبر زين كاش</h2>
+
+    <p>الحد الأدنى للسحب: <b>100 نقطة</b></p>
+
+    <label>رقم محفظة زين كاش:</label>
+    <input
+      id="zainNumber"
+      type="tel"
+      placeholder="07xxxxxxxxx"
+    >
+
+    <button onclick="withdraw()">
+      💵 إرسال طلب السحب
+    </button>
+
+    <div id="message" class="message"></div>
+  </div>
+
+  <div class="card">
+    <h3>📌 ملاحظة</h3>
+    <p>
+      هذه نسخة تجريبية. إرسال الطلب هنا لا يعني تحويل أموال حقيقية.
+      ربط الدفع الحقيقي يحتاج إلى خادم ونظام دفع معتمد.
+    </p>
+  </div>
+
 </div>
 
 <script>
+
 let balance = Number(localStorage.getItem("balance")) || 0;
 
 document.getElementById("balance").textContent = balance;
 
-function earn(){
-    balance += 10;
-    localStorage.setItem("balance", balance);
-    document.getElementById("balance").textContent = balance;
-    alert("🎉 تمت إضافة 10 نقاط إلى رصيدك");
+function earnPoints(){
+
+  balance += 10;
+
+  localStorage.setItem("balance", balance);
+
+  document.getElementById("balance").textContent = balance;
+
+  showMessage("🎉 تمت إضافة 10 نقاط إلى رصيدك.");
+
 }
 
 function withdraw(){
-    if(balance < 100){
-        alert("رصيدك غير كافٍ. تحتاج إلى 100 نقطة على الأقل.");
-    }else{
-        alert("✅ تم تسجيل طلب السحب. هذه نسخة تجريبية من التطبيق.");
-    }
+
+  const number =
+    document.getElementById("zainNumber").value.trim();
+
+  if(balance < 100){
+
+    showMessage(
+      "❌ لا يمكنك طلب السحب الآن. تحتاج إلى 100 نقطة على الأقل."
+    );
+
+    return;
+  }
+
+  if(!/^07[0-9]{9}$/.test(number)){
+
+    showMessage(
+      "❌ أدخل رقم زين كاش صحيحًا مثل 07xxxxxxxxx"
+    );
+
+    return;
+  }
+
+  localStorage.setItem("zainNumber", number);
+
+  showMessage(
+    "✅ تم تسجيل طلب السحب التجريبي بنجاح."
+  );
 }
+
+function showMessage(text){
+
+  const box = document.getElementById("message");
+
+  box.textContent = text;
+
+  box.style.display = "block";
+}
+
 </script>
 
 </body>
