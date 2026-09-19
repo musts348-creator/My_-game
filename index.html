@@ -6,7 +6,9 @@
 <title>ربح</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
@@ -24,11 +26,13 @@ body{
 
 .header h1{
     margin:0;
-    font-size:30px;
+    font-size:32px;
 }
 
 .container{
     padding:15px;
+    max-width:600px;
+    margin:auto;
 }
 
 .card{
@@ -39,14 +43,33 @@ body{
     box-shadow:0 3px 12px #ddd;
 }
 
-input{
-    width:100%;
+.balance{
+    text-align:center;
+    font-size:34px;
+    font-weight:bold;
+    color:#1677ff;
+    margin:20px 0;
+}
+
+.user{
+    text-align:center;
+    font-size:18px;
+}
+
+.counter{
+    text-align:center;
+    background:#eef5ff;
     padding:14px;
-    margin-top:8px;
-    margin-bottom:10px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    font-size:17px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.task{
+    border:1px solid #ddd;
+    padding:15px;
+    margin:12px 0;
+    border-radius:12px;
 }
 
 button{
@@ -64,32 +87,18 @@ button:disabled{
     background:#aaa;
 }
 
-.balance{
-    text-align:center;
-    font-size:32px;
-    font-weight:bold;
-    color:#1677ff;
-    margin:15px;
+.logout{
+    background:#777;
 }
 
-.counter{
-    text-align:center;
-    background:#eef5ff;
-    padding:12px;
-    border-radius:12px;
-    font-size:18px;
-    font-weight:bold;
-}
-
-.task{
-    border:1px solid #ddd;
-    padding:15px;
-    margin:10px 0;
-    border-radius:12px;
-}
-
-.task h3{
-    margin-top:0;
+input{
+    width:100%;
+    padding:14px;
+    margin-top:8px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:17px;
+    direction:ltr;
 }
 
 .message{
@@ -100,8 +109,13 @@ button:disabled{
     background:#eef5ff;
 }
 
-.logout{
-    background:#777;
+.history{
+    border-top:1px solid #ddd;
+    padding:12px 0;
+}
+
+.history:last-child{
+    border-bottom:0;
 }
 </style>
 </head>
@@ -119,7 +133,7 @@ button:disabled{
 
 <div class="card" id="loginCard">
 
-    <h2>👤 إنشاء حساب</h2>
+    <h2>👤 تسجيل الدخول</h2>
 
     <label>اسم المستخدم:</label>
 
@@ -152,12 +166,15 @@ button:disabled{
 
 <div class="card">
 
-    <h2>👋 أهلاً بك</h2>
-
-    <p>
-        المستخدم:
+    <div class="user">
+        👋 أهلاً بك
         <b id="userDisplay"></b>
-    </p>
+    </div>
+
+    <div class="balance">
+        <span id="balance">0</span>
+        نقطة
+    </div>
 
     <button class="logout" onclick="logout()">
         🚪 تسجيل الخروج
@@ -166,16 +183,7 @@ button:disabled{
 </div>
 
 
-<div class="card">
-
-    <h2>💰 رصيدك</h2>
-
-    <div class="balance">
-        <span id="balance">0</span> نقطة
-    </div>
-
-</div>
-
+<!-- المهام -->
 
 <div class="card">
 
@@ -228,9 +236,11 @@ button:disabled{
 </div>
 
 
+<!-- السحب -->
+
 <div class="card">
 
-    <h2>💵 خيارات السحب</h2>
+    <h2>💵 طلب السحب</h2>
 
     <p>
         الحد الأدنى للسحب:
@@ -239,8 +249,6 @@ button:disabled{
 
 
     <h3>🟢 زين كاش</h3>
-
-    <label>رقم محفظة زين كاش:</label>
 
     <input
         id="zainNumber"
@@ -257,8 +265,6 @@ button:disabled{
 
 
     <h3>💳 Mastercard</h3>
-
-    <label>رقم Mastercard:</label>
 
     <input
         id="mastercard"
@@ -277,17 +283,30 @@ button:disabled{
 </div>
 
 
+<!-- سجل الطلبات -->
+
+<div class="card">
+
+    <h2>📊 سجل طلبات السحب</h2>
+
+    <div id="history">
+        لا توجد طلبات سحب حتى الآن.
+    </div>
+
+</div>
+
+
 <div class="card">
 
     <h3>📌 ملاحظة</h3>
 
     <p>
         هذه نسخة تجريبية.
-        تسجيل الدخول والرصيد محفوظان على هذا الجهاز فقط.
+        السحب لا يحوّل أموالًا حقيقية حاليًا.
     </p>
 
     <p>
-        السحب لا يحوّل أموالًا حقيقية حاليًا.
+        تسجيل الدخول والرصيد محفوظان على هذا الجهاز.
     </p>
 
 </div>
@@ -405,13 +424,6 @@ function setBalance(value){
 
 function loadUserData(){
 
-    let balance =
-        getBalance();
-
-    document.getElementById("balance").textContent =
-        balance;
-
-
     let today =
         new Date().toISOString().split("T")[0];
 
@@ -464,7 +476,13 @@ function loadUserData(){
     });
 
 
+    document.getElementById("balance").textContent =
+        getBalance();
+
+
     updateCounter();
+
+    loadHistory();
 
 }
 
@@ -597,8 +615,14 @@ function withdrawZain(){
     }
 
 
+    addHistory(
+        "زين كاش",
+        number
+    );
+
+
     showMessage(
-        "✅ تم تسجيل طلب السحب التجريبي عبر زين كاش."
+        "✅ تم تسجيل طلب السحب التجريبي."
     );
 
 }
@@ -638,9 +662,117 @@ function withdrawMastercard(){
     }
 
 
+    let hiddenCard =
+        "**** **** **** " +
+        card.slice(-4);
+
+
+    addHistory(
+        "Mastercard",
+        hiddenCard
+    );
+
+
     showMessage(
         "✅ تم تسجيل طلب Mastercard التجريبي."
     );
+
+}
+
+
+function addHistory(method, account){
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                userKey("history")
+            ) || "[]"
+        );
+
+
+    let item = {
+
+        method: method,
+
+        account: account,
+
+        points: getBalance(),
+
+        date: new Date().toLocaleString("ar-IQ")
+
+    };
+
+
+    history.unshift(item);
+
+
+    localStorage.setItem(
+        userKey("history"),
+        JSON.stringify(history)
+    );
+
+
+    loadHistory();
+
+}
+
+
+function loadHistory(){
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                userKey("history")
+            ) || "[]"
+        );
+
+
+    const box =
+        document.getElementById("history");
+
+
+    if(history.length === 0){
+
+        box.innerHTML =
+            "لا توجد طلبات سحب حتى الآن.";
+
+        return;
+
+    }
+
+
+    box.innerHTML = "";
+
+
+    history.forEach(function(item){
+
+        let div =
+            document.createElement("div");
+
+
+        div.className =
+            "history";
+
+
+        div.innerHTML =
+            "💵 <b>" +
+            item.method +
+            "</b><br>" +
+            "الحساب: " +
+            item.account +
+            "<br>" +
+            "النقاط: " +
+            item.points +
+            "<br>" +
+            "التاريخ: " +
+            item.date +
+            "<br>" +
+            "⏳ الحالة: قيد المراجعة";
+
+
+        box.appendChild(div);
+
+    });
 
 }
 
@@ -664,9 +796,7 @@ function showMessage(text){
 function showLoginMessage(text){
 
     const message =
-        document.getElementById(
-            "loginMessage"
-        );
+        document.getElementById("loginMessage");
 
 
     message.textContent =
