@@ -97,12 +97,14 @@ button:disabled{
   color:green;
   text-align:center;
   margin-top:10px;
+  word-break:break-word;
 }
 
 .error{
   color:red;
   text-align:center;
   margin-top:10px;
+  word-break:break-word;
 }
 </style>
 </head>
@@ -111,6 +113,7 @@ button:disabled{
 
 <div class="container">
 
+<!-- تسجيل الدخول -->
 <div id="loginPage" class="card">
 
 <h1>💰 تطبيق ربح</h1>
@@ -134,6 +137,7 @@ button:disabled{
 </div>
 
 
+<!-- التطبيق -->
 <div id="appPage" class="hidden">
 
 <div class="card">
@@ -157,6 +161,7 @@ button:disabled{
 </div>
 
 
+<!-- المهام -->
 <div class="card">
 
 <h2>🎯 المهام اليومية</h2>
@@ -193,6 +198,7 @@ button:disabled{
 </div>
 
 
+<!-- السحب -->
 <div class="card">
 
 <h2>💵 طلب سحب</h2>
@@ -218,6 +224,7 @@ placeholder="رقم زين كاش أو بيانات الحساب">
 </div>
 
 
+<!-- سجل السحب -->
 <div class="card">
 
 <h2>📋 سجل السحب</h2>
@@ -261,29 +268,38 @@ let completedTasks = [];
 
 async function supabaseRequest(table, options = {}){
 
-  const response = await fetch(
-    SUPABASE_URL + "/rest/v1/" + table,
-    {
-      ...options,
-      headers:{
-        "apikey":SUPABASE_KEY,
-        "Authorization":"Bearer " + SUPABASE_KEY,
-        "Content-Type":"application/json",
-        ...(options.headers || {})
+  try{
+
+    const response = await fetch(
+      SUPABASE_URL + "/rest/v1/" + table,
+      {
+        ...options,
+        headers:{
+          "apikey":SUPABASE_KEY,
+          "Authorization":"Bearer " + SUPABASE_KEY,
+          "Content-Type":"application/json",
+          ...(options.headers || {})
+        }
       }
+    );
+
+    const text = await response.text();
+
+    if(!response.ok){
+
+      throw new Error(
+        "HTTP " + response.status + ": " + text
+      );
     }
-  );
 
-  if(!response.ok){
+    return text ? JSON.parse(text) : null;
 
-    const errorText = await response.text();
+  }catch(error){
 
-    throw new Error(errorText);
+    console.log("SUPABASE ERROR:",error);
+
+    throw error;
   }
-
-  const text = await response.text();
-
-  return text ? JSON.parse(text) : null;
 }
 
 
@@ -350,7 +366,8 @@ async function register(){
   }catch(error){
 
     showLoginMessage(
-      "❌ حدث خطأ أثناء إنشاء الحساب.",
+      "❌ خطأ أثناء إنشاء الحساب: " +
+      error.message,
       true
     );
 
@@ -417,11 +434,15 @@ async function login(){
   }catch(error){
 
     showLoginMessage(
-      "❌ تعذر الاتصال بقاعدة البيانات.",
+      "❌ خطأ قاعدة البيانات: " +
+      error.message,
       true
     );
 
-    console.log(error);
+    console.log(
+      "SUPABASE ERROR:",
+      error
+    );
   }
 }
 
@@ -463,7 +484,7 @@ function updateBalance(){
 
 
 /* ==============================
-   تحديث الرصيد
+   تحديث الرصيد في Supabase
    ============================== */
 
 async function saveBalance(){
@@ -562,7 +583,10 @@ async function completeTask(number){
     completedTasks =
       completedTasks.filter(x => x !== number);
 
-    alert("❌ حدث خطأ في حفظ الرصيد.");
+    alert(
+      "❌ حدث خطأ في حفظ الرصيد:\n" +
+      error.message
+    );
 
     console.log(error);
   }
@@ -711,7 +735,8 @@ async function withdraw(){
   }catch(error){
 
     showWithdrawMessage(
-      "❌ حدث خطأ أثناء إرسال الطلب.",
+      "❌ حدث خطأ أثناء إرسال الطلب: " +
+      error.message,
       true
     );
 
@@ -770,7 +795,8 @@ async function loadHistory(){
   }catch(error){
 
     document.getElementById("history").textContent =
-      "تعذر تحميل سجل السحب.";
+      "❌ تعذر تحميل سجل السحب: " +
+      error.message;
 
     console.log(error);
   }
@@ -850,7 +876,10 @@ async function autoLogin(){
 
   }catch(error){
 
-    console.log(error);
+    console.log(
+      "AUTO LOGIN ERROR:",
+      error
+    );
   }
 }
 
