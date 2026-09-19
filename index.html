@@ -120,9 +120,17 @@ button:disabled{
 
 <h2>تسجيل الدخول</h2>
 
-<input id="username" type="text" placeholder="اسم المستخدم">
+<input
+  id="username"
+  type="text"
+  placeholder="اسم المستخدم"
+>
 
-<input id="password" type="password" placeholder="كلمة المرور">
+<input
+  id="password"
+  type="password"
+  placeholder="كلمة المرور"
+>
 
 <button onclick="login()">دخول</button>
 
@@ -152,7 +160,9 @@ button:disabled{
 <span id="balance">0</span>
 </div>
 
-<p style="text-align:center">نقطة</p>
+<p style="text-align:center">
+نقطة
+</p>
 
 <button onclick="logout()" class="logout">
 تسجيل الخروج
@@ -171,36 +181,64 @@ button:disabled{
 <b id="remaining">4</b>
 </p>
 
+
 <div class="task">
+
 <b>المهمة 1</b>
-<p>احصل على 10 نقاط</p>
+
+<p>
+احصل على 10 نقاط
+</p>
+
 <button id="task1" onclick="completeTask(1)">
 🎁 تنفيذ المهمة +10
 </button>
+
 </div>
 
+
 <div class="task">
+
 <b>المهمة 2</b>
-<p>احصل على 20 نقطة</p>
+
+<p>
+احصل على 20 نقطة
+</p>
+
 <button id="task2" onclick="completeTask(2)">
 🎁 تنفيذ المهمة +20
 </button>
+
 </div>
 
+
 <div class="task">
+
 <b>المهمة 3</b>
-<p>احصل على 30 نقطة</p>
+
+<p>
+احصل على 30 نقطة
+</p>
+
 <button id="task3" onclick="completeTask(3)">
 🎁 تنفيذ المهمة +30
 </button>
+
 </div>
 
+
 <div class="task">
+
 <b>المهمة 4</b>
-<p>احصل على 40 نقطة</p>
+
+<p>
+احصل على 40 نقطة
+</p>
+
 <button id="task4" onclick="completeTask(4)">
 🎁 تنفيذ المهمة +40
 </button>
+
 </div>
 
 </div>
@@ -216,12 +254,25 @@ button:disabled{
 </p>
 
 <select id="method">
-<option value="زين كاش">زين كاش</option>
-<option value="Mastercard">Mastercard</option>
+
+<option value="زين كاش">
+زين كاش
+</option>
+
+<option value="Mastercard">
+Mastercard
+</option>
+
 </select>
 
-<input id="account" type="text"
-placeholder="رقم زين كاش أو بيانات الحساب">
+
+<input
+  id="account"
+  type="text"
+  inputmode="numeric"
+  placeholder="رقم زين كاش أو بيانات الحساب"
+>
+
 
 <button onclick="withdraw()">
 طلب سحب
@@ -250,9 +301,9 @@ placeholder="رقم زين كاش أو بيانات الحساب">
 
 <script>
 
-/* ==============================
-   بيانات Supabase
-   ============================== */
+/* =========================
+   SUPABASE
+========================= */
 
 const SUPABASE_URL =
 "https://jfpmniqxdwrvnpjlatkk.supabase.co";
@@ -261,20 +312,18 @@ const SUPABASE_KEY =
 "sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
 
 
-/* ==============================
-   متغيرات التطبيق
-   ============================== */
-
 let currentUser = null;
+
 let userBalance = 0;
+
 let completedTasks = [];
 
 
-/* ==============================
-   اتصال Supabase
-   ============================== */
+/* =========================
+   الاتصال بقاعدة البيانات
+========================= */
 
-async function supabaseRequest(table, options = {}){
+async function supabaseRequest(table, options={}){
 
   try{
 
@@ -282,10 +331,16 @@ async function supabaseRequest(table, options = {}){
       SUPABASE_URL + "/rest/v1/" + table,
       {
         ...options,
+
         headers:{
           "apikey":SUPABASE_KEY,
-          "Authorization":"Bearer " + SUPABASE_KEY,
-          "Content-Type":"application/json",
+
+          "Authorization":
+          "Bearer " + SUPABASE_KEY,
+
+          "Content-Type":
+          "application/json",
+
           ...(options.headers || {})
         }
       }
@@ -296,32 +351,44 @@ async function supabaseRequest(table, options = {}){
     if(!response.ok){
 
       throw new Error(
-        "HTTP " + response.status + ": " + text
+        "HTTP " +
+        response.status +
+        ": " +
+        text
       );
+
     }
 
     return text ? JSON.parse(text) : null;
 
   }catch(error){
 
-    console.log("SUPABASE ERROR:",error);
+    console.log(
+      "SUPABASE ERROR:",
+      error
+    );
 
     throw error;
+
   }
+
 }
 
 
-/* ==============================
+/* =========================
    إنشاء حساب
-   ============================== */
+========================= */
 
 async function register(){
 
   const username =
-    document.getElementById("username").value.trim();
+  document.getElementById("username")
+  .value.trim();
 
   const password =
-    document.getElementById("password").value.trim();
+  document.getElementById("password")
+  .value.trim();
+
 
   if(!username || !password){
 
@@ -333,12 +400,15 @@ async function register(){
     return;
   }
 
+
   try{
 
-    const existing = await supabaseRequest(
+    const existing =
+    await supabaseRequest(
       "users?select=id&username=eq." +
       encodeURIComponent(username)
     );
+
 
     if(existing && existing.length > 0){
 
@@ -349,6 +419,7 @@ async function register(){
 
       return;
     }
+
 
     await supabaseRequest(
       "users",
@@ -367,9 +438,11 @@ async function register(){
       }
     );
 
+
     showLoginMessage(
       "✅ تم إنشاء الحساب. اضغط دخول."
     );
+
 
   }catch(error){
 
@@ -380,21 +453,26 @@ async function register(){
     );
 
     console.log(error);
+
   }
+
 }
 
 
-/* ==============================
+/* =========================
    تسجيل الدخول
-   ============================== */
+========================= */
 
 async function login(){
 
   const username =
-    document.getElementById("username").value.trim();
+  document.getElementById("username")
+  .value.trim();
 
   const password =
-    document.getElementById("password").value.trim();
+  document.getElementById("password")
+  .value.trim();
+
 
   if(!username || !password){
 
@@ -406,14 +484,17 @@ async function login(){
     return;
   }
 
+
   try{
 
-    const users = await supabaseRequest(
+    const users =
+    await supabaseRequest(
       "users?select=*&username=eq." +
       encodeURIComponent(username) +
       "&password=eq." +
       encodeURIComponent(password)
     );
+
 
     if(!users || users.length === 0){
 
@@ -425,19 +506,23 @@ async function login(){
       return;
     }
 
+
     currentUser = users[0];
 
     userBalance =
-      Number(currentUser.balance || 0);
+    Number(currentUser.balance || 0);
+
 
     localStorage.setItem(
       "rab7User",
       currentUser.username
     );
 
+
     await loadTasks();
 
     showApp();
+
 
   }catch(error){
 
@@ -451,55 +536,70 @@ async function login(){
       "SUPABASE ERROR:",
       error
     );
+
   }
+
 }
 
 
-/* ==============================
+/* =========================
    عرض التطبيق
-   ============================== */
+========================= */
 
 function showApp(){
 
   document
-    .getElementById("loginPage")
-    .classList.add("hidden");
+  .getElementById("loginPage")
+  .classList.add("hidden");
+
 
   document
-    .getElementById("appPage")
-    .classList.remove("hidden");
+  .getElementById("appPage")
+  .classList.remove("hidden");
 
-  document.getElementById("userName").textContent =
-    currentUser.username;
+
+  document
+  .getElementById("userName")
+  .textContent =
+  currentUser.username;
+
 
   updateBalance();
 
   updateTasks();
 
   loadHistory();
+
 }
 
 
-/* ==============================
-   الرصيد
-   ============================== */
+/* =========================
+   تحديث الرصيد
+========================= */
 
 function updateBalance(){
 
-  document.getElementById("balance").textContent =
-    userBalance;
+  document
+  .getElementById("balance")
+  .textContent =
+  userBalance;
+
 }
 
 
-/* ==============================
-   تحديث الرصيد في Supabase
-   ============================== */
+/* =========================
+   حفظ الرصيد
+========================= */
 
 async function saveBalance(){
 
   await supabaseRequest(
+
     "users?username=eq." +
-    encodeURIComponent(currentUser.username),
+    encodeURIComponent(
+      currentUser.username
+    ),
+
     {
       method:"PATCH",
 
@@ -511,75 +611,103 @@ async function saveBalance(){
         balance:userBalance
       })
     }
+
   );
+
 }
 
 
-/* ==============================
+/* =========================
    المهام اليومية
-   ============================== */
+========================= */
 
 async function loadTasks(){
 
   const savedDate =
-    localStorage.getItem(
-      "rab7Date_" + currentUser.username
-    );
+  localStorage.getItem(
+    "rab7Date_" +
+    currentUser.username
+  );
+
 
   const today =
-    new Date().toISOString().split("T")[0];
+  new Date()
+  .toISOString()
+  .split("T")[0];
+
 
   if(savedDate !== today){
 
     completedTasks = [];
 
     localStorage.setItem(
-      "rab7Date_" + currentUser.username,
+      "rab7Date_" +
+      currentUser.username,
       today
     );
 
+
     localStorage.setItem(
-      "rab7Tasks_" + currentUser.username,
+      "rab7Tasks_" +
+      currentUser.username,
       JSON.stringify([])
     );
 
   }else{
 
     completedTasks =
-      JSON.parse(
-        localStorage.getItem(
-          "rab7Tasks_" + currentUser.username
-        ) || "[]"
-      );
+    JSON.parse(
+      localStorage.getItem(
+        "rab7Tasks_" +
+        currentUser.username
+      ) || "[]"
+    );
+
   }
+
 }
 
 
-/* ==============================
-   تنفيذ المهام
-   ============================== */
+/* =========================
+   تنفيذ المهمة
+========================= */
 
 async function completeTask(number){
 
-  if(completedTasks.includes(number)){
+  if(completedTasks.includes(number))
     return;
-  }
+
 
   let points = 0;
 
-  if(number === 1) points = 10;
-  if(number === 2) points = 20;
-  if(number === 3) points = 30;
-  if(number === 4) points = 40;
+
+  if(number === 1)
+    points = 10;
+
+  if(number === 2)
+    points = 20;
+
+  if(number === 3)
+    points = 30;
+
+  if(number === 4)
+    points = 40;
+
 
   userBalance += points;
 
   completedTasks.push(number);
 
+
   localStorage.setItem(
-    "rab7Tasks_" + currentUser.username,
-    JSON.stringify(completedTasks)
+    "rab7Tasks_" +
+    currentUser.username,
+
+    JSON.stringify(
+      completedTasks
+    )
   );
+
 
   try{
 
@@ -589,43 +717,64 @@ async function completeTask(number){
 
     updateTasks();
 
+
   }catch(error){
 
     userBalance -= points;
 
     completedTasks =
-      completedTasks.filter(x => x !== number);
+    completedTasks.filter(
+      x => x !== number
+    );
+
 
     alert(
       "❌ حدث خطأ في حفظ الرصيد:\n" +
       error.message
     );
 
+
     console.log(error);
+
   }
+
 }
 
 
-/* ==============================
+/* =========================
    تحديث المهام
-   ============================== */
+========================= */
 
 function updateTasks(){
 
-  document.getElementById("remaining").textContent =
-    4 - completedTasks.length;
+  document
+  .getElementById("remaining")
+  .textContent =
+  4 - completedTasks.length;
 
-  for(let i=1;i<=4;i++){
+
+  for(
+    let i = 1;
+    i <= 4;
+    i++
+  ){
 
     const button =
-      document.getElementById("task" + i);
+    document.getElementById(
+      "task" + i
+    );
 
-    if(!button) continue;
 
-    if(completedTasks.includes(i)){
+    if(!button)
+      continue;
+
+
+    if(
+      completedTasks.includes(i)
+    ){
 
       button.textContent =
-        "✅ تمت اليوم";
+      "✅ تمت اليوم";
 
       button.disabled = true;
 
@@ -633,33 +782,50 @@ function updateTasks(){
 
       button.disabled = false;
 
-      if(i===1)
-        button.textContent="🎁 تنفيذ المهمة +10";
 
-      if(i===2)
-        button.textContent="🎁 تنفيذ المهمة +20";
+      if(i === 1)
+        button.textContent =
+        "🎁 تنفيذ المهمة +10";
 
-      if(i===3)
-        button.textContent="🎁 تنفيذ المهمة +30";
 
-      if(i===4)
-        button.textContent="🎁 تنفيذ المهمة +40";
+      if(i === 2)
+        button.textContent =
+        "🎁 تنفيذ المهمة +20";
+
+
+      if(i === 3)
+        button.textContent =
+        "🎁 تنفيذ المهمة +30";
+
+
+      if(i === 4)
+        button.textContent =
+        "🎁 تنفيذ المهمة +40";
+
     }
+
   }
+
 }
 
 
-/* ==============================
-   السحب
-   ============================== */
+/* =========================
+   طلب السحب
+========================= */
 
 async function withdraw(){
 
   const method =
-    document.getElementById("method").value;
+  document.getElementById("method")
+  .value;
+
 
   const account =
-    document.getElementById("account").value.trim();
+  document.getElementById("account")
+  .value.trim();
+
+
+  /* الحد الأدنى */
 
   if(userBalance < 100){
 
@@ -671,6 +837,9 @@ async function withdraw(){
     return;
   }
 
+
+  /* التأكد من إدخال الرقم */
+
   if(!account){
 
     showWithdrawMessage(
@@ -681,18 +850,29 @@ async function withdraw(){
     return;
   }
 
+
+  /* =========================
+     زين كاش - 11 رقم
+  ========================= */
+
   if(method === "زين كاش"){
 
-    if(!/^07[0-9]{8}$/.test(account)){
+    if(!/^07[0-9]{9}$/.test(account)){
 
       showWithdrawMessage(
-        "❌ رقم زين كاش يجب أن يكون 10 أرقام ويبدأ بـ 07.",
+        "❌ رقم زين كاش يجب أن يكون 11 رقماً ويبدأ بـ 07.",
         true
       );
 
       return;
     }
+
   }
+
+
+  /* =========================
+     Mastercard
+  ========================= */
 
   if(method === "Mastercard"){
 
@@ -706,10 +886,17 @@ async function withdraw(){
       return;
     }
 
+
     alert(
       "⚠️ لا تستخدم رقم بطاقة حقيقي في هذه النسخة التجريبية."
     );
+
   }
+
+
+  /* =========================
+     إرسال الطلب
+  ========================= */
 
   try{
 
@@ -724,35 +911,52 @@ async function withdraw(){
 
         body:JSON.stringify({
 
-          username:currentUser.username,
+          username:
+          currentUser.username,
 
-          method:method,
+          method:
+          method,
 
           account:
-            method === "Mastercard"
-            ? "****" + account.slice(-4)
-            : account,
+          method === "Mastercard"
+          ? "****" +
+            account.slice(-4)
+          : account,
 
-          points:userBalance,
+          points:
+          userBalance,
 
-          status:"قيد المراجعة"
+          status:
+          "قيد المراجعة"
+
         })
       }
     );
 
+
+    /* تصفير الرصيد */
+
     userBalance = 0;
+
 
     await saveBalance();
 
+
     updateBalance();
 
-    document.getElementById("account").value = "";
+
+    document
+    .getElementById("account")
+    .value = "";
+
 
     showWithdrawMessage(
       "✅ تم إرسال طلب السحب للمراجعة."
     );
 
+
     loadHistory();
+
 
   }catch(error){
 
@@ -762,139 +966,234 @@ async function withdraw(){
       true
     );
 
+
     console.log(error);
+
   }
+
 }
 
 
-/* ==============================
+/* =========================
    سجل السحب
-   ============================== */
+========================= */
 
 async function loadHistory(){
 
   try{
 
     const records =
-      await supabaseRequest(
-        "withdrawals?select=*&username=eq." +
-        encodeURIComponent(currentUser.username) +
-        "&order=created_at.desc"
-      );
+    await supabaseRequest(
+
+      "withdrawals?select=*" +
+      "&username=eq." +
+      encodeURIComponent(
+        currentUser.username
+      ) +
+      "&order=created_at.desc"
+
+    );
+
 
     const history =
-      document.getElementById("history");
+    document.getElementById(
+      "history"
+    );
 
-    if(!records || records.length === 0){
+
+    if(
+      !records ||
+      records.length === 0
+    ){
 
       history.innerHTML =
-        "لا توجد طلبات سحب.";
+      "لا توجد طلبات سحب.";
 
       return;
+
     }
 
+
     history.innerHTML = "";
+
 
     records.forEach(item => {
 
       const div =
-        document.createElement("div");
+      document.createElement("div");
 
-      div.className = "history";
+
+      div.className =
+      "history";
+
 
       div.innerHTML = `
-        <b>طريقة السحب:</b> ${item.method}<br>
-        <b>الحساب:</b> ${item.account}<br>
-        <b>النقاط:</b> ${item.points}<br>
-        <b>الحالة:</b> ${item.status}<br>
-        <b>التاريخ:</b> ${new Date(item.created_at).toLocaleString("ar-IQ")}
+
+        <b>طريقة السحب:</b>
+        ${item.method}
+        <br>
+
+        <b>الحساب:</b>
+        ${item.account}
+        <br>
+
+        <b>النقاط:</b>
+        ${item.points}
+        <br>
+
+        <b>الحالة:</b>
+        ${item.status}
+        <br>
+
+        <b>التاريخ:</b>
+        ${new Date(
+          item.created_at
+        ).toLocaleString("ar-IQ")}
+
       `;
+
 
       history.appendChild(div);
 
     });
 
+
   }catch(error){
 
-    document.getElementById("history").textContent =
-      "❌ تعذر تحميل سجل السحب: " +
-      error.message;
+    document
+    .getElementById("history")
+    .textContent =
+    "❌ تعذر تحميل سجل السحب: " +
+    error.message;
+
 
     console.log(error);
+
   }
+
 }
 
 
-/* ==============================
+/* =========================
    تسجيل الخروج
-   ============================== */
+========================= */
 
 function logout(){
 
-  localStorage.removeItem("rab7User");
+  localStorage.removeItem(
+    "rab7User"
+  );
 
   location.reload();
+
 }
 
 
-/* ==============================
-   الرسائل
-   ============================== */
+/* =========================
+   رسائل الدخول
+========================= */
 
-function showLoginMessage(message,error=false){
+function showLoginMessage(
+  message,
+  error=false
+){
 
   const box =
-    document.getElementById("loginMessage");
+  document.getElementById(
+    "loginMessage"
+  );
 
-  box.textContent = message;
+
+  box.textContent =
+  message;
+
 
   box.className =
-    error ? "error" : "success";
+  error
+  ? "error"
+  : "success";
+
 }
 
 
-function showWithdrawMessage(message,error=false){
+/* =========================
+   رسائل السحب
+========================= */
+
+function showWithdrawMessage(
+  message,
+  error=false
+){
 
   const box =
-    document.getElementById("withdrawMessage");
+  document.getElementById(
+    "withdrawMessage"
+  );
 
-  box.textContent = message;
+
+  box.textContent =
+  message;
+
 
   box.className =
-    error ? "error" : "success";
+  error
+  ? "error"
+  : "success";
+
 }
 
 
-/* ==============================
-   فتح الحساب المحفوظ
-   ============================== */
+/* =========================
+   الدخول التلقائي
+========================= */
 
 async function autoLogin(){
 
   const username =
-    localStorage.getItem("rab7User");
+  localStorage.getItem(
+    "rab7User"
+  );
 
-  if(!username) return;
+
+  if(!username)
+    return;
+
 
   try{
 
     const users =
-      await supabaseRequest(
-        "users?select=*&username=eq." +
-        encodeURIComponent(username)
-      );
+    await supabaseRequest(
 
-    if(users && users.length > 0){
+      "users?select=*" +
+      "&username=eq." +
+      encodeURIComponent(
+        username
+      )
 
-      currentUser = users[0];
+    );
+
+
+    if(
+      users &&
+      users.length > 0
+    ){
+
+      currentUser =
+      users[0];
+
 
       userBalance =
-        Number(currentUser.balance || 0);
+      Number(
+        currentUser.balance || 0
+      );
+
 
       await loadTasks();
 
       showApp();
+
     }
+
 
   }catch(error){
 
@@ -902,8 +1201,11 @@ async function autoLogin(){
       "AUTO LOGIN ERROR:",
       error
     );
+
   }
+
 }
+
 
 autoLogin();
 
