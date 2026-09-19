@@ -47,6 +47,15 @@ body{
     margin:15px;
 }
 
+.counter{
+    text-align:center;
+    background:#eef5ff;
+    padding:12px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+}
+
 .task{
     border:1px solid #ddd;
     padding:15px;
@@ -112,11 +121,17 @@ input{
 
 <div class="card">
 
-    <h2>📋 المهام</h2>
+    <h2>📋 المهام اليومية</h2>
+
+    <div class="counter">
+        المهام المتبقية اليوم:
+        <span id="remaining">3</span>
+    </div>
 
     <div class="task">
         <h3>🎁 المهمة الأولى</h3>
-        <p>اضغط على الزر للحصول على 10 نقاط.</p>
+        <p>احصل على 10 نقاط.</p>
+
         <button id="task1" onclick="completeTask(1)">
             احصل على 10 نقاط
         </button>
@@ -124,7 +139,8 @@ input{
 
     <div class="task">
         <h3>🎁 المهمة الثانية</h3>
-        <p>أكمل هذه المهمة للحصول على 20 نقطة.</p>
+        <p>احصل على 20 نقطة.</p>
+
         <button id="task2" onclick="completeTask(2)">
             احصل على 20 نقطة
         </button>
@@ -132,7 +148,8 @@ input{
 
     <div class="task">
         <h3>🎁 المهمة الثالثة</h3>
-        <p>أكمل هذه المهمة للحصول على 30 نقطة.</p>
+        <p>احصل على 30 نقطة.</p>
+
         <button id="task3" onclick="completeTask(3)">
             احصل على 30 نقطة
         </button>
@@ -177,22 +194,64 @@ input{
 let balance =
     Number(localStorage.getItem("balance")) || 0;
 
-let completedTasks =
-    JSON.parse(localStorage.getItem("completedTasks") || "[]");
+let today =
+    new Date().toISOString().split("T")[0];
+
+let savedDate =
+    localStorage.getItem("taskDate");
+
+let completedTasks = [];
+
+if(savedDate !== today){
+
+    completedTasks = [];
+
+    localStorage.setItem(
+        "taskDate",
+        today
+    );
+
+    localStorage.setItem(
+        "completedTasks",
+        JSON.stringify([])
+    );
+
+}else{
+
+    completedTasks =
+        JSON.parse(
+            localStorage.getItem("completedTasks") || "[]"
+        );
+}
 
 function updateBalance(){
 
     document.getElementById("balance").textContent =
         balance;
 
-    localStorage.setItem("balance", balance);
+    localStorage.setItem(
+        "balance",
+        balance
+    );
+}
+
+function updateCounter(){
+
+    let remaining =
+        3 - completedTasks.length;
+
+    document.getElementById(
+        "remaining"
+    ).textContent = remaining;
 }
 
 function completeTask(task){
 
     if(completedTasks.includes(task)){
 
-        showMessage("⚠️ لقد أكملت هذه المهمة سابقًا.");
+        showMessage(
+            "⚠️ لقد أكملت هذه المهمة اليوم."
+        );
 
         return;
     }
@@ -213,29 +272,35 @@ function completeTask(task){
     );
 
     updateBalance();
+    updateCounter();
 
-    document.getElementById(
-        "task" + task
-    ).disabled = true;
+    let button =
+        document.getElementById(
+            "task" + task
+        );
 
-    document.getElementById(
-        "task" + task
-    ).textContent = "✅ تمت المهمة";
+    button.disabled = true;
+    button.textContent =
+        "✅ تمت اليوم";
 
     showMessage(
-        "🎉 تمت إضافة " + points + " نقطة إلى رصيدك."
+        "🎉 تمت إضافة " +
+        points +
+        " نقطة إلى رصيدك."
     );
 }
 
 function withdraw(){
 
     const number =
-        document.getElementById("zainNumber").value.trim();
+        document.getElementById(
+            "zainNumber"
+        ).value.trim();
 
     if(balance < 100){
 
         showMessage(
-            "❌ تحتاج إلى 100 نقطة على الأقل لطلب السحب."
+            "❌ تحتاج إلى 100 نقطة على الأقل."
         );
 
         return;
@@ -263,29 +328,39 @@ function withdraw(){
 function showMessage(text){
 
     const message =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
 
     message.textContent = text;
 
-    message.style.display = "block";
+    message.style.display =
+        "block";
 }
 
-updateBalance();
+function loadTasks(){
 
-completedTasks.forEach(function(task){
+    completedTasks.forEach(function(task){
 
-    const button =
-        document.getElementById("task" + task);
+        let button =
+            document.getElementById(
+                "task" + task
+            );
 
-    if(button){
+        if(button){
 
-        button.disabled = true;
+            button.disabled = true;
 
-        button.textContent =
-            "✅ تمت المهمة";
-    }
+            button.textContent =
+                "✅ تمت اليوم";
+        }
+    });
 
-});
+    updateCounter();
+    updateBalance();
+}
+
+loadTasks();
 
 </script>
 
