@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>إدارة ربح</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  margin:0;
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);
+  color:white;
+  min-height:100vh;
+}
+
+.container{
+  width:94%;
+  max-width:700px;
+  margin:25px auto;
+}
+
+.card{
+  background:white;
+  color:#111827;
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+h1,h2{
+  text-align:center;
+}
+
+input,button{
+  width:100%;
+  padding:13px;
+  margin-top:10px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:16px;
+}
+
+button{
+  border:0;
+  background:#2563eb;
+  color:white;
+  font-weight:bold;
+}
+
+.logout{
+  background:#dc2626;
+}
+
+.request{
+  background:#f3f4f6;
+  border-radius:14px;
+  padding:15px;
+  margin-top:12px;
+}
+
+.status{
+  font-weight:bold;
+}
+
+.pending{
+  color:#d97706;
+}
+
+.paid{
+  color:green;
+}
+
+.rejected{
+  color:red;
+}
+
+.hidden{
+  display:none;
+}
+
+.error{
+  color:red;
+  text-align:center;
+  margin-top:10px;
+}
+
+.success{
+  color:green;
+  text-align:center;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- صفحة دخول الإدارة -->
+
+<div id="loginPage" class="card">
+
+<h1>🔐 إدارة تطبيق ربح</h1>
+
+<p style="text-align:center">
+دخول المدير
+</p>
+
+<input
+id="adminUsername"
+type="text"
+placeholder="اسم المدير"
+>
+
+<input
+id="adminPassword"
+type="password"
+placeholder="كلمة مرور المدير"
+>
+
+<button onclick="adminLogin()">
+دخول الإدارة
+</button>
+
+<div id="loginMessage"></div>
+
+</div>
+
+
+<!-- لوحة الإدارة -->
+
+<div id="adminPage" class="hidden">
+
+<div class="card">
+
+<h1>⚙️ لوحة إدارة ربح</h1>
+
+<p style="text-align:center">
+إدارة طلبات السحب
+</p>
+
+<button onclick="loadWithdrawals()">
+🔄 تحديث الطلبات
+</button>
+
+<button
+onclick="adminLogout()"
+class="logout"
+>
+تسجيل الخروج
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>💵 طلبات السحب</h2>
+
+<div id="withdrawals">
+جاري تحميل الطلبات...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+SUPABASE
+========================= */
+
+const SUPABASE_URL =
+"https://jfpmniqxdwrvnpjlatkk.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
+
+
+/* =========================
+دخول الإدارة
+========================= */
+
+function adminLogin(){
+
+const username =
+document.getElementById(
+"adminUsername"
+).value.trim();
+
+const password =
+document.getElementById(
+"adminPassword"
+).value.trim();
+
+
+if(
+username === "admin" &&
+password === "123456"
+){
+
+document
+.getElementById("loginPage")
+.classList.add("hidden");
+
+document
+.getElementById("adminPage")
+.classList.remove("hidden");
+
+loadWithdrawals();
+
+}else{
+
+showLoginMessage(
+"❌ اسم المدير أو كلمة المرور غير صحيحة.",
+true
+);
+
+}
+
+}
+
+
+/* =========================
+رسالة الدخول
+========================= */
+
+function showLoginMessage(
+message,
+error=false
+){
+
+const box =
+document.getElementById(
+"loginMessage"
+);
+
+box.textContent =
+message;
+
+box.className =
+error
+? "error"
+: "success";
+
+}
+
+
+/* =========================
+الاتصال بقاعدة البيانات
+========================= */
+
+async function supabaseRequest(
+table,
+options={}
+){
+
+const response =
+await fetch(
+
+SUPABASE_URL +
+"/rest/v1/" +
+table,
+
+{
+
+...options,
+
+headers:{
+
+"apikey":
+SUPABASE_KEY,
+
+"Authorization":
+"Bearer " +
+SUPABASE_KEY,
+
+"Content-Type":
+"application/json",
+
+...(options.headers || {})
+
+}
+
+}
+
+);
+
+
+const text =
+await response.text();
+
+
+if(!response.ok){
+
+throw new Error(
+"HTTP " +
+response.status +
+": " +
+text
+);
+
+}
+
+
+return text
+? JSON.parse(text)
+: null;
+
+}
+
+
+/* =========================
+تحميل طلبات السحب
+========================= */
+
+async function loadWithdrawals(){
+
+const box =
+document.getElementById(
+"withdrawals"
+);
+
+box.innerHTML =
+"جاري تحميل الطلبات...";
+
+
+try{
+
+const records =
+await supabaseRequest(
+
+"withdrawals?select=*" +
+"&order=created_at.desc"
+
+);
+
+
+if(
+!records ||
+records.length === 0
+){
+
+box.innerHTML =
+"لا توجد طلبات سحب.";
+
+return;
+
+}
+
+
+box.innerHTML = "";
+
+
+records.forEach(item=>{
+
+const div =
+document.createElement(
+"div"
+);
+
+div.className =
+"request";
+
+
+let statusClass =
+"pending";
+
+
+if(item.status === "تم الدفع")
+statusClass = "paid";
+
+
+if(item.status === "مرفوض")
+statusClass = "rejected";
+
+
+div.innerHTML = `
+
+<b>👤 المستخدم:</b>
+${item.username}
+<br><br>
+
+<b>💰 النقاط:</b>
+${item.points}
+<br><br>
+
+<b>📱 طريقة السحب:</b>
+${item.method}
+<br><br>
+
+<b>📞 الحساب:</b>
+${item.account}
+<br><br>
+
+<b>📌 الحالة:</b>
+
+<span class="status ${statusClass}">
+${item.status}
+</span>
+
+<br><br>
+
+<b>📅 التاريخ:</b>
+${new Date(
+item.created_at
+).toLocaleString("ar-IQ")}
+
+<br><br>
+
+<button
+onclick="changeStatus('${item.id}','تم الدفع')"
+>
+✅ تم الدفع
+</button>
+
+<button
+onclick="changeStatus('${item.id}','مرفوض')"
+style="background:#dc2626"
+>
+❌ رفض الطلب
+</button>
+
+`;
+
+box.appendChild(div);
+
+});
+
+
+}catch(error){
+
+box.innerHTML =
+"❌ حدث خطأ: " +
+error.message;
+
+console.log(error);
+
+}
+
+}
+
+
+/* =========================
+تغيير حالة الطلب
+========================= */
+
+async function changeStatus(
+id,
+newStatus
+){
+
+try{
+
+await supabaseRequest(
+
+"withdrawals?id=eq." +
+encodeURIComponent(id),
+
+{
+
+method:"PATCH",
+
+headers:{
+"Prefer":"return=minimal"
+},
+
+body:JSON.stringify({
+
+status:newStatus
+
+})
+
+}
+
+);
+
+
+alert(
+"✅ تم تغيير حالة الطلب إلى: " +
+newStatus
+);
+
+
+loadWithdrawals();
+
+
+}catch(error){
+
+alert(
+"❌ حدث خطأ:\n" +
+error.message
+);
+
+console.log(error);
+
+}
+
+}
+
+
+/* =========================
+تسجيل الخروج
+========================= */
+
+function adminLogout(){
+
+location.reload();
+
+}
+
+</script>
+
+</body>
+</html>
