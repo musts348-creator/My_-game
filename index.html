@@ -3,63 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ربح - Zain Cash</title>
+<title>ربح</title>
 
 <style>
 *{box-sizing:border-box}
+
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f3f6f9;
-  color:#222;
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f3f6f9;
+    color:#222;
 }
+
 .header{
-  background:#1677ff;
-  color:white;
-  padding:25px 10px;
-  text-align:center;
+    background:#1677ff;
+    color:white;
+    text-align:center;
+    padding:25px 10px;
 }
-.header h1{margin:0;font-size:30px}
-.container{padding:15px}
+
+.header h1{
+    margin:0;
+    font-size:30px;
+}
+
+.container{
+    padding:15px;
+}
+
 .card{
-  background:white;
-  margin:15px 0;
-  padding:22px;
-  border-radius:18px;
-  box-shadow:0 3px 12px #ddd;
+    background:white;
+    margin:15px 0;
+    padding:20px;
+    border-radius:18px;
+    box-shadow:0 3px 12px #ddd;
 }
+
 .balance{
-  text-align:center;
-  font-size:32px;
-  font-weight:bold;
-  color:#1677ff;
-  margin:12px;
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    color:#1677ff;
+    margin:15px;
 }
+
+.task{
+    border:1px solid #ddd;
+    padding:15px;
+    margin:10px 0;
+    border-radius:12px;
+}
+
+.task h3{
+    margin-top:0;
+}
+
 button{
-  width:100%;
-  padding:15px;
-  margin-top:10px;
-  border:0;
-  border-radius:12px;
-  background:#1677ff;
-  color:white;
-  font-size:18px;
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:0;
+    border-radius:12px;
+    background:#1677ff;
+    color:white;
+    font-size:17px;
 }
+
+button:disabled{
+    background:#aaa;
+}
+
 input{
-  width:100%;
-  padding:14px;
-  margin-top:8px;
-  border:1px solid #ccc;
-  border-radius:10px;
-  font-size:17px;
-  direction:ltr;
+    width:100%;
+    padding:14px;
+    margin-top:8px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:17px;
+    direction:ltr;
 }
+
 .message{
-  margin-top:15px;
-  padding:12px;
-  border-radius:10px;
-  display:none;
-  background:#eef5ff;
+    display:none;
+    margin-top:15px;
+    padding:12px;
+    border-radius:10px;
+    background:#eef5ff;
 }
 </style>
 </head>
@@ -67,108 +96,196 @@ input{
 <body>
 
 <div class="header">
-  <h1>💰 تطبيق ربح</h1>
-  <div>اكسب النقاط واطلب السحب</div>
+    <h1>💰 ربح</h1>
+    <div>نفّذ المهام واجمع النقاط</div>
 </div>
 
 <div class="container">
 
-  <div class="card">
-    <h2>رصيدك</h2>
+<div class="card">
+    <h2>💰 رصيدك</h2>
+
     <div class="balance">
-      <span id="balance">0</span> نقطة
+        <span id="balance">0</span> نقطة
+    </div>
+</div>
+
+<div class="card">
+
+    <h2>📋 المهام</h2>
+
+    <div class="task">
+        <h3>🎁 المهمة الأولى</h3>
+        <p>اضغط على الزر للحصول على 10 نقاط.</p>
+        <button id="task1" onclick="completeTask(1)">
+            احصل على 10 نقاط
+        </button>
     </div>
 
-    <button onclick="earnPoints()">
-      🎁 احصل على 10 نقاط
-    </button>
-  </div>
+    <div class="task">
+        <h3>🎁 المهمة الثانية</h3>
+        <p>أكمل هذه المهمة للحصول على 20 نقطة.</p>
+        <button id="task2" onclick="completeTask(2)">
+            احصل على 20 نقطة
+        </button>
+    </div>
 
-  <div class="card">
-    <h2>💵 طلب سحب عبر زين كاش</h2>
+    <div class="task">
+        <h3>🎁 المهمة الثالثة</h3>
+        <p>أكمل هذه المهمة للحصول على 30 نقطة.</p>
+        <button id="task3" onclick="completeTask(3)">
+            احصل على 30 نقطة
+        </button>
+    </div>
+
+</div>
+
+<div class="card">
+
+    <h2>💵 طلب السحب عبر زين كاش</h2>
 
     <p>الحد الأدنى للسحب: <b>100 نقطة</b></p>
 
     <label>رقم محفظة زين كاش:</label>
+
     <input
-      id="zainNumber"
-      type="tel"
-      placeholder="07xxxxxxxxx"
+        id="zainNumber"
+        type="tel"
+        placeholder="07xxxxxxxxx"
     >
 
     <button onclick="withdraw()">
-      💵 إرسال طلب السحب
+        💵 إرسال طلب السحب
     </button>
 
     <div id="message" class="message"></div>
-  </div>
 
-  <div class="card">
+</div>
+
+<div class="card">
     <h3>📌 ملاحظة</h3>
     <p>
-      هذه نسخة تجريبية. إرسال الطلب هنا لا يعني تحويل أموال حقيقية.
-      ربط الدفع الحقيقي يحتاج إلى خادم ونظام دفع معتمد.
+        هذه نسخة تجريبية. طلب السحب لا يحوّل أموالًا حقيقية
+        حتى يتم ربط التطبيق بنظام دفع وخادم آمن.
     </p>
-  </div>
+</div>
 
 </div>
 
 <script>
 
-let balance = Number(localStorage.getItem("balance")) || 0;
+let balance =
+    Number(localStorage.getItem("balance")) || 0;
 
-document.getElementById("balance").textContent = balance;
+let completedTasks =
+    JSON.parse(localStorage.getItem("completedTasks") || "[]");
 
-function earnPoints(){
+function updateBalance(){
 
-  balance += 10;
+    document.getElementById("balance").textContent =
+        balance;
 
-  localStorage.setItem("balance", balance);
+    localStorage.setItem("balance", balance);
+}
 
-  document.getElementById("balance").textContent = balance;
+function completeTask(task){
 
-  showMessage("🎉 تمت إضافة 10 نقاط إلى رصيدك.");
+    if(completedTasks.includes(task)){
 
+        showMessage("⚠️ لقد أكملت هذه المهمة سابقًا.");
+
+        return;
+    }
+
+    let points = 0;
+
+    if(task === 1) points = 10;
+    if(task === 2) points = 20;
+    if(task === 3) points = 30;
+
+    balance += points;
+
+    completedTasks.push(task);
+
+    localStorage.setItem(
+        "completedTasks",
+        JSON.stringify(completedTasks)
+    );
+
+    updateBalance();
+
+    document.getElementById(
+        "task" + task
+    ).disabled = true;
+
+    document.getElementById(
+        "task" + task
+    ).textContent = "✅ تمت المهمة";
+
+    showMessage(
+        "🎉 تمت إضافة " + points + " نقطة إلى رصيدك."
+    );
 }
 
 function withdraw(){
 
-  const number =
-    document.getElementById("zainNumber").value.trim();
+    const number =
+        document.getElementById("zainNumber").value.trim();
 
-  if(balance < 100){
+    if(balance < 100){
 
-    showMessage(
-      "❌ لا يمكنك طلب السحب الآن. تحتاج إلى 100 نقطة على الأقل."
+        showMessage(
+            "❌ تحتاج إلى 100 نقطة على الأقل لطلب السحب."
+        );
+
+        return;
+    }
+
+    if(!/^07[0-9]{9}$/.test(number)){
+
+        showMessage(
+            "❌ أدخل رقم زين كاش صحيحًا."
+        );
+
+        return;
+    }
+
+    localStorage.setItem(
+        "zainNumber",
+        number
     );
 
-    return;
-  }
-
-  if(!/^07[0-9]{9}$/.test(number)){
-
     showMessage(
-      "❌ أدخل رقم زين كاش صحيحًا مثل 07xxxxxxxxx"
+        "✅ تم تسجيل طلب السحب التجريبي بنجاح."
     );
-
-    return;
-  }
-
-  localStorage.setItem("zainNumber", number);
-
-  showMessage(
-    "✅ تم تسجيل طلب السحب التجريبي بنجاح."
-  );
 }
 
 function showMessage(text){
 
-  const box = document.getElementById("message");
+    const message =
+        document.getElementById("message");
 
-  box.textContent = text;
+    message.textContent = text;
 
-  box.style.display = "block";
+    message.style.display = "block";
 }
+
+updateBalance();
+
+completedTasks.forEach(function(task){
+
+    const button =
+        document.getElementById("task" + task);
+
+    if(button){
+
+        button.disabled = true;
+
+        button.textContent =
+            "✅ تمت المهمة";
+    }
+
+});
 
 </script>
 
