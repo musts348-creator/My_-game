@@ -1,33 +1,96 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>لعبتي</title>
+<title>ربح</title>
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #222;
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f2f5f8;
+    text-align:center;
+    color:#222;
 }
-
-canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
+.header{
+    background:#1677ff;
+    color:white;
+    padding:25px 10px;
+    font-size:28px;
+    font-weight:bold;
+}
+.card{
+    background:white;
+    margin:20px;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 3px 12px #ccc;
+}
+.balance{
+    font-size:32px;
+    color:#1677ff;
+    font-weight:bold;
+    margin:15px;
+}
+button{
+    width:90%;
+    padding:16px;
+    margin:8px;
+    border:0;
+    border-radius:12px;
+    background:#1677ff;
+    color:white;
+    font-size:18px;
+}
+button:active{
+    transform:scale(.98);
+}
+.info{
+    font-size:16px;
+    line-height:1.8;
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="gameCanvas"></canvas>
+<div class="header">💰 تطبيق ربح</div>
 
-<script src="game.js"></script>
+<div class="card">
+    <div>رصيدك الحالي</div>
+    <div class="balance"><span id="balance">0</span> نقطة</div>
+
+    <button onclick="earn()">🎁 احصل على نقاط</button>
+    <button onclick="withdraw()">💵 طلب سحب</button>
+</div>
+
+<div class="card info">
+    <h2>طريقة الاستخدام</h2>
+    <p>اضغط على زر الحصول على نقاط لزيادة رصيدك.</p>
+    <p>عند وصول الرصيد إلى الحد المطلوب يمكنك طلب السحب.</p>
+</div>
+
+<script>
+let balance = Number(localStorage.getItem("balance")) || 0;
+
+document.getElementById("balance").textContent = balance;
+
+function earn(){
+    balance += 10;
+    localStorage.setItem("balance", balance);
+    document.getElementById("balance").textContent = balance;
+    alert("🎉 تمت إضافة 10 نقاط إلى رصيدك");
+}
+
+function withdraw(){
+    if(balance < 100){
+        alert("رصيدك غير كافٍ. تحتاج إلى 100 نقطة على الأقل.");
+    }else{
+        alert("✅ تم تسجيل طلب السحب. هذه نسخة تجريبية من التطبيق.");
+    }
+}
+</script>
 
 </body>
 </html>
