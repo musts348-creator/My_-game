@@ -159,9 +159,11 @@ input{
 
 <div class="card">
 
-    <h2>💵 طلب السحب عبر زين كاش</h2>
+    <h2>💵 خيارات السحب</h2>
 
     <p>الحد الأدنى للسحب: <b>100 نقطة</b></p>
+
+    <h3>🟢 زين كاش</h3>
 
     <label>رقم محفظة زين كاش:</label>
 
@@ -171,8 +173,27 @@ input{
         placeholder="07xxxxxxxxx"
     >
 
-    <button onclick="withdraw()">
-        💵 إرسال طلب السحب
+    <button onclick="withdrawZain()">
+        💵 طلب سحب عبر زين كاش
+    </button>
+
+
+    <hr style="margin:25px 0;border:0;border-top:1px solid #ddd;">
+
+
+    <h3>💳 Mastercard</h3>
+
+    <label>رقم بطاقة Mastercard:</label>
+
+    <input
+        id="mastercard"
+        type="tel"
+        maxlength="19"
+        placeholder="0000 0000 0000 0000"
+    >
+
+    <button onclick="withdrawMastercard()">
+        💳 طلب سحب عبر Mastercard
     </button>
 
     <div id="message" class="message"></div>
@@ -180,10 +201,16 @@ input{
 </div>
 
 <div class="card">
-    <h3>📌 ملاحظة</h3>
+    <h3>📌 ملاحظة مهمة</h3>
+
     <p>
-        هذه نسخة تجريبية. طلب السحب لا يحوّل أموالًا حقيقية
-        حتى يتم ربط التطبيق بنظام دفع وخادم آمن.
+        هذه نسخة تجريبية من تطبيق ربح.
+        طلبات السحب لا تحوّل أموالًا حقيقية حاليًا.
+    </p>
+
+    <p>
+        التحويل الحقيقي يحتاج إلى خادم آمن
+        وربط رسمي مع خدمة الدفع.
     </p>
 </div>
 
@@ -224,6 +251,7 @@ if(savedDate !== today){
         );
 }
 
+
 function updateBalance(){
 
     document.getElementById("balance").textContent =
@@ -235,15 +263,16 @@ function updateBalance(){
     );
 }
 
+
 function updateCounter(){
 
     let remaining =
         3 - completedTasks.length;
 
-    document.getElementById(
-        "remaining"
-    ).textContent = remaining;
+    document.getElementById("remaining").textContent =
+        remaining;
 }
+
 
 function completeTask(task){
 
@@ -280,6 +309,7 @@ function completeTask(task){
         );
 
     button.disabled = true;
+
     button.textContent =
         "✅ تمت اليوم";
 
@@ -290,7 +320,8 @@ function completeTask(task){
     );
 }
 
-function withdraw(){
+
+function withdrawZain(){
 
     const number =
         document.getElementById(
@@ -315,15 +346,42 @@ function withdraw(){
         return;
     }
 
-    localStorage.setItem(
-        "zainNumber",
-        number
-    );
-
     showMessage(
-        "✅ تم تسجيل طلب السحب التجريبي بنجاح."
+        "✅ تم تسجيل طلب السحب التجريبي عبر زين كاش."
     );
 }
+
+
+function withdrawMastercard(){
+
+    const card =
+        document.getElementById(
+            "mastercard"
+        ).value.replace(/\s/g,"");
+
+    if(balance < 100){
+
+        showMessage(
+            "❌ تحتاج إلى 100 نقطة على الأقل."
+        );
+
+        return;
+    }
+
+    if(!/^[0-9]{16}$/.test(card)){
+
+        showMessage(
+            "❌ أدخل رقم Mastercard مكوّنًا من 16 رقمًا."
+        );
+
+        return;
+    }
+
+    showMessage(
+        "✅ تم تسجيل طلب Mastercard التجريبي بنجاح."
+    );
+}
+
 
 function showMessage(text){
 
@@ -337,6 +395,7 @@ function showMessage(text){
     message.style.display =
         "block";
 }
+
 
 function loadTasks(){
 
@@ -359,6 +418,7 @@ function loadTasks(){
     updateCounter();
     updateBalance();
 }
+
 
 loadTasks();
 
