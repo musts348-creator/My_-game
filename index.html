@@ -1,5 +1,6 @@
 <!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
+<link rel="manifest" href="manifest.json">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ربح</title><style>
@@ -27,55 +28,137 @@ button:disabled{opacity:.55}
 .small{font-size:13px;opacity:.8;line-height:1.7}
 .nav{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:#061126;padding:7px;border-radius:15px}
 .nav button{font-size:11px;padding:10px 3px;margin:0;background:#18345e;color:white}
-</style></head><body><div class="container"><!-- LOGIN --><div id="loginPage">
+</style></head><body><div class="container">
+
+<!-- LOGIN -->
+<div id="loginPage">
 <div class="card"><h1>💰 تطبيق ربح</h1>
-<h3>تسجيل الدخول</h3><input id="loginUsername" type="text" placeholder="اسم المستخدم">
-<input id="loginPassword" type="password" placeholder="كلمة المرور"><button class="green" onclick="login()">دخول</button>
+<h3>تسجيل الدخول</h3>
+<input id="loginUsername" type="text" placeholder="اسم المستخدم">
+<input id="loginPassword" type="password" placeholder="كلمة المرور">
+<button class="green" onclick="login()">دخول</button>
 <button class="blue" onclick="showRegister()">إنشاء حساب جديد</button>
+<div id="loginMessage" class="message"></div>
+</div>
+</div>
 
-<div id="loginMessage" class="message"></div></div>
-</div><!-- REGISTER --><div id="registerPage" class="hidden">
-<div class="card"><h1>📝 إنشاء حساب</h1><input id="registerUsername" type="text" placeholder="اسم المستخدم">
-<input id="registerPassword" type="password" placeholder="كلمة المرور"><input id="referralCode" type="text" placeholder="كود الإحالة - اختياري"><button class="green" onclick="register()">إنشاء الحساب</button>
+<!-- REGISTER -->
+<div id="registerPage" class="hidden">
+<div class="card"><h1>📝 إنشاء حساب</h1>
+<input id="registerUsername" type="text" placeholder="اسم المستخدم">
+<input id="registerPassword" type="password" placeholder="كلمة المرور">
+<input id="referralCode" type="text" placeholder="كود الإحالة - اختياري">
+<button class="green" onclick="register()">إنشاء الحساب</button>
 <button class="gray" onclick="showLogin()">رجوع</button>
+<div id="registerMessage" class="message"></div>
+</div>
+</div>
 
-<div id="registerMessage" class="message"></div></div>
-</div><!-- APPLICATION --><div id="appPage" class="hidden"><div class="card"><h1>💰 ربح</h1><p>مرحباً: <b id="userName"></b></p><div class="balance">
+<!-- APPLICATION -->
+<div id="appPage" class="hidden">
+<div class="card"><h1>💰 ربح</h1>
+<p>مرحباً: <b id="userName"></b></p>
+<div class="balance">
 <span id="balance">0</span>
 <span class="points">نقطة</span>
-</div><p class="small">
-اجمع النقاط من المهام والإعلانات التجريبية.
-</p></div><!-- HOME --><div id="homeSection"><div class="card"><h2>🏠 الرئيسية</h2><button class="green" onclick="showSection('tasksSection')">📋 المهام اليومية</button>
+</div>
+<p class="small">اجمع النقاط من المهام والإعلانات التجريبية.</p>
+</div>
+
+<!-- HOME -->
+<div id="homeSection">
+<div class="card"><h2>🏠 الرئيسية</h2>
+<button class="green" onclick="showSection('tasksSection')">📋 المهام اليومية</button>
 <button class="blue" onclick="showSection('adsSection')">📺 الإعلانات</button>
 <button class="orange" onclick="showSection('referralSection')">👥 الإحالة</button>
 <button class="orange" onclick="showSection('withdrawSection')">💳 السحب</button>
+</div>
+</div>
 
-</div></div><!-- TASKS --><div id="tasksSection" class="hidden"><div class="card"><h2>📋 المهام اليومية</h2><p class="small">يمكن تنفيذ كل مهمة مرة واحدة في اليوم.</p><div id="tasksContainer"></div></div></div><!-- ADS --><div id="adsSection" class="hidden"><div class="card"><h2>📺 الإعلانات</h2><div class="ad"><h3>🎬 إعلان تجريبي</h3><p>شاهد الإعلان لمدة 10 ثوانٍ للحصول على 10 نقاط.</p><div id="adTimer" class="timer"></div><button id="adButton" class="green" onclick="watchAd()">▶️ مشاهدة الإعلان</button>
+<!-- TASKS -->
+<div id="tasksSection" class="hidden">
+<div class="card"><h2>📋 المهام اليومية</h2>
+<p class="small">يمكن تنفيذ كل مهمة مرة واحدة في اليوم.</p>
+<div id="tasksContainer"></div>
+</div>
+</div>
 
-</div><br><p class="small">
-هذه إعلانات تجريبية داخل التطبيق وليست شبكة إعلانية حقيقية.
-</p></div></div><!-- REFERRAL --><div id="referralSection" class="hidden"><div class="card"><h2>👥 نظام الإحالة</h2><p>
+<!-- ADS -->
+<div id="adsSection" class="hidden">
+<div class="card"><h2>📺 الإعلانات</h2>
+<div class="ad"><h3>🎬 إعلان تجريبي</h3>
+<p>شاهد الإعلان لمدة 10 ثوانٍ للحصول على 10 نقاط.</p>
+<div id="adTimer" class="timer"></div>
+<button id="adButton" class="green" onclick="watchAd()">▶️ مشاهدة الإعلان</button>
+</div>
+<br>
+<p class="small">هذه إعلانات تجريبية داخل التطبيق وليست شبكة إعلانية حقيقية.</p>
+</div>
+</div>
+
+<!-- REFERRAL -->
+<div id="referralSection" class="hidden">
+<div class="card"><h2>👥 نظام الإحالة</h2>
+<p>
 شارك كودك مع أصدقائك.<br>
 عند تسجيل مستخدم جديد باستخدام كودك تحصل على <b>50 نقطة</b>.
-</p><div class="refbox"><h3>كود الإحالة الخاص بك</h3><div id="myReferralCode"></div><button class="blue" onclick="copyReferral()">📋 نسخ الكود</button>
+</p>
+<div class="refbox">
+<h3>كود الإحالة الخاص بك</h3>
+<div id="myReferralCode"></div>
+<button class="blue" onclick="copyReferral()">📋 نسخ الكود</button>
+</div>
+</div>
+</div>
 
-</div></div></div><!-- WITHDRAW --><div id="withdrawSection" class="hidden"><div class="card"><h2>💳 طلب السحب</h2><p>
-رصيدك:
-<b id="withdrawBalance">0</b> نقطة
-</p><select id="withdrawMethod" onchange="changeWithdrawMethod()"><option value="zain">Zain Cash</option>
-<option value="mastercard">Mastercard</option></select><input id="withdrawAccount" type="text" inputmode="numeric" placeholder="رقم Zain Cash - 07712345678"><input id="withdrawAmount" type="number" inputmode="numeric" placeholder="عدد النقاط"><button class="orange" onclick="submitWithdrawal()">💸 إرسال طلب السحب</button>
+<!-- WITHDRAW -->
+<div id="withdrawSection" class="hidden">
+<div class="card"><h2>💳 طلب السحب</h2>
+<p>رصيدك: <b id="withdrawBalance">0</b> نقطة</p>
+<select id="withdrawMethod" onchange="changeWithdrawMethod()">
+<option value="zain">Zain Cash</option>
+<option value="mastercard">Mastercard</option>
+</select>
+<input id="withdrawAccount" type="text" inputmode="numeric" placeholder="رقم Zain Cash - 07712345678">
+<input id="withdrawAmount" type="number" inputmode="numeric" placeholder="عدد النقاط">
+<button class="orange" onclick="submitWithdrawal()">💸 إرسال طلب السحب</button>
+<p class="small">الحد الأدنى للسحب 100 نقطة.</p>
+<div id="withdrawMessage" class="message"></div>
+</div>
+</div>
 
-<p class="small">الحد الأدنى للسحب 100 نقطة.</p><div id="withdrawMessage" class="message"></div></div></div><!-- HISTORY --><div id="historySection" class="hidden"><div class="card"><h2>📜 طلباتي</h2><div id="historyContainer">جاري التحميل...</div></div></div><!-- NOTIFICATIONS --><div id="notificationsSection" class="hidden"><div class="card"><h2>🔔 الإشعارات</h2><div id="notificationsContainer">جاري التحميل...</div></div></div><div class="card"><button class="red" onclick="logout()">🚪 تسجيل الخروج</button>
+<!-- HISTORY -->
+<div id="historySection" class="hidden">
+<div class="card"><h2>📜 طلباتي</h2>
+<div id="historyContainer">جاري التحميل...</div>
+</div>
+</div>
 
-</div><!-- NAVIGATION --><div class="nav"><button onclick="showSection('homeSection')">🏠 الرئيسية</button>
+<!-- NOTIFICATIONS -->
+<div id="notificationsSection" class="hidden">
+<div class="card"><h2>🔔 الإشعارات</h2>
+<div id="notificationsContainer">جاري التحميل...</div>
+</div>
+</div>
+
+<div class="card">
+<button class="red" onclick="logout()">🚪 تسجيل الخروج</button>
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+<button onclick="showSection('homeSection')">🏠 الرئيسية</button>
 <button onclick="showSection('tasksSection')">📋 المهام</button>
 <button onclick="showSection('adsSection')">📺 الإعلانات</button>
 <button onclick="showSection('referralSection')">👥 الإحالة</button>
 <button onclick="showSection('withdrawSection')">💳 السحب</button>
 <button onclick="showSection('historySection')">📜 طلباتي</button>
 <button onclick="showSection('notificationsSection')">🔔 الإشعارات</button>
+</div>
+</div>
+</div>
 
-</div></div></div><script>
+<script>
 
 /* =========================
 SUPABASE
@@ -1048,161 +1131,4 @@ div.innerHTML=
 (item.points || 0)+
 "<br>"+
 "<b>الحالة:</b> "+
-(item.status || "قيد المراجعة")+
-"<br>"+
-"<small>"+
-(item.created_at
-? new Date(item.created_at).toLocaleString("ar-IQ")
-: "")+
-"</small>";
-
-container.appendChild(div);
-
-});
-
-}catch(error){
-
-container.innerHTML=
-error.message ||
-"تعذر تحميل الطلبات.";
-
-}
-
-}
-
-
-/* =========================
-NOTIFICATIONS
-========================= */
-
-async function loadNotifications(){
-
-const container=
-document.getElementById("notificationsContainer");
-
-container.innerHTML=
-"جاري تحميل الإشعارات...";
-
-try{
-
-const data=
-await api("withdrawals",{
-
-query:
-"user_id=eq."+
-encodeURIComponent(currentUser.id)+
-"&select=status,points,method,created_at&order=id.desc"
-
-});
-
-
-if(!data || data.length===0){
-
-container.innerHTML=
-"🔔 لا توجد إشعارات.";
-
-return;
-}
-
-
-container.innerHTML="";
-
-
-data.forEach(function(item){
-
-const div=
-document.createElement("div");
-
-div.className="history";
-
-let status="⏳ قيد المراجعة";
-
-if(item.status==="تم الدفع"){
-status="✅ تم الدفع";
-}
-
-if(item.status==="مرفوض"){
-status="❌ مرفوض";
-}
-
-div.textContent=
-"طلب سحب "+
-item.points+
-" نقطة — "+
-status;
-
-container.appendChild(div);
-
-});
-
-}catch(error){
-
-container.innerHTML=
-error.message ||
-"تعذر تحميل الإشعارات.";
-
-}
-
-}
-
-
-/* =========================
-LOGOUT
-========================= */
-
-function logout(){
-
-currentUser=null;
-
-localStorage.removeItem("ribhUser");
-
-showLogin();
-
-}
-
-
-/* =========================
-AUTO LOGIN
-========================= */
-
-window.addEventListener("load",function(){
-
-const saved=
-localStorage.getItem("ribhUser");
-
-if(saved){
-
-try{
-
-currentUser=
-JSON.parse(saved);
-
-if(currentUser && currentUser.id){
-
-openApplication();
-
-}else{
-
-localStorage.removeItem("ribhUser");
-showLogin();
-
-}
-
-}catch(error){
-
-localStorage.removeItem("ribhUser");
-
-showLogin();
-
-}
-
-}else{
-
-showLogin();
-
-}
-
-});
-
-</script></body>
-</html>
+(item.status || "ق
