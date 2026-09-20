@@ -15,19 +15,28 @@ min-height:100vh
 }
 .container{width:92%;max-width:520px;margin:25px auto}
 .card{
-background:white;color:#111827;border-radius:20px;
-padding:20px;margin-bottom:18px;
+background:white;
+color:#111827;
+border-radius:20px;
+padding:20px;
+margin-bottom:18px;
 box-shadow:0 10px 30px rgba(0,0,0,.25)
 }
 h1,h2{text-align:center}
 input,select,button{
-width:100%;padding:13px;margin-top:10px;
-border-radius:12px;border:1px solid #ddd;
+width:100%;
+padding:13px;
+margin-top:10px;
+border-radius:12px;
+border:1px solid #ddd;
 font-size:16px
 }
 button{
-border:0;background:#2563eb;color:white;
-font-weight:bold;cursor:pointer
+border:0;
+background:#2563eb;
+color:white;
+font-weight:bold;
+cursor:pointer
 }
 button:disabled{background:#9ca3af}
 .logout{background:#dc2626}
@@ -35,25 +44,44 @@ button:disabled{background:#9ca3af}
 .orange{background:#ea580c}
 .purple{background:#7c3aed}
 .balance{
-text-align:center;font-size:34px;font-weight:bold;
+text-align:center;
+font-size:34px;
+font-weight:bold;
 color:#2563eb
 }
 .task,.history,.refbox,.rank{
-border:1px solid #ddd;padding:14px;
-border-radius:14px;margin-top:10px
+border:1px solid #ddd;
+padding:14px;
+border-radius:14px;
+margin-top:10px
 }
 .history{background:#f3f4f6}
 .status{font-weight:bold;font-size:18px}
 .small{
-font-size:13px;color:#6b7280;text-align:center
+font-size:13px;
+color:#6b7280;
+text-align:center
 }
 .success{color:green;text-align:center;margin-top:10px}
 .error{color:red;text-align:center;margin-top:10px}
 .hidden{display:none}
 .stat{
-display:flex;justify-content:space-between;
-padding:10px;background:#f3f4f6;
-border-radius:10px;margin-top:8px
+display:flex;
+justify-content:space-between;
+padding:10px;
+background:#f3f4f6;
+border-radius:10px;
+margin-top:8px
+}
+.refbox{
+background:#f5f3ff
+}
+.refcode{
+font-size:20px;
+text-align:center;
+font-weight:bold;
+color:#7c3aed;
+padding:10px
 }
 </style>
 </head>
@@ -62,29 +90,48 @@ border-radius:10px;margin-top:8px
 
 <div class="container">
 
-<!-- LOGIN -->
+<!-- تسجيل الدخول -->
 
 <div id="loginPage" class="card">
 
 <h1>💰 تطبيق ربح</h1>
+
 <h2>تسجيل الدخول</h2>
 
 <input id="username" placeholder="اسم المستخدم">
-<input id="password" type="password" placeholder="كلمة المرور">
 
-<button onclick="login()">دخول</button>
-<button onclick="register()">إنشاء حساب جديد</button>
+<input
+id="password"
+type="password"
+placeholder="كلمة المرور"
+>
+
+<!-- رمز الإحالة اختياري -->
+
+<input
+id="referralInput"
+placeholder="رمز الإحالة - اختياري"
+>
+
+<button onclick="login()">
+دخول
+</button>
+
+<button onclick="register()">
+إنشاء حساب جديد
+</button>
 
 <div id="loginMessage"></div>
 
 </div>
 
 
-<!-- APP -->
+<!-- التطبيق -->
 
 <div id="appPage" class="hidden">
 
-<!-- ACCOUNT -->
+
+<!-- الحساب -->
 
 <div class="card">
 
@@ -98,7 +145,9 @@ border-radius:10px;margin-top:8px
 <span id="balance">0</span>
 </div>
 
-<p style="text-align:center">نقطة</p>
+<p style="text-align:center">
+نقطة
+</p>
 
 <div class="stat">
 <span>المهام المكتملة</span>
@@ -110,14 +159,22 @@ border-radius:10px;margin-top:8px
 <b id="withdrawCount">0</b>
 </div>
 
-<button onclick="logout()" class="logout">
+<div class="stat">
+<span>الأصدقاء المدعوون</span>
+<b id="referralCount">0</b>
+</div>
+
+<button
+onclick="logout()"
+class="logout"
+>
 تسجيل الخروج
 </button>
 
 </div>
 
 
-<!-- DAILY TASKS -->
+<!-- المهام -->
 
 <div class="card">
 
@@ -128,58 +185,106 @@ border-radius:10px;margin-top:8px
 <b id="remaining">6</b>
 </p>
 
+
 <div class="task">
+
 <b>المهمة 1</b>
+
 <p>احصل على 10 نقاط</p>
-<button id="task1" onclick="completeTask(1)">
+
+<button
+id="task1"
+onclick="completeTask(1)"
+>
 🎁 تنفيذ المهمة +10
 </button>
+
 </div>
 
+
 <div class="task">
+
 <b>المهمة 2</b>
+
 <p>احصل على 20 نقطة</p>
-<button id="task2" onclick="completeTask(2)">
+
+<button
+id="task2"
+onclick="completeTask(2)"
+>
 🎁 تنفيذ المهمة +20
 </button>
+
 </div>
 
+
 <div class="task">
+
 <b>المهمة 3</b>
+
 <p>احصل على 30 نقطة</p>
-<button id="task3" onclick="completeTask(3)">
+
+<button
+id="task3"
+onclick="completeTask(3)"
+>
 🎁 تنفيذ المهمة +30
 </button>
+
 </div>
 
+
 <div class="task">
+
 <b>المهمة 4</b>
+
 <p>احصل على 40 نقطة</p>
-<button id="task4" onclick="completeTask(4)">
+
+<button
+id="task4"
+onclick="completeTask(4)"
+>
 🎁 تنفيذ المهمة +40
 </button>
+
 </div>
 
+
 <div class="task">
+
 <b>المهمة 5</b>
+
 <p>احصل على 50 نقطة</p>
-<button id="task5" onclick="completeTask(5)">
+
+<button
+id="task5"
+onclick="completeTask(5)"
+>
 🎁 تنفيذ المهمة +50
 </button>
+
 </div>
+
 
 <div class="task">
+
 <b>المهمة 6</b>
+
 <p>احصل على 60 نقطة</p>
-<button id="task6" onclick="completeTask(6)">
+
+<button
+id="task6"
+onclick="completeTask(6)"
+>
 🎁 تنفيذ المهمة +60
 </button>
-</div>
 
 </div>
 
+</div>
 
-<!-- ADS PLACEHOLDER -->
+
+<!-- الإعلان -->
 
 <div class="card">
 
@@ -189,16 +294,22 @@ border-radius:10px;margin-top:8px
 يمكن وضع إعلان هنا لاحقاً.
 </p>
 
-<button class="orange" onclick="demoAd()">
+<button
+class="orange"
+onclick="demoAd()"
+>
 📺 مشاهدة إعلان تجريبي
 </button>
 
-<div id="adMessage" class="small"></div>
+<div
+id="adMessage"
+class="small"
+></div>
 
 </div>
 
 
-<!-- REFERRAL -->
+<!-- الإحالة -->
 
 <div class="card">
 
@@ -210,23 +321,39 @@ border-radius:10px;margin-top:8px
 
 <div class="refbox">
 
-<p>
-رمز الإحالة:
-<b id="refCode"></b>
+<p style="text-align:center">
+رمز الإحالة الخاص بك:
 </p>
 
-<button class="purple" onclick="copyReferral()">
+<div
+id="refCode"
+class="refcode"
+></div>
+
+<button
+class="purple"
+onclick="copyReferral()"
+>
 📋 نسخ رمز الإحالة
 </button>
 
-<div id="refMessage" class="success"></div>
+<div
+id="refMessage"
+class="success"
+></div>
+
+<hr>
+
+<p>
+أدخل صديقك هذا الرمز عند إنشاء حساب جديد.
+</p>
 
 </div>
 
 </div>
 
 
-<!-- WITHDRAW -->
+<!-- السحب -->
 
 <div class="card">
 
@@ -252,7 +379,7 @@ Mastercard
 id="account"
 type="text"
 inputmode="numeric"
-placeholder="رقم زين كاش أو بيانات الحساب"
+placeholder="رقم زين كاش أو رقم البطاقة"
 >
 
 <button onclick="withdraw()">
@@ -264,7 +391,7 @@ placeholder="رقم زين كاش أو بيانات الحساب"
 </div>
 
 
-<!-- MY REQUESTS -->
+<!-- الطلبات -->
 
 <div class="card">
 
@@ -281,7 +408,7 @@ placeholder="رقم زين كاش أو بيانات الحساب"
 </div>
 
 
-<!-- RANKING -->
+<!-- الترتيب -->
 
 <div class="card">
 
@@ -294,17 +421,31 @@ placeholder="رقم زين كاش أو بيانات الحساب"
 </div>
 
 
-<!-- NOTIFICATIONS -->
+<!-- الإشعارات -->
 
 <div class="card">
 
 <h2>🔔 الإشعارات</h2>
 
 <div id="notifications">
-لا توجد إشعارات جديدة.
+جاري تحميل الإشعارات...
 </div>
 
 </div>
+
+
+<!-- المدعوون -->
+
+<div class="card">
+
+<h2>👥 أصدقائي المدعوون</h2>
+
+<div id="referrals">
+جاري تحميل الأصدقاء...
+</div>
+
+</div>
+
 
 </div>
 
@@ -320,47 +461,78 @@ const SUPABASE_KEY =
 "sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
 
 let currentUser=null;
+
 let userBalance=0;
+
 let completedTasks=[];
 
 
-/* DATABASE */
+/* الاتصال بقاعدة البيانات */
 
-async function supabaseRequest(table,options={}){
+async function supabaseRequest(
+table,
+options={}
+){
 
 const response=await fetch(
-SUPABASE_URL+"/rest/v1/"+table,
+SUPABASE_URL+
+"/rest/v1/"+
+table,
 {
 ...options,
 headers:{
 apikey:SUPABASE_KEY,
-Authorization:"Bearer "+SUPABASE_KEY,
-"Content-Type":"application/json",
+Authorization:
+"Bearer "+SUPABASE_KEY,
+"Content-Type":
+"application/json",
 ...(options.headers||{})
 }
-});
+}
+);
 
 const text=await response.text();
 
 if(!response.ok){
+
 throw new Error(
-"HTTP "+response.status+": "+text
+"HTTP "+
+response.status+
+": "+
+text
 );
+
 }
 
-return text?JSON.parse(text):null;
+return text?
+JSON.parse(text):
+null;
+
 }
 
 
-/* REGISTER */
+/* التسجيل */
 
 async function register(){
 
 const username=
-document.getElementById("username").value.trim();
+document
+.getElementById("username")
+.value
+.trim();
 
 const password=
-document.getElementById("password").value.trim();
+document
+.getElementById("password")
+.value
+.trim();
+
+const referral=
+document
+.getElementById("referralInput")
+.value
+.trim();
+
 
 if(!username||!password){
 
@@ -370,7 +542,9 @@ true
 );
 
 return;
+
 }
+
 
 try{
 
@@ -380,6 +554,7 @@ await supabaseRequest(
 encodeURIComponent(username)
 );
 
+
 if(existing&&existing.length){
 
 showLoginMessage(
@@ -388,31 +563,112 @@ true
 );
 
 return;
+
 }
+
+
+/* التحقق من رمز الإحالة */
+
+let referrer=null;
+
+if(referral){
+
+if(!referral.startsWith("RAB7-")){
+
+showLoginMessage(
+"❌ رمز الإحالة غير صحيح.",
+true
+);
+
+return;
+
+}
+
+referrer=
+referral.substring(5);
+
+const refUser=
+await supabaseRequest(
+"users?select=id,username&username=eq."+
+encodeURIComponent(referrer)
+);
+
+if(!refUser||!refUser.length){
+
+showLoginMessage(
+"❌ صاحب رمز الإحالة غير موجود.",
+true
+);
+
+return;
+
+}
+
+}
+
+
+/* إنشاء الحساب */
+
+const newUser={
+
+username:username,
+
+password:password,
+
+balance:0
+
+};
+
+
+/*
+نحاول إضافة صاحب الإحالة.
+إذا لم يكن العمود موجوداً في قاعدة البيانات،
+سيظهر خطأ ويجب إضافة العمود لاحقاً.
+*/
+
+if(referrer){
+
+newUser.referred_by=
+referrer;
+
+}
+
 
 await supabaseRequest(
 "users",
 {
 method:"POST",
+
 headers:{
-"Prefer":"return=minimal"
+"Prefer":
+"return=minimal"
 },
-body:JSON.stringify({
-username:username,
-password:password,
-balance:0
-})
+
+body:
+JSON.stringify(newUser)
+
 }
 );
 
+
 showLoginMessage(
-"✅ تم إنشاء الحساب. اضغط دخول."
+"✅ تم إنشاء الحساب بنجاح. اضغط دخول."
 );
+
+document
+.getElementById("password")
+.value="";
+
+document
+.getElementById("referralInput")
+.value="";
+
 
 }catch(error){
 
 showLoginMessage(
-"❌ خطأ: "+error.message,
+"❌ خطأ: "+
+error.message,
 true
 );
 
@@ -421,15 +677,22 @@ true
 }
 
 
-/* LOGIN */
+/* تسجيل الدخول */
 
 async function login(){
 
 const username=
-document.getElementById("username").value.trim();
+document
+.getElementById("username")
+.value
+.trim();
 
 const password=
-document.getElementById("password").value.trim();
+document
+.getElementById("password")
+.value
+.trim();
+
 
 if(!username||!password){
 
@@ -439,17 +702,21 @@ true
 );
 
 return;
+
 }
+
 
 try{
 
 const users=
 await supabaseRequest(
-"users?select=*&username=eq."+
+"users?select=*"+
+"&username=eq."+
 encodeURIComponent(username)+
 "&password=eq."+
 encodeURIComponent(password)
 );
+
 
 if(!users||!users.length){
 
@@ -459,21 +726,28 @@ true
 );
 
 return;
+
 }
+
 
 currentUser=users[0];
 
 userBalance=
-Number(currentUser.balance||0);
+Number(
+currentUser.balance||0
+);
+
 
 localStorage.setItem(
 "rab7User",
 currentUser.username
 );
 
+
 await loadTasks();
 
 showApp();
+
 
 }catch(error){
 
@@ -488,38 +762,51 @@ true
 }
 
 
-/* SHOW APP */
+/* فتح التطبيق */
 
 function showApp(){
 
 document
 .getElementById("loginPage")
-.classList.add("hidden");
+.classList
+.add("hidden");
 
 document
 .getElementById("appPage")
-.classList.remove("hidden");
+.classList
+.remove("hidden");
+
 
 document
 .getElementById("userName")
 .textContent=
 currentUser.username;
 
+
 document
 .getElementById("refCode")
 .textContent=
 "RAB7-"+currentUser.username;
 
+
 updateBalance();
+
 updateTasks();
+
 loadHistory();
+
 loadRanking();
+
 updateStats();
+
+updateNotifications();
+
+loadReferrals();
 
 }
 
 
-/* BALANCE */
+/* الرصيد */
 
 function updateBalance(){
 
@@ -531,19 +818,25 @@ userBalance;
 }
 
 
-/* SAVE BALANCE */
+/* حفظ الرصيد */
 
 async function saveBalance(){
 
 await supabaseRequest(
 "users?username=eq."+
-encodeURIComponent(currentUser.username),
+encodeURIComponent(
+currentUser.username
+),
 {
 method:"PATCH",
+
 headers:{
-"Prefer":"return=minimal"
+"Prefer":
+"return=minimal"
 },
-body:JSON.stringify({
+
+body:
+JSON.stringify({
 balance:userBalance
 })
 }
@@ -552,31 +845,36 @@ balance:userBalance
 }
 
 
-/* TASKS */
+/* المهام */
 
 async function loadTasks(){
 
 const savedDate=
 localStorage.getItem(
-"rab7Date_"+currentUser.username
+"rab7Date_"+
+currentUser.username
 );
+
 
 const today=
 new Date()
 .toISOString()
 .split("T")[0];
 
+
 if(savedDate!==today){
 
 completedTasks=[];
 
 localStorage.setItem(
-"rab7Date_"+currentUser.username,
+"rab7Date_"+
+currentUser.username,
 today
 );
 
 localStorage.setItem(
-"rab7Tasks_"+currentUser.username,
+"rab7Tasks_"+
+currentUser.username,
 "[]"
 );
 
@@ -585,7 +883,8 @@ localStorage.setItem(
 completedTasks=
 JSON.parse(
 localStorage.getItem(
-"rab7Tasks_"+currentUser.username
+"rab7Tasks_"+
+currentUser.username
 )||"[]"
 );
 
@@ -594,38 +893,58 @@ localStorage.getItem(
 }
 
 
-/* COMPLETE TASK */
+/* تنفيذ المهمة */
 
 async function completeTask(number){
 
-if(completedTasks.includes(number))
+if(
+completedTasks.includes(number)
+)
 return;
 
+
 const points={
+
 1:10,
+
 2:20,
+
 3:30,
+
 4:40,
+
 5:50,
+
 6:60
+
 }[number];
+
 
 userBalance+=points;
 
 completedTasks.push(number);
 
+
 localStorage.setItem(
-"rab7Tasks_"+currentUser.username,
-JSON.stringify(completedTasks)
+"rab7Tasks_"+
+currentUser.username,
+
+JSON.stringify(
+completedTasks
+)
 );
+
 
 try{
 
 await saveBalance();
 
 updateBalance();
+
 updateTasks();
+
 updateStats();
+
 
 }catch(error){
 
@@ -635,6 +954,7 @@ completedTasks=
 completedTasks.filter(
 x=>x!==number
 );
+
 
 alert(
 "❌ حدث خطأ في حفظ الرصيد:\n"+
@@ -646,39 +966,59 @@ error.message
 }
 
 
-/* UPDATE TASKS */
+/* تحديث المهام */
 
 function updateTasks(){
 
-document.getElementById("remaining")
+document
+.getElementById("remaining")
 .textContent=
 6-completedTasks.length;
 
-document.getElementById("doneTasks")
+
+document
+.getElementById("doneTasks")
 .textContent=
 completedTasks.length;
+
 
 for(let i=1;i<=6;i++){
 
 const button=
-document.getElementById("task"+i);
+document.getElementById(
+"task"+i
+);
 
-if(completedTasks.includes(i)){
 
-button.textContent="✅ تمت اليوم";
+if(
+completedTasks.includes(i)
+){
+
+button.textContent=
+"✅ تمت اليوم";
+
 button.disabled=true;
 
 }else{
 
 button.disabled=false;
 
+
 const points={
-1:10,2:20,3:30,
-4:40,5:50,6:60
+
+1:10,
+2:20,
+3:30,
+4:40,
+5:50,
+6:60
+
 }[i];
 
+
 button.textContent=
-"🎁 تنفيذ المهمة +"+points;
+"🎁 تنفيذ المهمة +"+
+points;
 
 }
 
@@ -687,28 +1027,68 @@ button.textContent=
 }
 
 
-/* DEMO AD */
+/* الإعلان التجريبي */
 
 function demoAd(){
 
-const box=
-document.getElementById("adMessage");
-
-box.textContent=
-"📢 هذه منطقة إعلان تجريبية فقط. لم تتم إضافة نقاط لأن الإعلان الحقيقي لم يتم ربطه بعد.";
+document
+.getElementById("adMessage")
+.textContent=
+"📢 هذا إعلان تجريبي فقط. لا توجد مكافأة حقيقية حتى يتم ربط شبكة إعلانات.";
 
 }
 
 
-/* WITHDRAW */
+/* نسخ رمز الإحالة */
+
+function copyReferral(){
+
+const code=
+document
+.getElementById("refCode")
+.textContent;
+
+
+navigator
+.clipboard
+.writeText(code)
+.then(()=>{
+
+document
+.getElementById("refMessage")
+.textContent=
+"✅ تم نسخ رمز الإحالة.";
+
+})
+.catch(()=>{
+
+document
+.getElementById("refMessage")
+.textContent=
+"رمز الإحالة: "+
+code;
+
+});
+
+}
+
+
+/* السحب */
 
 async function withdraw(){
 
 const method=
-document.getElementById("method").value;
+document
+.getElementById("method")
+.value;
+
 
 const account=
-document.getElementById("account").value.trim();
+document
+.getElementById("account")
+.value
+.trim();
+
 
 if(userBalance<100){
 
@@ -718,7 +1098,9 @@ true
 );
 
 return;
+
 }
+
 
 if(!account){
 
@@ -728,11 +1110,18 @@ true
 );
 
 return;
+
 }
+
+
+/* زين كاش */
 
 if(method==="زين كاش"){
 
-if(!/^07[0-9]{9}$/.test(account)){
+if(
+!/^07[0-9]{9}$/
+.test(account)
+){
 
 showWithdrawMessage(
 "❌ رقم زين كاش يجب أن يكون 11 رقماً ويبدأ بـ 07.",
@@ -740,13 +1129,20 @@ true
 );
 
 return;
+
 }
 
 }
+
+
+/* Mastercard */
 
 if(method==="Mastercard"){
 
-if(!/^[0-9]{16}$/.test(account)){
+if(
+!^[0-9]{16}$/
+.test(account)
+){
 
 showWithdrawMessage(
 "❌ رقم Mastercard يجب أن يكون 16 رقماً.",
@@ -754,7 +1150,9 @@ true
 );
 
 return;
+
 }
+
 
 alert(
 "⚠️ لا تستخدم بطاقة حقيقية في هذه النسخة التجريبية."
@@ -762,16 +1160,21 @@ alert(
 
 }
 
+
 try{
 
 await supabaseRequest(
 "withdrawals",
 {
 method:"POST",
+
 headers:{
-"Prefer":"return=minimal"
+"Prefer":
+"return=minimal"
 },
-body:JSON.stringify({
+
+body:
+JSON.stringify({
 
 username:
 currentUser.username,
@@ -781,8 +1184,11 @@ method,
 
 account:
 method==="Mastercard"
-?"****"+account.slice(-4)
-:account,
+?
+"****"+
+account.slice(-4)
+:
+account,
 
 points:
 userBalance,
@@ -794,22 +1200,32 @@ status:
 }
 );
 
+
 userBalance=0;
+
 
 await saveBalance();
 
+
 updateBalance();
+
 
 document
 .getElementById("account")
 .value="";
 
+
 showWithdrawMessage(
 "✅ تم إرسال طلب السحب للمراجعة."
 );
 
+
 await loadHistory();
+
 updateStats();
+
+updateNotifications();
+
 
 }catch(error){
 
@@ -824,15 +1240,18 @@ true
 }
 
 
-/* HISTORY */
+/* سجل الطلبات */
 
 async function loadHistory(){
 
 const history=
-document.getElementById("history");
+document
+.getElementById("history");
+
 
 history.textContent=
 "جاري تحميل الطلبات...";
+
 
 try{
 
@@ -846,51 +1265,78 @@ currentUser.username
 "&order=created_at.desc"
 );
 
-if(!records||!records.length){
+
+if(
+!records||
+!records.length
+){
 
 history.textContent=
 "لا توجد طلبات سحب.";
 
 return;
+
 }
+
 
 history.innerHTML="";
 
-records.forEach(item=>{
+
+records.forEach(
+item=>{
 
 const div=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
-div.className="history";
+div.className=
+"history";
+
 
 div.innerHTML=
+
 "<b>طريقة السحب:</b> "+
 (item.method||"")+
+
 "<br><br>"+
 
 "<b>الحساب:</b> "+
 (item.account||"")+
+
 "<br><br>"+
 
 "<b>النقاط:</b> "+
 (item.points||"")+
+
 "<br><br>"+
 
 "<div class='status'>📌 الحالة: "+
 (item.status||"")+
 "</div>"+
+
 "<br>"+
 
 "<b>📅 التاريخ:</b> "+
-new Date(item.created_at)
+new Date(
+item.created_at
+)
 .toLocaleString("ar-IQ");
+
 
 history.appendChild(div);
 
-});
+}
+);
 
-document.getElementById("withdrawCount")
-.textContent=records.length;
+
+document
+.getElementById(
+"withdrawCount"
+)
+.textContent=
+records.length;
+
 
 }catch(error){
 
@@ -903,36 +1349,51 @@ error.message;
 }
 
 
-/* RANKING */
+/* ترتيب المستخدمين */
 
 async function loadRanking(){
 
 const box=
-document.getElementById("ranking");
+document
+.getElementById("ranking");
+
 
 try{
 
 const users=
 await supabaseRequest(
-"users?select=username,balance&order=balance.desc&limit=10"
+"users?select=username,balance"+
+"&order=balance.desc"+
+"&limit=10"
 );
 
-if(!users||!users.length){
+
+if(
+!users||
+!users.length
+){
 
 box.textContent=
 "لا يوجد ترتيب حالياً.";
 
 return;
+
 }
+
 
 box.innerHTML="";
 
-users.forEach((user,index)=>{
+
+users.forEach(
+(user,index)=>{
 
 const div=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 div.className="rank";
+
 
 div.textContent=
 (index+1)+
@@ -942,9 +1403,12 @@ user.username+
 (user.balance||0)+
 " نقطة";
 
+
 box.appendChild(div);
 
-});
+}
+);
+
 
 }catch(error){
 
@@ -956,34 +1420,170 @@ box.textContent=
 }
 
 
-/* REFERRAL */
+/* الإشعارات */
 
-function copyReferral(){
+async function updateNotifications(){
 
-const code=
-document.getElementById("refCode")
-.textContent;
+const box=
+document
+.getElementById(
+"notifications"
+);
 
-navigator.clipboard.writeText(code)
-.then(()=>{
 
-document.getElementById("refMessage")
-.textContent=
-"✅ تم نسخ رمز الإحالة.";
+try{
 
-})
-.catch(()=>{
+const records=
+await supabaseRequest(
+"withdrawals?select=status,created_at"+
+"&username=eq."+
+encodeURIComponent(
+currentUser.username
+)+
+"&order=created_at.desc"+
+"&limit=5"
+);
 
-document.getElementById("refMessage")
-.textContent=
-"رمز الإحالة: "+code;
 
-});
+if(
+!records||
+!records.length
+){
+
+box.textContent=
+"لا توجد إشعارات جديدة.";
+
+return;
 
 }
 
 
-/* STATS */
+box.innerHTML="";
+
+
+records.forEach(
+item=>{
+
+const div=
+document.createElement(
+"div"
+);
+
+div.className=
+"history";
+
+
+div.textContent=
+"🔔 طلب سحب: "+
+(item.status||
+"قيد المراجعة");
+
+
+box.appendChild(div);
+
+}
+);
+
+
+}catch(error){
+
+box.textContent=
+"تعذر تحميل الإشعارات.";
+
+}
+
+}
+
+
+/* الأصدقاء المدعوون */
+
+async function loadReferrals(){
+
+const box=
+document
+.getElementById(
+"referrals"
+);
+
+
+try{
+
+const records=
+await supabaseRequest(
+"users?select=username"+
+"&referred_by=eq."+
+encodeURIComponent(
+currentUser.username
+)
+);
+
+
+if(
+!records||
+!records.length
+){
+
+box.textContent=
+"لم يدعُ أي شخص باستخدام رمزك حتى الآن.";
+
+document
+.getElementById(
+"referralCount"
+)
+.textContent="0";
+
+return;
+
+}
+
+
+document
+.getElementById(
+"referralCount"
+)
+.textContent=
+records.length;
+
+
+box.innerHTML="";
+
+
+records.forEach(
+(user,index)=>{
+
+const div=
+document.createElement(
+"div"
+);
+
+div.className=
+"rank";
+
+
+div.textContent=
+"👤 "+
+(index+1)+
+" - "+
+user.username;
+
+
+box.appendChild(div);
+
+}
+);
+
+
+}catch(error){
+
+box.textContent=
+"تعذر تحميل قائمة الأصدقاء.";
+
+}
+
+}
+
+
+/* الإحصائيات */
 
 async function updateStats(){
 
@@ -998,115 +1598,104 @@ currentUser.username
 )
 );
 
-document.getElementById("withdrawCount")
-.textContent=
-records?records.length:0;
 
-document.getElementById("doneTasks")
+document
+.getElementById(
+"withdrawCount"
+)
+.textContent=
+records?
+records.length:
+0;
+
+
+document
+.getElementById(
+"doneTasks"
+)
 .textContent=
 completedTasks.length;
 
+
 }catch(error){}
 
 }
 
 
-/* NOTIFICATIONS */
+/* رسالة تسجيل الدخول */
 
-async function updateNotifications(){
+function showLoginMessage(
+message,
+error=false
+){
 
-try{
-
-const records=
-await supabaseRequest(
-"withdrawals?select=status,created_at"+
-"&username=eq."+
-encodeURIComponent(
-currentUser.username
-)+
-"&order=created_at.desc&limit=5"
+const box=
+document
+.getElementById(
+"loginMessage"
 );
 
-const box=
-document.getElementById("notifications");
-
-if(!records||!records.length){
-
-box.textContent=
-"لا توجد إشعارات جديدة.";
-
-return;
-}
-
-box.innerHTML="";
-
-records.forEach(item=>{
-
-const div=
-document.createElement("div");
-
-div.className="history";
-
-div.textContent=
-"🔔 طلب سحب: "+
-(item.status||"قيد المراجعة");
-
-box.appendChild(div);
-
-});
-
-}catch(error){}
-
-}
-
-
-/* MESSAGES */
-
-function showLoginMessage(message,error=false){
-
-const box=
-document.getElementById("loginMessage");
 
 box.textContent=message;
 
 box.className=
-error?"error":"success";
+error?
+"error":
+"success";
 
 }
 
 
-function showWithdrawMessage(message,error=false){
+/* رسالة السحب */
+
+function showWithdrawMessage(
+message,
+error=false
+){
 
 const box=
-document.getElementById("withdrawMessage");
+document
+.getElementById(
+"withdrawMessage"
+);
+
 
 box.textContent=message;
 
 box.className=
-error?"error":"success";
+error?
+"error":
+"success";
 
 }
 
 
-/* LOGOUT */
+/* تسجيل الخروج */
 
 function logout(){
 
-localStorage.removeItem("rab7User");
+localStorage.removeItem(
+"rab7User"
+);
 
 location.reload();
 
 }
 
 
-/* AUTO LOGIN */
+/* الدخول التلقائي */
 
 async function autoLogin(){
 
 const username=
-localStorage.getItem("rab7User");
+localStorage.getItem(
+"rab7User"
+);
 
-if(!username)return;
+
+if(!username)
+return;
+
 
 try{
 
@@ -1117,14 +1706,23 @@ await supabaseRequest(
 encodeURIComponent(username)
 );
 
-if(users&&users.length){
+
+if(
+users&&
+users.length
+){
 
 currentUser=users[0];
 
+
 userBalance=
-Number(currentUser.balance||0);
+Number(
+currentUser.balance||0
+);
+
 
 await loadTasks();
+
 
 showApp();
 
@@ -1137,6 +1735,7 @@ console.log(error);
 }
 
 }
+
 
 autoLogin();
 
