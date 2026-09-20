@@ -1,439 +1,81 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ربح</title>
-
-<style>
+<title>ربح</title><style>
 *{box-sizing:border-box;font-family:Arial,Tahoma,sans-serif}
-body{
-margin:0;
-background:linear-gradient(135deg,#07152e,#123b70);
-color:#fff;
-}
-.container{
-width:94%;
-max-width:700px;
-margin:auto;
-padding:15px 0 40px;
-}
-.card{
-background:rgba(255,255,255,.09);
-border-radius:18px;
-padding:18px;
-margin:12px 0;
-box-shadow:0 8px 25px rgba(0,0,0,.2);
-}
+body{margin:0;background:linear-gradient(135deg,#07152e,#123b70);color:#fff}
+.container{width:94%;max-width:700px;margin:auto;padding:15px 0 40px}
+.card{background:rgba(255,255,255,.09);border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 8px 25px rgba(0,0,0,.2)}
 h1,h2,h3{text-align:center}
-input,select{
-width:100%;
-padding:14px;
-margin:7px 0;
-border:0;
-border-radius:10px;
-font-size:16px;
-}
-button{
-width:100%;
-padding:14px;
-margin:7px 0;
-border:0;
-border-radius:10px;
-font-size:16px;
-font-weight:bold;
-}
+input,select{width:100%;padding:14px;margin:7px 0;border:0;border-radius:10px;font-size:16px}
+button{width:100%;padding:14px;margin:7px 0;border:0;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.55}
 .green{background:#00c853;color:#fff}
 .blue{background:#1976d2;color:#fff}
 .orange{background:#ff9800;color:#fff}
 .red{background:#e53935;color:#fff}
 .gray{background:#37474f;color:#fff}
 .hidden{display:none!important}
-.message{
-text-align:center;
-padding:10px;
-margin-top:10px;
-border-radius:8px;
-background:rgba(255,255,255,.1);
-}
-.balance{
-text-align:center;
-font-size:36px;
-font-weight:bold;
-margin:15px;
-}
+.message{text-align:center;padding:10px;margin-top:10px;border-radius:8px;background:rgba(255,255,255,.1);min-height:20px}
+.balance{text-align:center;font-size:36px;font-weight:bold;margin:15px}
 .points{color:#ffd54f}
-.task,.history{
-padding:14px;
-margin:9px 0;
-border:1px solid rgba(255,255,255,.12);
-border-radius:12px;
-}
-.ad{
-background:linear-gradient(135deg,#4527a0,#8e24aa);
-padding:20px;
-border-radius:15px;
-text-align:center;
-}
-.timer{
-font-size:28px;
-font-weight:bold;
-margin:10px;
-}
-.refbox{
-background:#102a43;
-padding:15px;
-border-radius:12px;
-text-align:center;
-word-break:break-all;
-}
-.small{
-font-size:13px;
-opacity:.8;
-line-height:1.7;
-}
-.nav{
-position:sticky;
-bottom:0;
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:5px;
-background:#061126;
-padding:7px;
-border-radius:15px;
-}
-.nav button{
-font-size:11px;
-padding:10px 3px;
-margin:0;
-background:#18345e;
-color:white;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<!-- LOGIN -->
-<div id="loginPage">
-<div class="card">
-
-<h1>💰 تطبيق ربح</h1>
-<h3>تسجيل الدخول</h3>
-
-<input id="loginUsername" type="text" placeholder="اسم المستخدم">
-<input id="loginPassword" type="password" placeholder="كلمة المرور">
-
-<button class="green" onclick="login()">دخول</button>
+.task,.history{padding:14px;margin:9px 0;border:1px solid rgba(255,255,255,.12);border-radius:12px}
+.ad{background:linear-gradient(135deg,#4527a0,#8e24aa);padding:20px;border-radius:15px;text-align:center}
+.timer{font-size:28px;font-weight:bold;margin:10px}
+.refbox{background:#102a43;padding:15px;border-radius:12px;text-align:center;word-break:break-all}
+.small{font-size:13px;opacity:.8;line-height:1.7}
+.nav{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:#061126;padding:7px;border-radius:15px}
+.nav button{font-size:11px;padding:10px 3px;margin:0;background:#18345e;color:white}
+</style></head><body><div class="container"><!-- LOGIN --><div id="loginPage">
+<div class="card"><h1>💰 تطبيق ربح</h1>
+<h3>تسجيل الدخول</h3><input id="loginUsername" type="text" placeholder="اسم المستخدم">
+<input id="loginPassword" type="password" placeholder="كلمة المرور"><button class="green" onclick="login()">دخول</button>
 <button class="blue" onclick="showRegister()">إنشاء حساب جديد</button>
 
-<div id="loginMessage" class="message"></div>
+<div id="loginMessage" class="message"></div></div>
+</div><!-- REGISTER --><div id="registerPage" class="hidden">
+<div class="card"><h1>📝 إنشاء حساب</h1><input id="registerUsername" type="text" placeholder="اسم المستخدم">
+<input id="registerPassword" type="password" placeholder="كلمة المرور"><input id="referralCode" type="text" placeholder="كود الإحالة - اختياري"><button class="green" onclick="register()">إنشاء الحساب</button>
+<button class="gray" onclick="showLogin()">رجوع</button>
 
-</div>
-</div>
-
-
-<!-- REGISTER -->
-<div id="registerPage" class="hidden">
-<div class="card">
-
-<h1>📝 إنشاء حساب</h1>
-
-<input id="registerUsername" type="text" placeholder="اسم المستخدم">
-<input id="registerPassword" type="password" placeholder="كلمة المرور">
-
-<input id="referralCode"
-type="text"
-placeholder="كود الإحالة - اختياري">
-
-<button class="green" onclick="register()">
-إنشاء الحساب
-</button>
-
-<button class="gray" onclick="showLogin()">
-رجوع
-</button>
-
-<div id="registerMessage" class="message"></div>
-
-</div>
-</div>
-
-
-<!-- APPLICATION -->
-<div id="appPage" class="hidden">
-
-<div class="card">
-
-<h1>💰 ربح</h1>
-
-<p>
-مرحباً:
-<b id="userName"></b>
-</p>
-
-<div class="balance">
+<div id="registerMessage" class="message"></div></div>
+</div><!-- APPLICATION --><div id="appPage" class="hidden"><div class="card"><h1>💰 ربح</h1><p>مرحباً: <b id="userName"></b></p><div class="balance">
 <span id="balance">0</span>
 <span class="points">نقطة</span>
-</div>
-
-<p class="small">
+</div><p class="small">
 اجمع النقاط من المهام والإعلانات التجريبية.
-</p>
+</p></div><!-- HOME --><div id="homeSection"><div class="card"><h2>🏠 الرئيسية</h2><button class="green" onclick="showSection('tasksSection')">📋 المهام اليومية</button>
+<button class="blue" onclick="showSection('adsSection')">📺 الإعلانات</button>
+<button class="orange" onclick="showSection('referralSection')">👥 الإحالة</button>
+<button class="orange" onclick="showSection('withdrawSection')">💳 السحب</button>
 
-</div>
+</div></div><!-- TASKS --><div id="tasksSection" class="hidden"><div class="card"><h2>📋 المهام اليومية</h2><p class="small">يمكن تنفيذ كل مهمة مرة واحدة في اليوم.</p><div id="tasksContainer"></div></div></div><!-- ADS --><div id="adsSection" class="hidden"><div class="card"><h2>📺 الإعلانات</h2><div class="ad"><h3>🎬 إعلان تجريبي</h3><p>شاهد الإعلان لمدة 10 ثوانٍ للحصول على 10 نقاط.</p><div id="adTimer" class="timer"></div><button id="adButton" class="green" onclick="watchAd()">▶️ مشاهدة الإعلان</button>
 
-
-<!-- HOME -->
-<div id="homeSection">
-
-<div class="card">
-
-<h2>🏠 الرئيسية</h2>
-
-<button class="green"
-onclick="showSection('tasksSection')">
-📋 المهام اليومية
-</button>
-
-<button class="blue"
-onclick="showSection('adsSection')">
-📺 الإعلانات
-</button>
-
-<button class="orange"
-onclick="showSection('referralSection')">
-👥 الإحالة
-</button>
-
-<button class="orange"
-onclick="showSection('withdrawSection')">
-💳 السحب
-</button>
-
-</div>
-
-</div>
-
-
-<!-- TASKS -->
-<div id="tasksSection" class="hidden">
-
-<div class="card">
-
-<h2>📋 المهام اليومية</h2>
-
-<p class="small">
-يمكن تنفيذ كل مهمة مرة واحدة في اليوم.
-</p>
-
-<div id="tasksContainer"></div>
-
-</div>
-
-</div>
-
-
-<!-- ADS -->
-<div id="adsSection" class="hidden">
-
-<div class="card">
-
-<h2>📺 الإعلانات</h2>
-
-<div class="ad">
-
-<h3>🎬 إعلان تجريبي</h3>
-
-<p>
-شاهد الإعلان لمدة 10 ثوانٍ للحصول على 10 نقاط.
-</p>
-
-<div id="adTimer" class="timer"></div>
-
-<button id="adButton"
-class="green"
-onclick="watchAd()">
-▶️ مشاهدة الإعلان
-</button>
-
-</div>
-
-<br>
-
-<p class="small">
+</div><br><p class="small">
 هذه إعلانات تجريبية داخل التطبيق وليست شبكة إعلانية حقيقية.
-</p>
+</p></div></div><!-- REFERRAL --><div id="referralSection" class="hidden"><div class="card"><h2>👥 نظام الإحالة</h2><p>
+شارك كودك مع أصدقائك.<br>
+عند تسجيل مستخدم جديد باستخدام كودك تحصل على <b>50 نقطة</b>.
+</p><div class="refbox"><h3>كود الإحالة الخاص بك</h3><div id="myReferralCode"></div><button class="blue" onclick="copyReferral()">📋 نسخ الكود</button>
 
-</div>
-
-</div>
-
-
-<!-- REFERRAL -->
-<div id="referralSection" class="hidden">
-
-<div class="card">
-
-<h2>👥 نظام الإحالة</h2>
-
-<p>
-شارك كودك مع أصدقائك.
-عند تسجيل مستخدم جديد باستخدام كودك،
-تحصل على <b>50 نقطة</b>.
-</p>
-
-<div class="refbox">
-
-<h3>كود الإحالة الخاص بك</h3>
-
-<div id="myReferralCode"></div>
-
-<button class="blue"
-onclick="copyReferral()">
-📋 نسخ الكود
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- WITHDRAW -->
-<div id="withdrawSection" class="hidden">
-
-<div class="card">
-
-<h2>💳 طلب السحب</h2>
-
-<p>
+</div></div></div><!-- WITHDRAW --><div id="withdrawSection" class="hidden"><div class="card"><h2>💳 طلب السحب</h2><p>
 رصيدك:
-<b id="withdrawBalance">0</b>
-نقطة
-</p>
+<b id="withdrawBalance">0</b> نقطة
+</p><select id="withdrawMethod" onchange="changeWithdrawMethod()"><option value="zain">Zain Cash</option>
+<option value="mastercard">Mastercard</option></select><input id="withdrawAccount" type="text" inputmode="numeric" placeholder="رقم Zain Cash - 07712345678"><input id="withdrawAmount" type="number" inputmode="numeric" placeholder="عدد النقاط"><button class="orange" onclick="submitWithdrawal()">💸 إرسال طلب السحب</button>
 
-<select id="withdrawMethod"
-onchange="changeWithdrawMethod()">
+<p class="small">الحد الأدنى للسحب 100 نقطة.</p><div id="withdrawMessage" class="message"></div></div></div><!-- HISTORY --><div id="historySection" class="hidden"><div class="card"><h2>📜 طلباتي</h2><div id="historyContainer">جاري التحميل...</div></div></div><!-- NOTIFICATIONS --><div id="notificationsSection" class="hidden"><div class="card"><h2>🔔 الإشعارات</h2><div id="notificationsContainer">جاري التحميل...</div></div></div><div class="card"><button class="red" onclick="logout()">🚪 تسجيل الخروج</button>
 
-<option value="zain">
-Zain Cash
-</option>
+</div><!-- NAVIGATION --><div class="nav"><button onclick="showSection('homeSection')">🏠 الرئيسية</button>
+<button onclick="showSection('tasksSection')">📋 المهام</button>
+<button onclick="showSection('adsSection')">📺 الإعلانات</button>
+<button onclick="showSection('referralSection')">👥 الإحالة</button>
+<button onclick="showSection('withdrawSection')">💳 السحب</button>
+<button onclick="showSection('historySection')">📜 طلباتي</button>
+<button onclick="showSection('notificationsSection')">🔔 الإشعارات</button>
 
-<option value="mastercard">
-Mastercard
-</option>
-
-</select>
-
-<input id="withdrawAccount"
-type="text"
-placeholder="رقم Zain Cash - 07712345678">
-
-<input id="withdrawAmount"
-type="number"
-placeholder="عدد النقاط">
-
-<button class="orange"
-onclick="submitWithdrawal()">
-💸 إرسال طلب السحب
-</button>
-
-<p class="small">
-الحد الأدنى للسحب 100 نقطة.
-</p>
-
-<div id="withdrawMessage"
-class="message"></div>
-
-</div>
-
-</div>
-
-
-<!-- HISTORY -->
-<div id="historySection" class="hidden">
-
-<div class="card">
-
-<h2>📜 طلباتي</h2>
-
-<div id="historyContainer">
-جاري التحميل...
-</div>
-
-</div>
-
-</div>
-
-
-<!-- NOTIFICATIONS -->
-<div id="notificationsSection" class="hidden">
-
-<div class="card">
-
-<h2>🔔 الإشعارات</h2>
-
-<div id="notificationsContainer">
-جاري التحميل...
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card">
-
-<button class="red" onclick="logout()">
-🚪 تسجيل الخروج
-</button>
-
-</div>
-
-
-<!-- NAVIGATION -->
-<div class="nav">
-
-<button onclick="showSection('homeSection')">
-🏠 الرئيسية
-</button>
-
-<button onclick="showSection('tasksSection')">
-📋 المهام
-</button>
-
-<button onclick="showSection('adsSection')">
-📺 الإعلانات
-</button>
-
-<button onclick="showSection('referralSection')">
-👥 الإحالة
-</button>
-
-<button onclick="showSection('withdrawSection')">
-💳 السحب
-</button>
-
-<button onclick="showSection('historySection')">
-📜 طلباتي
-</button>
-
-<button onclick="showSection('notificationsSection')">
-🔔 الإشعارات
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<script>
+</div></div></div><script>
 
 /* =========================
 SUPABASE
@@ -445,6 +87,10 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
 
+
+/* =========================
+API
+========================= */
 
 async function api(table,options={}){
 
@@ -463,6 +109,7 @@ headers:{
 "apikey":SUPABASE_KEY,
 "Authorization":"Bearer "+SUPABASE_KEY,
 "Content-Type":"application/json",
+"Accept":"application/json",
 "Prefer":"return=representation"
 }
 };
@@ -471,27 +118,52 @@ if(options.body){
 config.body=JSON.stringify(options.body);
 }
 
-const response=await fetch(url,config);
+let response;
+
+try{
+
+response=await fetch(url,config);
+
+}catch(error){
+
+throw new Error(
+"تعذر الاتصال بخادم قاعدة البيانات."
+);
+
+}
 
 const text=await response.text();
 
 let data=null;
 
 try{
+
 data=text ? JSON.parse(text) : null;
+
 }catch(e){
+
 data=text;
+
 }
 
 if(!response.ok){
-throw new Error(
-typeof data==="string"
-? data
-: JSON.stringify(data)
-);
+
+let errorMessage="خطأ في قاعدة البيانات.";
+
+if(data && data.message){
+errorMessage=data.message;
+}else if(data && data.error){
+errorMessage=data.error;
+}else if(typeof data==="string" && data){
+errorMessage=data;
+}
+
+throw new Error(errorMessage);
+
 }
 
 return data;
+
 }
 
 
@@ -513,56 +185,50 @@ const tasks=[
 
 
 /* =========================
+MESSAGES
+========================= */
+
+function showError(element,error){
+
+console.error(error);
+
+element.textContent=
+error && error.message
+? error.message
+: "حدث خطأ غير معروف.";
+
+}
+
+
+/* =========================
 PAGES
 ========================= */
 
 function showLogin(){
 
-document
-.getElementById("loginPage")
-.classList.remove("hidden");
-
-document
-.getElementById("registerPage")
-.classList.add("hidden");
-
-document
-.getElementById("appPage")
-.classList.add("hidden");
+document.getElementById("loginPage").classList.remove("hidden");
+document.getElementById("registerPage").classList.add("hidden");
+document.getElementById("appPage").classList.add("hidden");
 
 }
 
 
 function showRegister(){
 
-document
-.getElementById("loginPage")
-.classList.add("hidden");
+document.getElementById("loginPage").classList.add("hidden");
+document.getElementById("registerPage").classList.remove("hidden");
+document.getElementById("appPage").classList.add("hidden");
 
-document
-.getElementById("registerPage")
-.classList.remove("hidden");
-
-document
-.getElementById("appPage")
-.classList.add("hidden");
+document.getElementById("registerMessage").textContent="";
 
 }
 
 
 function showApp(){
 
-document
-.getElementById("loginPage")
-.classList.add("hidden");
-
-document
-.getElementById("registerPage")
-.classList.add("hidden");
-
-document
-.getElementById("appPage")
-.classList.remove("hidden");
+document.getElementById("loginPage").classList.add("hidden");
+document.getElementById("registerPage").classList.add("hidden");
+document.getElementById("appPage").classList.remove("hidden");
 
 }
 
@@ -581,15 +247,19 @@ const sections=[
 
 sections.forEach(function(id){
 
-document
-.getElementById(id)
-.classList.add("hidden");
+const element=document.getElementById(id);
+
+if(element){
+element.classList.add("hidden");
+}
 
 });
 
-document
-.getElementById(section)
-.classList.remove("hidden");
+const selected=document.getElementById(section);
+
+if(selected){
+selected.classList.remove("hidden");
+}
 
 if(section==="historySection"){
 loadHistory();
@@ -609,19 +279,13 @@ LOGIN
 async function login(){
 
 const username=
-document
-.getElementById("loginUsername")
-.value
-.trim();
+document.getElementById("loginUsername").value.trim();
 
 const password=
-document
-.getElementById("loginPassword")
-.value;
+document.getElementById("loginPassword").value;
 
 const message=
-document
-.getElementById("loginMessage");
+document.getElementById("loginMessage");
 
 if(!username || !password){
 
@@ -631,8 +295,7 @@ message.textContent=
 return;
 }
 
-message.textContent=
-"جاري تسجيل الدخول...";
+message.textContent="جاري تسجيل الدخول...";
 
 try{
 
@@ -663,14 +326,13 @@ localStorage.setItem(
 JSON.stringify(currentUser)
 );
 
+message.textContent="";
+
 openApplication();
 
 }catch(error){
 
-console.error(error);
-
-message.textContent=
-"تعذر الاتصال بقاعدة البيانات.";
+showError(message,error);
 
 }
 
@@ -684,25 +346,17 @@ REGISTER
 async function register(){
 
 const username=
-document
-.getElementById("registerUsername")
-.value
-.trim();
+document.getElementById("registerUsername").value.trim();
 
 const password=
-document
-.getElementById("registerPassword")
-.value;
+document.getElementById("registerPassword").value;
 
 const referral=
-document
-.getElementById("referralCode")
-.value
-.trim();
+document.getElementById("referralCode").value.trim();
 
 const message=
-document
-.getElementById("registerMessage");
+document.getElementById("registerMessage");
+
 
 if(username.length<3){
 
@@ -712,6 +366,7 @@ message.textContent=
 return;
 }
 
+
 if(password.length<4){
 
 message.textContent=
@@ -720,10 +375,14 @@ message.textContent=
 return;
 }
 
+
 message.textContent=
 "جاري إنشاء الحساب...";
 
+
 try{
+
+/* فحص اسم المستخدم */
 
 const existing=
 await api("users",{
@@ -735,7 +394,8 @@ encodeURIComponent(username)+
 
 });
 
-if(existing.length>0){
+
+if(existing && existing.length>0){
 
 message.textContent=
 "اسم المستخدم موجود مسبقاً.";
@@ -743,6 +403,8 @@ message.textContent=
 return;
 }
 
+
+/* إنشاء الحساب */
 
 const created=
 await api("users",{
@@ -759,17 +421,25 @@ referred_by:referral || null
 });
 
 
+if(!created || created.length===0){
+
+throw new Error(
+"لم يتم إنشاء الحساب في قاعدة البيانات."
+);
+
+}
+
+
 /* مكافأة الإحالة */
 
-if(referral.startsWith("RAB7-")){
+if(referral && referral.startsWith("RAB7-")){
 
 const refUsername=
-referral.substring(5);
+referral.substring(5).trim();
 
-if(
-refUsername &&
-refUsername!==username
-){
+if(refUsername && refUsername!==username){
+
+try{
 
 const refUsers=
 await api("users",{
@@ -781,11 +451,11 @@ encodeURIComponent(refUsername)+
 
 });
 
-if(refUsers.length>0){
+if(refUsers && refUsers.length>0){
 
 const refUser=refUsers[0];
 
-const points=
+const oldPoints=
 Number(refUser.points || 0);
 
 await api("users",{
@@ -797,31 +467,44 @@ query:
 encodeURIComponent(refUser.id),
 
 body:{
-points:points+50
+points:oldPoints+50
 }
 
 });
 
 }
 
+}catch(refError){
+
+console.error(
+"Referral error:",
+refError
+);
+
+}
+
 }
 
 }
 
 
 message.textContent=
-"تم إنشاء الحساب بنجاح.";
+"✅ تم إنشاء الحساب بنجاح.";
+
+document.getElementById("registerUsername").value="";
+document.getElementById("registerPassword").value="";
+document.getElementById("referralCode").value="";
 
 setTimeout(function(){
+
 showLogin();
+
 },1000);
+
 
 }catch(error){
 
-console.error(error);
-
-message.textContent=
-"تعذر إنشاء الحساب.";
+showError(message,error);
 
 }
 
@@ -836,9 +519,8 @@ function openApplication(){
 
 showApp();
 
-document
-.getElementById("userName")
-.textContent=currentUser.username;
+document.getElementById("userName").textContent=
+currentUser.username || "";
 
 updateBalance();
 
@@ -860,19 +542,22 @@ function updateBalance(){
 const points=
 Number(currentUser.points || 0);
 
-document
-.getElementById("balance")
-.textContent=points;
+document.getElementById("balance").textContent=
+points;
 
-document
-.getElementById("withdrawBalance")
-.textContent=points;
+document.getElementById("withdrawBalance").textContent=
+points;
 
 }
 
 
+/* =========================
+SAVE POINTS
+========================= */
+
 async function savePoints(points){
 
+const updated=
 await api("users",{
 
 method:"PATCH",
@@ -886,6 +571,14 @@ points:points
 }
 
 });
+
+if(!updated || updated.length===0){
+
+throw new Error(
+"تعذر تحديث الرصيد في قاعدة البيانات."
+);
+
+}
 
 currentUser.points=points;
 
@@ -928,9 +621,17 @@ today();
 
 function getDoneTasks(){
 
+try{
+
 return JSON.parse(
 localStorage.getItem(taskKey()) || "[]"
 );
+
+}catch(e){
+
+return [];
+
+}
 
 }
 
@@ -969,9 +670,7 @@ div.innerHTML=
 "🎁 المكافأة: "+task.points+" نقطة"+
 "<button class='green' "+
 (isDone ? "disabled" : "")+
-" onclick='completeTask("+
-task.id+
-")'>"+
+" onclick='completeTask("+task.id+")'>"+
 (isDone
 ? "تم إنجاز المهمة ✓"
 : "إنجاز المهمة")+
@@ -1024,6 +723,7 @@ task.points+
 }catch(error){
 
 alert(
+error.message ||
 "حدث خطأ أثناء إضافة النقاط."
 );
 
@@ -1091,6 +791,7 @@ button.textContent=
 }catch(error){
 
 timer.textContent=
+error.message ||
 "حدث خطأ.";
 
 button.disabled=false;
@@ -1112,28 +813,24 @@ REFERRAL
 
 function generateReferralCode(){
 
-document
-.getElementById("myReferralCode")
-.textContent=
+document.getElementById("myReferralCode").textContent=
 "RAB7-"+currentUser.username;
 
 }
 
 
-function copyReferral(){
+async function copyReferral(){
 
 const code=
 "RAB7-"+currentUser.username;
 
-if(navigator.clipboard){
+try{
 
-navigator.clipboard
-.writeText(code)
-.then(function(){
+await navigator.clipboard.writeText(code);
+
 alert("تم نسخ كود الإحالة.");
-});
 
-}else{
+}catch(error){
 
 alert(
 "كود الإحالة: "+code
@@ -1151,13 +848,12 @@ WITHDRAW METHOD
 function changeWithdrawMethod(){
 
 const method=
-document
-.getElementById("withdrawMethod")
-.value;
+document.getElementById("withdrawMethod").value;
 
 const input=
-document
-.getElementById("withdrawAccount");
+document.getElementById("withdrawAccount");
+
+input.value="";
 
 if(method==="zain"){
 
@@ -1181,28 +877,21 @@ WITHDRAW
 async function submitWithdrawal(){
 
 const method=
-document
-.getElementById("withdrawMethod")
-.value;
+document.getElementById("withdrawMethod").value;
 
 const account=
-document
-.getElementById("withdrawAccount")
-.value
-.trim();
+document.getElementById("withdrawAccount").value.trim();
 
 const amount=
 Number(
-document
-.getElementById("withdrawAmount")
-.value
+document.getElementById("withdrawAmount").value
 );
 
 const message=
-document
-.getElementById("withdrawMessage");
+document.getElementById("withdrawMessage");
 
-if(amount<100){
+
+if(!Number.isFinite(amount) || amount<100){
 
 message.textContent=
 "الحد الأدنى للسحب 100 نقطة.";
@@ -1210,8 +899,8 @@ message.textContent=
 return;
 }
 
-if(amount>
-Number(currentUser.points || 0)){
+
+if(amount>Number(currentUser.points || 0)){
 
 message.textContent=
 "رصيدك غير كافٍ.";
@@ -1255,6 +944,7 @@ method==="mastercard"
 : account;
 
 
+const result=
 await api("withdrawals",{
 
 method:"POST",
@@ -1274,29 +964,29 @@ status:"قيد المراجعة"
 });
 
 
+if(!result || result.length===0){
+
+throw new Error(
+"لم يتم تسجيل طلب السحب."
+);
+
+}
+
+
 await savePoints(
 Number(currentUser.points || 0)-amount
 );
 
 
-document
-.getElementById("withdrawAmount")
-.value="";
-
-document
-.getElementById("withdrawAccount")
-.value="";
-
+document.getElementById("withdrawAmount").value="";
+document.getElementById("withdrawAccount").value="";
 
 message.textContent=
 "✅ تم إرسال طلب السحب وهو قيد المراجعة.";
 
 }catch(error){
 
-console.error(error);
-
-message.textContent=
-"تعذر إرسال طلب السحب.";
+showError(message,error);
 
 }
 
@@ -1310,8 +1000,7 @@ HISTORY
 async function loadHistory(){
 
 const container=
-document
-.getElementById("historyContainer");
+document.getElementById("historyContainer");
 
 container.innerHTML=
 "جاري تحميل الطلبات...";
@@ -1337,7 +1026,9 @@ container.innerHTML=
 return;
 }
 
+
 container.innerHTML="";
+
 
 data.forEach(function(item){
 
@@ -1361,8 +1052,7 @@ div.innerHTML=
 "<br>"+
 "<small>"+
 (item.created_at
-? new Date(item.created_at)
-.toLocaleString("ar-IQ")
+? new Date(item.created_at).toLocaleString("ar-IQ")
 : "")+
 "</small>";
 
@@ -1372,9 +1062,8 @@ container.appendChild(div);
 
 }catch(error){
 
-console.error(error);
-
 container.innerHTML=
+error.message ||
 "تعذر تحميل الطلبات.";
 
 }
@@ -1389,8 +1078,7 @@ NOTIFICATIONS
 async function loadNotifications(){
 
 const container=
-document
-.getElementById("notificationsContainer");
+document.getElementById("notificationsContainer");
 
 container.innerHTML=
 "جاري تحميل الإشعارات...";
@@ -1416,7 +1104,9 @@ container.innerHTML=
 return;
 }
 
+
 container.innerHTML="";
+
 
 data.forEach(function(item){
 
@@ -1448,6 +1138,7 @@ container.appendChild(div);
 }catch(error){
 
 container.innerHTML=
+error.message ||
 "تعذر تحميل الإشعارات.";
 
 }
@@ -1463,9 +1154,7 @@ function logout(){
 
 currentUser=null;
 
-localStorage.removeItem(
-"ribhUser"
-);
+localStorage.removeItem("ribhUser");
 
 showLogin();
 
@@ -1476,9 +1165,7 @@ showLogin();
 AUTO LOGIN
 ========================= */
 
-window.addEventListener(
-"load",
-function(){
+window.addEventListener("load",function(){
 
 const saved=
 localStorage.getItem("ribhUser");
@@ -1490,13 +1177,20 @@ try{
 currentUser=
 JSON.parse(saved);
 
+if(currentUser && currentUser.id){
+
 openApplication();
+
+}else{
+
+localStorage.removeItem("ribhUser");
+showLogin();
+
+}
 
 }catch(error){
 
-localStorage.removeItem(
-"ribhUser"
-);
+localStorage.removeItem("ribhUser");
 
 showLogin();
 
@@ -1510,7 +1204,5 @@ showLogin();
 
 });
 
-</script>
-
-</body>
+</script></body>
 </html>
