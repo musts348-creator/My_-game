@@ -7,16 +7,16 @@
 
 <style>
 body{
-    font-family:Arial,sans-serif;
-    background:#f2f4f7;
     margin:0;
     padding:20px;
+    background:#f2f4f7;
+    font-family:Arial,sans-serif;
 }
 .box{
     max-width:450px;
-    margin:30px auto;
+    margin:20px auto;
     background:white;
-    padding:25px;
+    padding:20px;
     border-radius:15px;
     box-shadow:0 2px 10px #0002;
 }
@@ -29,7 +29,9 @@ input,button{
     font-size:16px;
     border-radius:8px;
 }
-input{border:1px solid #ccc}
+input{
+    border:1px solid #ccc;
+}
 button{
     border:0;
     background:#1677ff;
@@ -39,65 +41,75 @@ button{
 .green{background:#159447}
 .red{background:#d33}
 .hidden{display:none}
-.msg{text-align:center;margin:10px 0}
+.msg{text-align:center}
 .points{
     text-align:center;
-    font-size:30px;
+    font-size:32px;
     font-weight:bold;
 }
 .task{
     border:1px solid #ddd;
-    padding:10px;
+    padding:12px;
     margin:8px 0;
-    border-radius:8px;
+    border-radius:10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- صفحة الدخول -->
+<!-- تسجيل الدخول -->
 <div id="loginPage" class="box">
 
 <h1>💰 ربح</h1>
 <h2>تسجيل الدخول</h2>
 
-<input id="loginUser" type="text" placeholder="اسم المستخدم">
-<input id="loginPass" type="password" placeholder="كلمة المرور">
+<input id="loginUsername"
+       type="text"
+       placeholder="اسم المستخدم">
 
-<button id="loginButton">دخول</button>
+<input id="loginPassword"
+       type="password"
+       placeholder="كلمة المرور">
 
-<button id="registerPageButton" class="gray">
+<button id="loginBtn">دخول</button>
+
+<button id="openRegisterBtn" class="gray">
 إنشاء حساب جديد
 </button>
 
-<div id="loginMsg" class="msg"></div>
+<p id="loginMessage" class="msg"></p>
 
 </div>
 
 
-<!-- صفحة إنشاء الحساب -->
+<!-- إنشاء حساب -->
 <div id="registerPage" class="box hidden">
 
 <h1>💰 ربح</h1>
-<h2>إنشاء حساب</h2>
+<h2>إنشاء حساب جديد</h2>
 
-<input id="newUser" type="text" placeholder="اسم المستخدم">
+<input id="registerUsername"
+       type="text"
+       placeholder="اسم المستخدم">
 
-<input id="newPass" type="password" placeholder="كلمة المرور">
+<input id="registerPassword"
+       type="password"
+       placeholder="كلمة المرور">
 
-<input id="referralCode" type="text"
-placeholder="رمز الإحالة - اختياري">
+<input id="registerReferral"
+       type="text"
+       placeholder="رمز الإحالة - اختياري">
 
-<button id="createButton" class="green">
+<button id="registerBtn" class="green">
 إنشاء الحساب
 </button>
 
-<button id="backButton" class="gray">
+<button id="backLoginBtn" class="gray">
 العودة لتسجيل الدخول
 </button>
 
-<div id="registerMsg" class="msg"></div>
+<p id="registerMessage" class="msg"></p>
 
 </div>
 
@@ -108,81 +120,74 @@ placeholder="رمز الإحالة - اختياري">
 <h1>💰 تطبيق ربح</h1>
 
 <p style="text-align:center">
-مرحباً <b id="userName"></b>
+مرحباً <b id="currentUsername"></b>
 </p>
 
 <div class="points">
-<span id="userPoints">0</span>
+<span id="points">0</span>
 <br>
-<span style="font-size:16px">نقطة</span>
+<span style="font-size:15px">نقطة</span>
 </div>
 
 <hr>
 
-<h2>المهام</h2>
+<h2>📋 المهام</h2>
 
 <div class="task">
 احصل على 10 نقاط
-<button class="taskButton" data-points="10">
+<button class="taskBtn" data-points="10">
 تنفيذ
 </button>
 </div>
 
 <div class="task">
 احصل على 20 نقطة
-<button class="taskButton" data-points="20">
+<button class="taskBtn" data-points="20">
 تنفيذ
 </button>
 </div>
 
 <div class="task">
 احصل على 30 نقطة
-<button class="taskButton" data-points="30">
+<button class="taskBtn" data-points="30">
 تنفيذ
 </button>
 </div>
 
 <div class="task">
 احصل على 40 نقطة
-<button class="taskButton" data-points="40">
+<button class="taskBtn" data-points="40">
 تنفيذ
 </button>
 </div>
 
 <div class="task">
 احصل على 50 نقطة
-<button class="taskButton" data-points="50">
+<button class="taskBtn" data-points="50">
 تنفيذ
 </button>
 </div>
 
 <div class="task">
 احصل على 60 نقطة
-<button class="taskButton" data-points="60">
+<button class="taskBtn" data-points="60">
 تنفيذ
 </button>
 </div>
 
 <hr>
 
-<h2>👥 الإحالة</h2>
-
-<p>رمز الإحالة الخاص بك:</p>
+<h2>👥 رمز الإحالة</h2>
 
 <input id="myReferral" readonly>
 
-<button id="copyButton">
+<button id="copyReferralBtn">
 نسخ رمز الإحالة
 </button>
 
-<p>
-عند تسجيل شخص جديد باستخدام رمزك،
-تحصل على 50 نقطة.
-</p>
-
 <hr>
 
-<button id="logoutButton" class="red">
+<button id="logoutBtn" class="red">
 تسجيل خروج
 </button>
 
@@ -192,7 +197,7 @@ placeholder="رمز الإحالة - اختياري">
 <script>
 
 /* =========================
-   بيانات Supabase
+   SUPABASE
 ========================= */
 
 const SUPABASE_URL =
@@ -200,48 +205,6 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
 "sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
-
-
-/* =========================
-   طلب إلى Supabase
-========================= */
-
-async function requestSupabase(path, options = {}){
-
-    const response = await fetch(
-        SUPABASE_URL + "/rest/v1/" + path,
-        {
-            ...options,
-            headers:{
-                "apikey":SUPABASE_KEY,
-                "Authorization":"Bearer " + SUPABASE_KEY,
-                "Content-Type":"application/json",
-                "Prefer":"return=representation",
-                ...(options.headers || {})
-            }
-        }
-    );
-
-    const text = await response.text();
-
-    let data;
-
-    try{
-        data = text ? JSON.parse(text) : null;
-    }catch(e){
-        data = text;
-    }
-
-    if(!response.ok){
-        throw new Error(
-            typeof data === "string"
-            ? data
-            : JSON.stringify(data)
-        );
-    }
-
-    return data;
-}
 
 
 /* =========================
@@ -257,54 +220,127 @@ document.getElementById("registerPage");
 const appPage =
 document.getElementById("appPage");
 
-const loginUser =
-document.getElementById("loginUser");
+const loginUsername =
+document.getElementById("loginUsername");
 
-const loginPass =
-document.getElementById("loginPass");
+const loginPassword =
+document.getElementById("loginPassword");
 
-const loginMsg =
-document.getElementById("loginMsg");
+const loginMessage =
+document.getElementById("loginMessage");
 
-const newUser =
-document.getElementById("newUser");
+const registerUsername =
+document.getElementById("registerUsername");
 
-const newPass =
-document.getElementById("newPass");
+const registerPassword =
+document.getElementById("registerPassword");
 
-const referralCode =
-document.getElementById("referralCode");
+const registerReferral =
+document.getElementById("registerReferral");
 
-const registerMsg =
-document.getElementById("registerMsg");
+const registerMessage =
+document.getElementById("registerMessage");
+
+const points =
+document.getElementById("points");
+
+const currentUsername =
+document.getElementById("currentUsername");
+
+const myReferral =
+document.getElementById("myReferral");
+
 
 let currentUser = null;
 
 
 /* =========================
-   الانتقال بين الصفحات
+   الاتصال بقاعدة البيانات
+========================= */
+
+async function supabase(path, options){
+
+    const response = await fetch(
+        SUPABASE_URL + "/rest/v1/" + path,
+        {
+            method: options?.method || "GET",
+
+            headers:{
+                "apikey":SUPABASE_KEY,
+                "Authorization":
+                "Bearer " + SUPABASE_KEY,
+                "Content-Type":
+                "application/json",
+                "Prefer":
+                "return=representation"
+            },
+
+            body:options?.body
+        }
+    );
+
+    const text =
+    await response.text();
+
+    let data = null;
+
+    if(text){
+
+        try{
+            data = JSON.parse(text);
+        }
+        catch(e){
+            data = text;
+        }
+
+    }
+
+    if(!response.ok){
+
+        throw new Error(
+            typeof data === "string"
+            ? data
+            : JSON.stringify(data)
+        );
+
+    }
+
+    return data;
+}
+
+
+/* =========================
+   الصفحات
 ========================= */
 
 function showLogin(){
 
     loginPage.classList.remove("hidden");
+
     registerPage.classList.add("hidden");
+
     appPage.classList.add("hidden");
 
 }
+
 
 function showRegister(){
 
     loginPage.classList.add("hidden");
+
     registerPage.classList.remove("hidden");
+
     appPage.classList.add("hidden");
 
 }
 
+
 function showApp(){
 
     loginPage.classList.add("hidden");
+
     registerPage.classList.add("hidden");
+
     appPage.classList.remove("hidden");
 
 }
@@ -314,29 +350,29 @@ function showApp(){
    تسجيل الدخول
 ========================= */
 
-async function doLogin(){
+async function login(){
 
     const username =
-    loginUser.value.trim();
+    loginUsername.value.trim();
 
     const password =
-    loginPass.value;
+    loginPassword.value;
 
     if(!username || !password){
 
-        loginMsg.textContent =
-        "أدخل اسم المستخدم وكلمة المرور.";
+        loginMessage.textContent =
+        "اكتب اسم المستخدم وكلمة المرور.";
 
         return;
     }
 
-    loginMsg.textContent =
+    loginMessage.textContent =
     "جاري تسجيل الدخول...";
 
     try{
 
-        const users =
-        await requestSupabase(
+        const result =
+        await supabase(
             "users?username=eq." +
             encodeURIComponent(username) +
             "&password=eq." +
@@ -344,30 +380,36 @@ async function doLogin(){
             "&select=*"
         );
 
-        if(!users || users.length === 0){
 
-            loginMsg.textContent =
-            "اسم المستخدم أو كلمة المرور غير صحيحة.";
+        if(!result || result.length === 0){
+
+            loginMessage.textContent =
+            "بيانات الدخول غير صحيحة.";
 
             return;
         }
 
-        currentUser = users[0];
+
+        currentUser =
+        result[0];
+
 
         localStorage.setItem(
             "ribhUserId",
             String(currentUser.id)
         );
 
+
         showApp();
 
-        updateApp();
+        updateUser();
 
-    }catch(error){
+    }
+    catch(error){
 
         console.error(error);
 
-        loginMsg.textContent =
+        loginMessage.textContent =
         "تعذر الاتصال بقاعدة البيانات.";
 
     }
@@ -379,59 +421,65 @@ async function doLogin(){
    إنشاء الحساب
 ========================= */
 
-async function createAccount(){
+async function register(){
 
     const username =
-    newUser.value.trim();
+    registerUsername.value.trim();
 
     const password =
-    newPass.value;
+    registerPassword.value;
 
     const referral =
-    referralCode.value.trim();
+    registerReferral.value.trim();
+
 
     if(username.length < 3){
 
-        registerMsg.textContent =
+        registerMessage.textContent =
         "اسم المستخدم يجب أن يكون 3 أحرف على الأقل.";
 
         return;
     }
 
+
     if(password.length < 4){
 
-        registerMsg.textContent =
+        registerMessage.textContent =
         "كلمة المرور يجب أن تكون 4 أحرف على الأقل.";
 
         return;
     }
 
-    registerMsg.textContent =
+
+    registerMessage.textContent =
     "جاري إنشاء الحساب...";
+
 
     try{
 
         const existing =
-        await requestSupabase(
+        await supabase(
             "users?username=eq." +
             encodeURIComponent(username) +
             "&select=id"
         );
 
+
         if(existing && existing.length > 0){
 
-            registerMsg.textContent =
+            registerMessage.textContent =
             "اسم المستخدم موجود مسبقاً.";
 
             return;
         }
 
 
-        const created =
-        await requestSupabase(
+        const newUser =
+        await supabase(
             "users",
             {
                 method:"POST",
+
                 body:JSON.stringify({
                     username:username,
                     password:password,
@@ -443,24 +491,28 @@ async function createAccount(){
         );
 
 
-        if(!created || created.length === 0){
+        if(!newUser || newUser.length === 0){
 
-            registerMsg.textContent =
-            "تعذر إنشاء الحساب.";
+            registerMessage.textContent =
+            "لم يتم إنشاء الحساب.";
 
             return;
         }
 
 
-        currentUser = created[0];
+        currentUser =
+        newUser[0];
 
 
-        /* مكافأة الإحالة */
+        /*
+          مكافأة الإحالة
+        */
 
         if(referral.startsWith("RAB7-")){
 
             const refName =
             referral.substring(5);
+
 
             if(
                 refName &&
@@ -469,43 +521,44 @@ async function createAccount(){
 
                 try{
 
-                    const refUsers =
-                    await requestSupabase(
+                    const refUser =
+                    await supabase(
                         "users?username=eq." +
                         encodeURIComponent(refName) +
                         "&select=*"
                     );
 
+
                     if(
-                        refUsers &&
-                        refUsers.length > 0
+                        refUser &&
+                        refUser.length > 0
                     ){
 
-                        const refUser =
-                        refUsers[0];
+                        const oldPoints =
+                        Number(
+                            refUser[0].points || 0
+                        );
 
-                        const newPoints =
-                        Number(refUser.points || 0) + 50;
 
-                        await requestSupabase(
+                        await supabase(
                             "users?id=eq." +
-                            refUser.id,
+                            refUser[0].id,
                             {
                                 method:"PATCH",
+
                                 body:JSON.stringify({
-                                    points:newPoints
+                                    points:
+                                    oldPoints + 50
                                 })
                             }
                         );
 
                     }
 
-                }catch(e){
+                }
+                catch(e){
 
-                    console.log(
-                        "Referral error:",
-                        e
-                    );
+                    console.log(e);
 
                 }
 
@@ -519,16 +572,18 @@ async function createAccount(){
             String(currentUser.id)
         );
 
+
         showApp();
 
-        updateApp();
+        updateUser();
 
 
-    }catch(error){
+    }
+    catch(error){
 
         console.error(error);
 
-        registerMsg.textContent =
+        registerMessage.textContent =
         "تعذر الاتصال بقاعدة البيانات.";
 
     }
@@ -537,51 +592,52 @@ async function createAccount(){
 
 
 /* =========================
-   تحديث التطبيق
+   تحديث المستخدم
 ========================= */
 
-async function updateApp(){
+async function updateUser(){
 
     if(!currentUser){
         return;
     }
 
+
     try{
 
-        const users =
-        await requestSupabase(
+        const result =
+        await supabase(
             "users?id=eq." +
             currentUser.id +
             "&select=*"
         );
 
-        if(!users || users.length === 0){
 
-            doLogout();
+        if(!result || result.length === 0){
+
+            logout();
 
             return;
         }
 
-        currentUser = users[0];
 
-        const points =
+        currentUser =
+        result[0];
+
+
+        points.textContent =
         Number(currentUser.points || 0);
 
-        document.getElementById(
-            "userPoints"
-        ).textContent = points;
 
-        document.getElementById(
-            "userName"
-        ).textContent =
+        currentUsername.textContent =
         currentUser.username;
 
-        document.getElementById(
-            "myReferral"
-        ).value =
+
+        myReferral.value =
         "RAB7-" + currentUser.username;
 
-    }catch(error){
+
+    }
+    catch(error){
 
         console.error(error);
 
@@ -591,7 +647,7 @@ async function updateApp(){
 
 
 /* =========================
-   إضافة نقاط
+   إضافة النقاط
 ========================= */
 
 async function addPoints(amount){
@@ -600,29 +656,36 @@ async function addPoints(amount){
         return;
     }
 
+
     try{
 
         const oldPoints =
         Number(currentUser.points || 0);
 
+
         const newPoints =
         oldPoints + Number(amount);
 
-        await requestSupabase(
+
+        await supabase(
             "users?id=eq." +
             currentUser.id,
             {
                 method:"PATCH",
+
                 body:JSON.stringify({
                     points:newPoints
                 })
             }
         );
 
+
         currentUser.points =
         newPoints;
 
-        updateApp();
+
+        updateUser();
+
 
         alert(
             "تمت إضافة " +
@@ -630,7 +693,8 @@ async function addPoints(amount){
             " نقطة."
         );
 
-    }catch(error){
+    }
+    catch(error){
 
         console.error(error);
 
@@ -644,11 +708,11 @@ async function addPoints(amount){
 
 
 /* =========================
-   أزرار المهام
+   المهام
 ========================= */
 
 document
-.querySelectorAll(".taskButton")
+.querySelectorAll(".taskBtn")
 .forEach(function(button){
 
     button.addEventListener(
@@ -671,19 +735,17 @@ document
 
 
 /* =========================
-   نسخ رمز الإحالة
+   نسخ الإحالة
 ========================= */
 
 document.getElementById(
-    "copyButton"
+    "copyReferralBtn"
 ).addEventListener(
     "click",
     async function(){
 
         const code =
-        document.getElementById(
-            "myReferral"
-        ).value;
+        myReferral.value;
 
         try{
 
@@ -695,14 +757,10 @@ document.getElementById(
                 "تم نسخ رمز الإحالة."
             );
 
-        }catch(error){
+        }
+        catch(error){
 
-            const input =
-            document.getElementById(
-                "myReferral"
-            );
-
-            input.select();
+            myReferral.select();
 
             document.execCommand("copy");
 
@@ -720,7 +778,7 @@ document.getElementById(
    تسجيل الخروج
 ========================= */
 
-function doLogout(){
+function logout(){
 
     currentUser = null;
 
@@ -734,19 +792,19 @@ function doLogout(){
 
 
 /* =========================
-   الأزرار الرئيسية
+   الأزرار
 ========================= */
 
 document.getElementById(
-    "loginButton"
+    "loginBtn"
 ).addEventListener(
     "click",
-    doLogin
+    login
 );
 
 
 document.getElementById(
-    "registerPageButton"
+    "openRegisterBtn"
 ).addEventListener(
     "click",
     showRegister
@@ -754,7 +812,7 @@ document.getElementById(
 
 
 document.getElementById(
-    "backButton"
+    "backLoginBtn"
 ).addEventListener(
     "click",
     showLogin
@@ -762,29 +820,33 @@ document.getElementById(
 
 
 document.getElementById(
-    "createButton"
+    "registerBtn"
 ).addEventListener(
     "click",
-    createAccount
+    register
 );
 
 
 document.getElementById(
-    "logoutButton"
+    "logoutBtn"
 ).addEventListener(
     "click",
-    doLogout
+    logout
 );
 
 
-/* الضغط على Enter */
+/* =========================
+   Enter
+========================= */
 
-loginPass.addEventListener(
+loginPassword.addEventListener(
     "keydown",
     function(event){
 
         if(event.key === "Enter"){
-            doLogin();
+
+            login();
+
         }
 
     }
@@ -802,6 +864,7 @@ async function autoLogin(){
         "ribhUserId"
     );
 
+
     if(!savedId){
 
         showLogin();
@@ -809,33 +872,38 @@ async function autoLogin(){
         return;
     }
 
+
     try{
 
-        const users =
-        await requestSupabase(
+        const result =
+        await supabase(
             "users?id=eq." +
             encodeURIComponent(savedId) +
             "&select=*"
         );
 
+
         if(
-            users &&
-            users.length > 0
+            result &&
+            result.length > 0
         ){
 
-            currentUser = users[0];
+            currentUser =
+            result[0];
 
             showApp();
 
-            updateApp();
+            updateUser();
 
-        }else{
+        }
+        else{
 
             showLogin();
 
         }
 
-    }catch(error){
+    }
+    catch(error){
 
         console.error(error);
 
@@ -847,7 +915,7 @@ async function autoLogin(){
 
 
 /* =========================
-   تشغيل التطبيق
+   تشغيل
 ========================= */
 
 showLogin();
