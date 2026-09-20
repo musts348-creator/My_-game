@@ -1,0 +1,11 @@
+{
+  "name": "ربح",
+  "short_name": "ربح",
+  "description": "تطبيق ربح لجمع النقاط وتنفيذ المهام وطلب السحب.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#07152e",
+  "theme_color": "#123b70",
+  "lang": "ar",
+  "dir": "rtl"
+}
