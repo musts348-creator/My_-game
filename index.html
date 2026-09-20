@@ -1,1134 +1,692 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-<link rel="manifest" href="manifest.json">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ربح</title><style>
-*{box-sizing:border-box;font-family:Arial,Tahoma,sans-serif}
-body{margin:0;background:linear-gradient(135deg,#07152e,#123b70);color:#fff}
-.container{width:94%;max-width:700px;margin:auto;padding:15px 0 40px}
-.card{background:rgba(255,255,255,.09);border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 8px 25px rgba(0,0,0,.2)}
-h1,h2,h3{text-align:center}
-input,select{width:100%;padding:14px;margin:7px 0;border:0;border-radius:10px;font-size:16px}
-button{width:100%;padding:14px;margin:7px 0;border:0;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.55}
-.green{background:#00c853;color:#fff}
-.blue{background:#1976d2;color:#fff}
-.orange{background:#ff9800;color:#fff}
-.red{background:#e53935;color:#fff}
-.gray{background:#37474f;color:#fff}
-.hidden{display:none!important}
-.message{text-align:center;padding:10px;margin-top:10px;border-radius:8px;background:rgba(255,255,255,.1);min-height:20px}
-.balance{text-align:center;font-size:36px;font-weight:bold;margin:15px}
-.points{color:#ffd54f}
-.task,.history{padding:14px;margin:9px 0;border:1px solid rgba(255,255,255,.12);border-radius:12px}
-.ad{background:linear-gradient(135deg,#4527a0,#8e24aa);padding:20px;border-radius:15px;text-align:center}
-.timer{font-size:28px;font-weight:bold;margin:10px}
-.refbox{background:#102a43;padding:15px;border-radius:12px;text-align:center;word-break:break-all}
-.small{font-size:13px;opacity:.8;line-height:1.7}
-.nav{position:sticky;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:#061126;padding:7px;border-radius:15px}
-.nav button{font-size:11px;padding:10px 3px;margin:0;background:#18345e;color:white}
-</style></head><body><div class="container">
+<link rel="manifest" href="manifest.json">
+<title>ربح</title>
 
-<!-- LOGIN -->
-<div id="loginPage">
-<div class="card"><h1>💰 تطبيق ربح</h1>
-<h3>تسجيل الدخول</h3>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:linear-gradient(135deg,#07152e,#123b70);
+color:white;
+min-height:100vh;
+}
+.container{
+max-width:600px;
+margin:auto;
+padding:20px;
+}
+.card{
+background:rgba(255,255,255,.1);
+border-radius:18px;
+padding:20px;
+margin:15px 0;
+box-shadow:0 5px 20px rgba(0,0,0,.2);
+}
+h1,h2{text-align:center}
+input,select,button{
+width:100%;
+padding:13px;
+margin:8px 0;
+border:0;
+border-radius:10px;
+font-size:16px;
+}
+button{
+background:#18a558;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+button.secondary{background:#2463b5}
+button.danger{background:#c62828}
+.hidden{display:none}
+.balance{
+font-size:30px;
+text-align:center;
+font-weight:bold;
+margin:20px 0;
+}
+.task{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:12px;
+margin:8px 0;
+background:rgba(0,0,0,.18);
+border-radius:10px;
+}
+.task button{
+width:auto;
+margin:0;
+padding:9px 15px;
+}
+.nav{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:7px;
+margin-top:15px;
+}
+.nav button{
+font-size:13px;
+padding:10px 5px;
+}
+.message{
+text-align:center;
+padding:10px;
+margin:10px 0;
+border-radius:10px;
+background:rgba(255,255,255,.12);
+}
+.small{text-align:center;font-size:13px;opacity:.8}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- تسجيل الدخول -->
+<div id="loginPage" class="card">
+<h1>💰 ربح</h1>
+<h2>تسجيل الدخول</h2>
+
 <input id="loginUsername" type="text" placeholder="اسم المستخدم">
 <input id="loginPassword" type="password" placeholder="كلمة المرور">
-<button class="green" onclick="login()">دخول</button>
-<button class="blue" onclick="showRegister()">إنشاء حساب جديد</button>
+
+<button onclick="login()">تسجيل الدخول</button>
+<button class="secondary" onclick="showRegister()">إنشاء حساب جديد</button>
+
 <div id="loginMessage" class="message"></div>
 </div>
-</div>
 
-<!-- REGISTER -->
-<div id="registerPage" class="hidden">
-<div class="card"><h1>📝 إنشاء حساب</h1>
-<input id="registerUsername" type="text" placeholder="اسم المستخدم">
-<input id="registerPassword" type="password" placeholder="كلمة المرور">
-<input id="referralCode" type="text" placeholder="كود الإحالة - اختياري">
-<button class="green" onclick="register()">إنشاء الحساب</button>
-<button class="gray" onclick="showLogin()">رجوع</button>
+<!-- إنشاء الحساب -->
+<div id="registerPage" class="card hidden">
+<h1>💰 ربح</h1>
+<h2>إنشاء حساب جديد</h2>
+
+<input id="regUsername" type="text" placeholder="اسم المستخدم">
+<input id="regPassword" type="password" placeholder="كلمة المرور">
+<input id="regReferral" type="text" placeholder="رمز الإحالة - اختياري">
+
+<button onclick="register()">إنشاء الحساب</button>
+<button class="secondary" onclick="showLogin()">العودة لتسجيل الدخول</button>
+
 <div id="registerMessage" class="message"></div>
 </div>
-</div>
 
-<!-- APPLICATION -->
+<!-- التطبيق -->
 <div id="appPage" class="hidden">
-<div class="card"><h1>💰 ربح</h1>
-<p>مرحباً: <b id="userName"></b></p>
+
+<div class="card">
+<h1>💰 ربح</h1>
 <div class="balance">
-<span id="balance">0</span>
-<span class="points">نقطة</span>
+رصيدك: <span id="balance">0</span> نقطة
 </div>
-<p class="small">اجمع النقاط من المهام والإعلانات التجريبية.</p>
-</div>
-
-<!-- HOME -->
-<div id="homeSection">
-<div class="card"><h2>🏠 الرئيسية</h2>
-<button class="green" onclick="showSection('tasksSection')">📋 المهام اليومية</button>
-<button class="blue" onclick="showSection('adsSection')">📺 الإعلانات</button>
-<button class="orange" onclick="showSection('referralSection')">👥 الإحالة</button>
-<button class="orange" onclick="showSection('withdrawSection')">💳 السحب</button>
-</div>
+<div class="small">مرحباً <span id="currentUser"></span></div>
 </div>
 
-<!-- TASKS -->
-<div id="tasksSection" class="hidden">
-<div class="card"><h2>📋 المهام اليومية</h2>
-<p class="small">يمكن تنفيذ كل مهمة مرة واحدة في اليوم.</p>
-<div id="tasksContainer"></div>
-</div>
+<div id="homeSection" class="card">
+<h2>📋 المهام اليومية</h2>
+<div id="tasks"></div>
 </div>
 
-<!-- ADS -->
-<div id="adsSection" class="hidden">
-<div class="card"><h2>📺 الإعلانات</h2>
-<div class="ad"><h3>🎬 إعلان تجريبي</h3>
-<p>شاهد الإعلان لمدة 10 ثوانٍ للحصول على 10 نقاط.</p>
-<div id="adTimer" class="timer"></div>
-<button id="adButton" class="green" onclick="watchAd()">▶️ مشاهدة الإعلان</button>
-</div>
-<br>
-<p class="small">هذه إعلانات تجريبية داخل التطبيق وليست شبكة إعلانية حقيقية.</p>
-</div>
-</div>
-
-<!-- REFERRAL -->
-<div id="referralSection" class="hidden">
-<div class="card"><h2>👥 نظام الإحالة</h2>
-<p>
-شارك كودك مع أصدقائك.<br>
-عند تسجيل مستخدم جديد باستخدام كودك تحصل على <b>50 نقطة</b>.
+<div id="adsSection" class="card hidden">
+<h2>📺 مشاهدة الإعلانات</h2>
+<p style="text-align:center">
+شاهد الإعلان لمدة 10 ثوانٍ واحصل على 10 نقاط.
 </p>
-<div class="refbox">
-<h3>كود الإحالة الخاص بك</h3>
-<div id="myReferralCode"></div>
-<button class="blue" onclick="copyReferral()">📋 نسخ الكود</button>
-</div>
-</div>
+<button onclick="watchAd()">مشاهدة الإعلان</button>
+<div id="adMessage" class="message"></div>
 </div>
 
-<!-- WITHDRAW -->
-<div id="withdrawSection" class="hidden">
-<div class="card"><h2>💳 طلب السحب</h2>
-<p>رصيدك: <b id="withdrawBalance">0</b> نقطة</p>
-<select id="withdrawMethod" onchange="changeWithdrawMethod()">
+<div id="refSection" class="card hidden">
+<h2>👥 الإحالة</h2>
+<p>رمز الإحالة الخاص بك:</p>
+<input id="refCode" readonly>
+<p class="small">شارك الرمز مع أصدقائك واحصل على نقاط.</p>
+</div>
+
+<div id="withdrawSection" class="card hidden">
+<h2>💳 سحب الأرباح</h2>
+
+<select id="withdrawMethod" onchange="changeMethod()">
 <option value="zain">Zain Cash</option>
 <option value="mastercard">Mastercard</option>
 </select>
-<input id="withdrawAccount" type="text" inputmode="numeric" placeholder="رقم Zain Cash - 07712345678">
-<input id="withdrawAmount" type="number" inputmode="numeric" placeholder="عدد النقاط">
-<button class="orange" onclick="submitWithdrawal()">💸 إرسال طلب السحب</button>
-<p class="small">الحد الأدنى للسحب 100 نقطة.</p>
+
+<input id="withdrawAccount" type="text" placeholder="رقم الحساب">
+
+<input id="withdrawPoints" type="number" placeholder="عدد النقاط">
+
+<button onclick="withdraw()">طلب السحب</button>
+
 <div id="withdrawMessage" class="message"></div>
 </div>
+
+<div id="historySection" class="card hidden">
+<h2>📜 سجل السحب</h2>
+<div id="history"></div>
 </div>
 
-<!-- HISTORY -->
-<div id="historySection" class="hidden">
-<div class="card"><h2>📜 طلباتي</h2>
-<div id="historyContainer">جاري التحميل...</div>
-</div>
-</div>
-
-<!-- NOTIFICATIONS -->
-<div id="notificationsSection" class="hidden">
-<div class="card"><h2>🔔 الإشعارات</h2>
-<div id="notificationsContainer">جاري التحميل...</div>
-</div>
-</div>
-
-<div class="card">
-<button class="red" onclick="logout()">🚪 تسجيل الخروج</button>
-</div>
-
-<!-- NAVIGATION -->
 <div class="nav">
-<button onclick="showSection('homeSection')">🏠 الرئيسية</button>
-<button onclick="showSection('tasksSection')">📋 المهام</button>
-<button onclick="showSection('adsSection')">📺 الإعلانات</button>
-<button onclick="showSection('referralSection')">👥 الإحالة</button>
-<button onclick="showSection('withdrawSection')">💳 السحب</button>
-<button onclick="showSection('historySection')">📜 طلباتي</button>
-<button onclick="showSection('notificationsSection')">🔔 الإشعارات</button>
+<button onclick="showSection('home')">🏠 الرئيسية</button>
+<button onclick="showSection('ads')">📺 الإعلانات</button>
+<button onclick="showSection('ref')">👥 الإحالة</button>
+<button onclick="showSection('withdraw')">💳 السحب</button>
+<button onclick="showSection('history')">📜 السجل</button>
+<button class="danger" onclick="logout()">🚪 خروج</button>
 </div>
+
 </div>
 </div>
 
 <script>
+const SUPABASE_URL="https://jfpmniqxdwrvnpjlatkk.supabase.co";
+const SUPABASE_KEY="sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
 
-/* =========================
-SUPABASE
-========================= */
-
-const SUPABASE_URL =
-"https://jfpmniqxdwrvnpjlatkk.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
-
-
-/* =========================
-API
-========================= */
+let user=null;
 
 async function api(table,options={}){
-
-let url =
-SUPABASE_URL +
-"/rest/v1/" +
-table;
-
-if(options.query){
-url += "?" + options.query;
-}
-
-const config={
-method:options.method || "GET",
+const response=await fetch(
+SUPABASE_URL+"/rest/v1/"+table,
+{
+...options,
 headers:{
 "apikey":SUPABASE_KEY,
 "Authorization":"Bearer "+SUPABASE_KEY,
 "Content-Type":"application/json",
-"Accept":"application/json",
-"Prefer":"return=representation"
+...(options.headers||{})
 }
-};
-
-if(options.body){
-config.body=JSON.stringify(options.body);
 }
-
-let response;
-
-try{
-
-response=await fetch(url,config);
-
-}catch(error){
-
-throw new Error(
-"تعذر الاتصال بخادم قاعدة البيانات."
 );
 
+if(!response.ok){
+const text=await response.text();
+throw new Error(text||"خطأ في الاتصال بقاعدة البيانات");
 }
 
 const text=await response.text();
-
-let data=null;
-
-try{
-
-data=text ? JSON.parse(text) : null;
-
-}catch(e){
-
-data=text;
-
+return text?JSON.parse(text):[];
 }
-
-if(!response.ok){
-
-let errorMessage="خطأ في قاعدة البيانات.";
-
-if(data && data.message){
-errorMessage=data.message;
-}else if(data && data.error){
-errorMessage=data.error;
-}else if(typeof data==="string" && data){
-errorMessage=data;
-}
-
-throw new Error(errorMessage);
-
-}
-
-return data;
-
-}
-
-
-/* =========================
-VARIABLES
-========================= */
-
-let currentUser=null;
-let adRunning=false;
-
-const tasks=[
-{id:1,name:"المهمة الأولى",points:10},
-{id:2,name:"المهمة الثانية",points:20},
-{id:3,name:"المهمة الثالثة",points:30},
-{id:4,name:"المهمة الرابعة",points:40},
-{id:5,name:"المهمة الخامسة",points:50},
-{id:6,name:"المهمة السادسة",points:60}
-];
-
-
-/* =========================
-MESSAGES
-========================= */
-
-function showError(element,error){
-
-console.error(error);
-
-element.textContent=
-error && error.message
-? error.message
-: "حدث خطأ غير معروف.";
-
-}
-
-
-/* =========================
-PAGES
-========================= */
 
 function showLogin(){
-
 document.getElementById("loginPage").classList.remove("hidden");
 document.getElementById("registerPage").classList.add("hidden");
 document.getElementById("appPage").classList.add("hidden");
-
 }
 
-
 function showRegister(){
-
 document.getElementById("loginPage").classList.add("hidden");
 document.getElementById("registerPage").classList.remove("hidden");
 document.getElementById("appPage").classList.add("hidden");
-
-document.getElementById("registerMessage").textContent="";
-
 }
 
-
 function showApp(){
-
 document.getElementById("loginPage").classList.add("hidden");
 document.getElementById("registerPage").classList.add("hidden");
 document.getElementById("appPage").classList.remove("hidden");
-
 }
-
-
-function showSection(section){
-
-const sections=[
-"homeSection",
-"tasksSection",
-"adsSection",
-"referralSection",
-"withdrawSection",
-"historySection",
-"notificationsSection"
-];
-
-sections.forEach(function(id){
-
-const element=document.getElementById(id);
-
-if(element){
-element.classList.add("hidden");
-}
-
-});
-
-const selected=document.getElementById(section);
-
-if(selected){
-selected.classList.remove("hidden");
-}
-
-if(section==="historySection"){
-loadHistory();
-}
-
-if(section==="notificationsSection"){
-loadNotifications();
-}
-
-}
-
-
-/* =========================
-LOGIN
-========================= */
-
-async function login(){
-
-const username=
-document.getElementById("loginUsername").value.trim();
-
-const password=
-document.getElementById("loginPassword").value;
-
-const message=
-document.getElementById("loginMessage");
-
-if(!username || !password){
-
-message.textContent=
-"اكتب اسم المستخدم وكلمة المرور.";
-
-return;
-}
-
-message.textContent="جاري تسجيل الدخول...";
-
-try{
-
-const users=
-await api("users",{
-
-query:
-"username=eq."+
-encodeURIComponent(username)+
-"&password=eq."+
-encodeURIComponent(password)+
-"&select=*"
-
-});
-
-if(!users || users.length===0){
-
-message.textContent=
-"اسم المستخدم أو كلمة المرور غير صحيحة.";
-
-return;
-}
-
-currentUser=users[0];
-
-localStorage.setItem(
-"ribhUser",
-JSON.stringify(currentUser)
-);
-
-message.textContent="";
-
-openApplication();
-
-}catch(error){
-
-showError(message,error);
-
-}
-
-}
-
-
-/* =========================
-REGISTER
-========================= */
 
 async function register(){
 
-const username=
-document.getElementById("registerUsername").value.trim();
+const username=document.getElementById("regUsername").value.trim();
+const password=document.getElementById("regPassword").value.trim();
+const referral=document.getElementById("regReferral").value.trim();
 
-const password=
-document.getElementById("registerPassword").value;
+const msg=document.getElementById("registerMessage");
 
-const referral=
-document.getElementById("referralCode").value.trim();
-
-const message=
-document.getElementById("registerMessage");
-
+if(!username||!password){
+msg.textContent="يرجى إدخال اسم المستخدم وكلمة المرور";
+return;
+}
 
 if(username.length<3){
-
-message.textContent=
-"اسم المستخدم يجب أن يكون 3 أحرف على الأقل.";
-
+msg.textContent="اسم المستخدم يجب أن يكون 3 أحرف على الأقل";
 return;
 }
-
 
 if(password.length<4){
-
-message.textContent=
-"كلمة المرور يجب أن تكون 4 أحرف على الأقل.";
-
+msg.textContent="كلمة المرور يجب أن تكون 4 أحرف على الأقل";
 return;
 }
 
-
-message.textContent=
-"جاري إنشاء الحساب...";
-
+msg.textContent="جارٍ إنشاء الحساب...";
 
 try{
 
-/* فحص اسم المستخدم */
+const old=await api(
+"users?username=eq."+encodeURIComponent(username)+"&select=*"
+);
 
-const existing=
-await api("users",{
-
-query:
-"username=eq."+
-encodeURIComponent(username)+
-"&select=id"
-
-});
-
-
-if(existing && existing.length>0){
-
-message.textContent=
-"اسم المستخدم موجود مسبقاً.";
-
+if(old.length>0){
+msg.textContent="اسم المستخدم مستخدم مسبقاً";
 return;
 }
 
-
-/* إنشاء الحساب */
-
-const created=
-await api("users",{
-
-method:"POST",
-
-body:{
+const newUser={
 username:username,
 password:password,
-points:0,
-referred_by:referral || null
+points:0
+};
+
+const created=await api(
+"users",
+{
+method:"POST",
+headers:{
+"Prefer":"return=representation"
+},
+body:JSON.stringify(newUser)
 }
-
-});
-
-
-if(!created || created.length===0){
-
-throw new Error(
-"لم يتم إنشاء الحساب في قاعدة البيانات."
 );
 
+if(!created.length){
+throw new Error("لم يتم إنشاء الحساب");
 }
 
+user=created[0];
 
-/* مكافأة الإحالة */
+localStorage.setItem("ribh_user",JSON.stringify(user));
 
-if(referral && referral.startsWith("RAB7-")){
-
-const refUsername=
-referral.substring(5).trim();
-
-if(refUsername && refUsername!==username){
-
+if(referral){
 try{
+const refUsers=await api(
+"users?select=*&referral_code=eq."+encodeURIComponent(referral)
+);
 
-const refUsers=
-await api("users",{
-
-query:
-"username=eq."+
-encodeURIComponent(refUsername)+
-"&select=*"
-
-});
-
-if(refUsers && refUsers.length>0){
-
+if(refUsers.length>0){
 const refUser=refUsers[0];
 
-const oldPoints=
-Number(refUser.points || 0);
-
-await api("users",{
-
+await api(
+"users?id=eq."+encodeURIComponent(refUser.id),
+{
 method:"PATCH",
-
-query:
-"id=eq."+
-encodeURIComponent(refUser.id),
-
-body:{
-points:oldPoints+50
+headers:{
+"Prefer":"return=minimal"
+},
+body:JSON.stringify({
+points:(Number(refUser.points)||0)+50
+})
 }
-
-});
-
-}
-
-}catch(refError){
-
-console.error(
-"Referral error:",
-refError
 );
-
+}
+}catch(e){}
 }
 
-}
+msg.textContent="تم إنشاء الحساب بنجاح";
 
-}
-
-
-message.textContent=
-"✅ تم إنشاء الحساب بنجاح.";
-
-document.getElementById("registerUsername").value="";
-document.getElementById("registerPassword").value="";
-document.getElementById("referralCode").value="";
-
-setTimeout(function(){
-
-showLogin();
-
-},1000);
-
-
-}catch(error){
-
-showError(message,error);
-
-}
-
-}
-
-
-/* =========================
-OPEN APP
-========================= */
-
-function openApplication(){
-
-showApp();
-
-document.getElementById("userName").textContent=
-currentUser.username || "";
-
-updateBalance();
-
-generateReferralCode();
-
-renderTasks();
-
-showSection("homeSection");
-
-}
-
-
-/* =========================
-BALANCE
-========================= */
-
-function updateBalance(){
-
-const points=
-Number(currentUser.points || 0);
-
-document.getElementById("balance").textContent=
-points;
-
-document.getElementById("withdrawBalance").textContent=
-points;
-
-}
-
-
-/* =========================
-SAVE POINTS
-========================= */
-
-async function savePoints(points){
-
-const updated=
-await api("users",{
-
-method:"PATCH",
-
-query:
-"id=eq."+
-encodeURIComponent(currentUser.id),
-
-body:{
-points:points
-}
-
-});
-
-if(!updated || updated.length===0){
-
-throw new Error(
-"تعذر تحديث الرصيد في قاعدة البيانات."
-);
-
-}
-
-currentUser.points=points;
-
-localStorage.setItem(
-"ribhUser",
-JSON.stringify(currentUser)
-);
-
-updateBalance();
-
-}
-
-
-/* =========================
-DAILY TASKS
-========================= */
-
-function today(){
-
-const d=new Date();
-
-return d.getFullYear()+
-"-"+
-String(d.getMonth()+1).padStart(2,"0")+
-"-"+
-String(d.getDate()).padStart(2,"0");
-
-}
-
-
-function taskKey(){
-
-return "ribhTasks_"+
-currentUser.username+
-"_"+
-today();
-
-}
-
-
-function getDoneTasks(){
-
-try{
-
-return JSON.parse(
-localStorage.getItem(taskKey()) || "[]"
-);
+setTimeout(()=>{
+openApp();
+},500);
 
 }catch(e){
 
-return [];
+console.error(e);
+msg.textContent="تعذر الاتصال بقاعدة البيانات";
 
 }
 
 }
 
+async function login(){
 
-function saveDoneTasks(list){
+const username=document.getElementById("loginUsername").value.trim();
+const password=document.getElementById("loginPassword").value.trim();
 
-localStorage.setItem(
-taskKey(),
-JSON.stringify(list)
+const msg=document.getElementById("loginMessage");
+
+if(!username||!password){
+msg.textContent="يرجى إدخال اسم المستخدم وكلمة المرور";
+return;
+}
+
+msg.textContent="جارٍ تسجيل الدخول...";
+
+try{
+
+const users=await api(
+"users?username=eq."+encodeURIComponent(username)+"&password=eq."+encodeURIComponent(password)+"&select=*"
 );
 
+if(!users.length){
+msg.textContent="اسم المستخدم أو كلمة المرور غير صحيحة";
+return;
 }
 
+user=users[0];
 
-function renderTasks(){
+localStorage.setItem("ribh_user",JSON.stringify(user));
 
-const container=
-document.getElementById("tasksContainer");
+msg.textContent="تم تسجيل الدخول";
 
-container.innerHTML="";
+setTimeout(()=>{
+openApp();
+},300);
 
-const done=getDoneTasks();
+}catch(e){
 
-tasks.forEach(function(task){
+console.error(e);
+msg.textContent="تعذر الاتصال بقاعدة البيانات";
+
+}
+
+}
+
+async function openApp(){
+
+if(!user)return;
+
+showApp();
+
+document.getElementById("currentUser").textContent=user.username;
+document.getElementById("balance").textContent=Number(user.points)||0;
+
+const code="RAB7-"+user.username;
+document.getElementById("refCode").value=code;
+
+loadTasks();
+loadHistory();
+showSection("home");
+
+}
+
+function showSection(section){
+
+document.getElementById("homeSection").classList.add("hidden");
+document.getElementById("adsSection").classList.add("hidden");
+document.getElementById("refSection").classList.add("hidden");
+document.getElementById("withdrawSection").classList.add("hidden");
+document.getElementById("historySection").classList.add("hidden");
+
+if(section==="home"){
+document.getElementById("homeSection").classList.remove("hidden");
+}
+
+if(section==="ads"){
+document.getElementById("adsSection").classList.remove("hidden");
+}
+
+if(section==="ref"){
+document.getElementById("refSection").classList.remove("hidden");
+}
+
+if(section==="withdraw"){
+document.getElementById("withdrawSection").classList.remove("hidden");
+}
+
+if(section==="history"){
+document.getElementById("historySection").classList.remove("hidden");
+loadHistory();
+}
+
+}
+
+const taskPoints=[10,20,30,40,50,60];
+
+function getToday(){
+const d=new Date();
+return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+}
+
+function getDone(){
+return JSON.parse(
+localStorage.getItem("ribh_tasks_"+user.username+"_"+getToday())||"[]"
+);
+}
+
+function loadTasks(){
+
+const box=document.getElementById("tasks");
+const done=getDone();
+
+box.innerHTML="";
+
+taskPoints.forEach((points,index)=>{
+
+const taskNumber=index+1;
+const completed=done.includes(taskNumber);
 
 const div=document.createElement("div");
-
 div.className="task";
 
-const isDone=
-done.includes(task.id);
-
 div.innerHTML=
-"<b>"+task.name+"</b>"+
-"<br><br>"+
-"🎁 المكافأة: "+task.points+" نقطة"+
-"<button class='green' "+
-(isDone ? "disabled" : "")+
-" onclick='completeTask("+task.id+")'>"+
-(isDone
-? "تم إنجاز المهمة ✓"
-: "إنجاز المهمة")+
+"<span>المهمة "+taskNumber+" — "+points+" نقطة</span>"+
+"<button "+(completed?"disabled":"")+" onclick=\"completeTask("+taskNumber+","+points+")\">"+
+(completed?"تمت":"تنفيذ")+
 "</button>";
 
-container.appendChild(div);
+box.appendChild(div);
 
 });
 
 }
 
+async function completeTask(number,points){
 
-async function completeTask(id){
+const done=getDone();
 
-const done=getDoneTasks();
-
-if(done.includes(id)){
-return;
-}
-
-const task=
-tasks.find(function(t){
-return t.id===id;
-});
-
-if(!task){
-return;
-}
+if(done.includes(number))return;
 
 try{
 
-const points=
-Number(currentUser.points || 0)+
-task.points;
+const newPoints=(Number(user.points)||0)+points;
 
-await savePoints(points);
-
-done.push(id);
-
-saveDoneTasks(done);
-
-renderTasks();
-
-alert(
-"🎉 تمت إضافة "+
-task.points+
-" نقطة."
+await api(
+"users?id=eq."+encodeURIComponent(user.id),
+{
+method:"PATCH",
+headers:{
+"Prefer":"return=minimal"
+},
+body:JSON.stringify({
+points:newPoints
+})
+}
 );
 
-}catch(error){
+user.points=newPoints;
 
-alert(
-error.message ||
-"حدث خطأ أثناء إضافة النقاط."
+localStorage.setItem("ribh_user",JSON.stringify(user));
+
+done.push(number);
+
+localStorage.setItem(
+"ribh_tasks_"+user.username+"_"+getToday(),
+JSON.stringify(done)
 );
 
-}
+document.getElementById("balance").textContent=newPoints;
+
+loadTasks();
+
+}catch(e){
+
+alert("تعذر إضافة النقاط");
 
 }
 
-
-/* =========================
-ADS
-========================= */
-
-function watchAd(){
-
-if(adRunning){
-return;
 }
 
-adRunning=true;
+async function watchAd(){
 
-const button=
-document.getElementById("adButton");
+const msg=document.getElementById("adMessage");
 
-const timer=
-document.getElementById("adTimer");
+msg.textContent="جارٍ مشاهدة الإعلان... 10 ثوانٍ";
 
-button.disabled=true;
-
-let seconds=10;
-
-timer.textContent=
-seconds+" ثواني";
-
-const interval=setInterval(async function(){
-
-seconds--;
-
-if(seconds>0){
-
-timer.textContent=
-seconds+" ثواني";
-
-}else{
-
-clearInterval(interval);
-
-timer.textContent=
-"جاري إضافة المكافأة...";
+await new Promise(resolve=>setTimeout(resolve,10000));
 
 try{
 
-const points=
-Number(currentUser.points || 0)+10;
+const newPoints=(Number(user.points)||0)+10;
 
-await savePoints(points);
-
-timer.textContent=
-"🎉 حصلت على 10 نقاط";
-
-button.disabled=false;
-
-button.textContent=
-"▶️ مشاهدة إعلان آخر";
-
-}catch(error){
-
-timer.textContent=
-error.message ||
-"حدث خطأ.";
-
-button.disabled=false;
-
+await api(
+"users?id=eq."+encodeURIComponent(user.id),
+{
+method:"PATCH",
+headers:{
+"Prefer":"return=minimal"
+},
+body:JSON.stringify({
+points:newPoints
+})
 }
-
-adRunning=false;
-
-}
-
-},1000);
-
-}
-
-
-/* =========================
-REFERRAL
-========================= */
-
-function generateReferralCode(){
-
-document.getElementById("myReferralCode").textContent=
-"RAB7-"+currentUser.username;
-
-}
-
-
-async function copyReferral(){
-
-const code=
-"RAB7-"+currentUser.username;
-
-try{
-
-await navigator.clipboard.writeText(code);
-
-alert("تم نسخ كود الإحالة.");
-
-}catch(error){
-
-alert(
-"كود الإحالة: "+code
 );
 
-}
+user.points=newPoints;
+
+localStorage.setItem("ribh_user",JSON.stringify(user));
+
+document.getElementById("balance").textContent=newPoints;
+
+msg.textContent="تمت إضافة 10 نقاط إلى رصيدك";
+
+}catch(e){
+
+msg.textContent="حدث خطأ أثناء إضافة النقاط";
 
 }
 
+}
 
-/* =========================
-WITHDRAW METHOD
-========================= */
+function changeMethod(){
 
-function changeWithdrawMethod(){
-
-const method=
-document.getElementById("withdrawMethod").value;
-
-const input=
-document.getElementById("withdrawAccount");
-
-input.value="";
+const method=document.getElementById("withdrawMethod").value;
+const input=document.getElementById("withdrawAccount");
 
 if(method==="zain"){
-
-input.placeholder=
-"رقم Zain Cash - 07712345678";
-
+input.placeholder="رقم Zain Cash - 11 رقم";
 }else{
-
-input.placeholder=
-"رقم Mastercard - 16 رقم";
-
+input.placeholder="رقم Mastercard - 16 رقم";
 }
 
 }
 
+async function withdraw(){
 
-/* =========================
-WITHDRAW
-========================= */
+const method=document.getElementById("withdrawMethod").value;
+const account=document.getElementById("withdrawAccount").value.trim();
+const points=Number(document.getElementById("withdrawPoints").value);
 
-async function submitWithdrawal(){
+const msg=document.getElementById("withdrawMessage");
 
-const method=
-document.getElementById("withdrawMethod").value;
-
-const account=
-document.getElementById("withdrawAccount").value.trim();
-
-const amount=
-Number(
-document.getElementById("withdrawAmount").value
-);
-
-const message=
-document.getElementById("withdrawMessage");
-
-
-if(!Number.isFinite(amount) || amount<100){
-
-message.textContent=
-"الحد الأدنى للسحب 100 نقطة.";
-
+if(points<100){
+msg.textContent="الحد الأدنى للسحب هو 100 نقطة";
 return;
 }
 
-
-if(amount>Number(currentUser.points || 0)){
-
-message.textContent=
-"رصيدك غير كافٍ.";
-
+if(points>(Number(user.points)||0)){
+msg.textContent="رصيدك غير كافٍ";
 return;
 }
 
-
-if(method==="zain"){
-
-if(!/^07[0-9]{9}$/.test(account)){
-
-message.textContent=
-"رقم Zain Cash يجب أن يكون 11 رقماً ويبدأ بـ 07.";
-
+if(method==="zain" && !/^07[0-9]{9}$/.test(account)){
+msg.textContent="رقم Zain Cash يجب أن يكون 11 رقماً ويبدأ بـ 07";
 return;
 }
 
-}else{
-
-if(!/^[0-9]{16}$/.test(account)){
-
-message.textContent=
-"رقم Mastercard يجب أن يكون 16 رقماً.";
-
+if(method==="mastercard" && !/^[0-9]{16}$/.test(account)){
+msg.textContent="رقم Mastercard يجب أن يكون 16 رقماً";
 return;
 }
 
-}
-
-
-message.textContent=
-"جاري إرسال الطلب...";
-
+msg.textContent="جارٍ إرسال الطلب...";
 
 try{
 
-const masked=
-method==="mastercard"
-? "****"+account.slice(-4)
-: account;
-
-
-const result=
-await api("withdrawals",{
-
-method:"POST",
-
-body:{
-user_id:currentUser.id,
-username:currentUser.username,
-points:amount,
-method:
-method==="zain"
-? "Zain Cash"
-: "Mastercard",
-account:masked,
+const request={
+user_id:user.id,
+username:user.username,
+method:method,
+account:account,
+points:points,
 status:"قيد المراجعة"
+};
+
+await api(
+"withdrawals",
+{
+method:"POST",
+headers:{
+"Prefer":"return=representation"
+},
+body:JSON.stringify(request)
 }
-
-});
-
-
-if(!result || result.length===0){
-
-throw new Error(
-"لم يتم تسجيل طلب السحب."
 );
 
+const newPoints=(Number(user.points)||0)-points;
+
+await api(
+"users?id=eq."+encodeURIComponent(user.id),
+{
+method:"PATCH",
+headers:{
+"Prefer":"return=minimal"
+},
+body:JSON.stringify({
+points:newPoints
+})
 }
-
-
-await savePoints(
-Number(currentUser.points || 0)-amount
 );
 
+user.points=newPoints;
 
-document.getElementById("withdrawAmount").value="";
+localStorage.setItem("ribh_user",JSON.stringify(user));
+
+document.getElementById("balance").textContent=newPoints;
+
+msg.textContent="تم إرسال طلب السحب وقيد المراجعة";
+
 document.getElementById("withdrawAccount").value="";
+document.getElementById("withdrawPoints").value="";
 
-message.textContent=
-"✅ تم إرسال طلب السحب وهو قيد المراجعة.";
+loadHistory();
 
-}catch(error){
+}catch(e){
 
-showError(message,error);
+console.error(e);
+msg.textContent="تعذر إرسال طلب السحب";
 
 }
 
 }
-
-
-/* =========================
-HISTORY
-========================= */
 
 async function loadHistory(){
 
-const container=
-document.getElementById("historyContainer");
+if(!user)return;
 
-container.innerHTML=
-"جاري تحميل الطلبات...";
+const box=document.getElementById("history");
+
+box.innerHTML="جارٍ تحميل السجل...";
 
 try{
 
-const data=
-await api("withdrawals",{
+const rows=await api(
+"withdrawals?user_id=eq."+encodeURIComponent(user.id)+"&select=*&order=created_at.desc"
+);
 
-query:
-"user_id=eq."+
-encodeURIComponent(currentUser.id)+
-"&select=*&order=id.desc"
-
-});
-
-
-if(!data || data.length===0){
-
-container.innerHTML=
-"لا توجد طلبات سحب.";
-
+if(!rows.length){
+box.innerHTML="<p style='text-align:center'>لا توجد عمليات سحب</p>";
 return;
 }
 
+box.innerHTML="";
 
-container.innerHTML="";
+rows.forEach(row=>{
 
-
-data.forEach(function(item){
-
-const div=
-document.createElement("div");
-
-div.className="history";
+const div=document.createElement("div");
+div.className="task";
 
 div.innerHTML=
-"<b>طريقة السحب:</b> "+
-(item.method || "-")+
-"<br>"+
-"<b>الحساب:</b> "+
-(item.account || "-")+
-"<br>"+
-"<b>النقاط:</b> "+
-(item.points || 0)+
-"<br>"+
-"<b>الحالة:</b> "+
-(item.status || "ق
+"<div>"+
+"<b>"+(row.method||"")+"</b><br>"+
+(row.points||0)+" نقطة<br>"+
+"<small>"+(row.status||"")+"</small>"+
+"</div>";
+
+box.append
