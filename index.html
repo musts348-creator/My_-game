@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="manifest" href="manifest.json">
 <title>ربح</title>
 
@@ -13,27 +13,24 @@ body{
 margin:0;
 font-family:Arial,sans-serif;
 background:linear-gradient(135deg,#07152e,#123b70);
-color:#fff;
-min-height:100vh;
+color:white;
+min-height:100vh
 }
 
 .container{
 max-width:600px;
 margin:auto;
-padding:20px;
+padding:20px
 }
 
 .card{
-background:rgba(255,255,255,.10);
+background:rgba(255,255,255,.1);
 border-radius:18px;
 padding:20px;
-margin:15px 0;
-box-shadow:0 5px 20px rgba(0,0,0,.2);
+margin:15px 0
 }
 
-h1,h2{
-text-align:center;
-}
+h1,h2{text-align:center}
 
 input,select,button{
 width:100%;
@@ -41,38 +38,26 @@ padding:13px;
 margin:8px 0;
 border:0;
 border-radius:10px;
-font-size:16px;
+font-size:16px
 }
 
 button{
 background:#18a558;
-color:#fff;
-font-weight:bold;
-cursor:pointer;
+color:white;
+font-weight:bold
 }
 
-button.secondary{
-background:#2463b5;
-}
+button.secondary{background:#2463b5}
+button.danger{background:#c62828}
+button:disabled{background:#777}
 
-button.danger{
-background:#c62828;
-}
-
-button:disabled{
-background:#777;
-cursor:not-allowed;
-}
-
-.hidden{
-display:none!important;
-}
+.hidden{display:none!important}
 
 .balance{
 font-size:30px;
 text-align:center;
 font-weight:bold;
-margin:20px 0;
+margin:20px 0
 }
 
 .task{
@@ -83,25 +68,25 @@ gap:10px;
 padding:12px;
 margin:8px 0;
 background:rgba(0,0,0,.18);
-border-radius:10px;
+border-radius:10px
 }
 
 .task button{
 width:auto;
 margin:0;
-padding:9px 15px;
+padding:9px 15px
 }
 
 .nav{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:7px;
-margin-top:15px;
+margin-top:15px
 }
 
 .nav button{
 font-size:13px;
-padding:10px 5px;
+padding:10px 5px
 }
 
 .message{
@@ -110,13 +95,13 @@ padding:10px;
 margin:10px 0;
 border-radius:10px;
 background:rgba(255,255,255,.12);
-min-height:20px;
+min-height:20px
 }
 
 .small{
 text-align:center;
 font-size:13px;
-opacity:.8;
+opacity:.8
 }
 </style>
 </head>
@@ -125,7 +110,6 @@ opacity:.8;
 
 <div class="container">
 
-<!-- تسجيل الدخول -->
 <div id="loginPage" class="card">
 
 <h1>💰 ربح</h1>
@@ -144,8 +128,6 @@ opacity:.8;
 
 </div>
 
-
-<!-- إنشاء حساب -->
 <div id="registerPage" class="card hidden">
 
 <h1>💰 ربح</h1>
@@ -167,8 +149,6 @@ opacity:.8;
 
 </div>
 
-
-<!-- التطبيق -->
 <div id="appPage" class="hidden">
 
 <div class="card">
@@ -178,809 +158,453 @@ opacity:.8;
 <div class="balance">
 رصيدك:
 <span id="balance">0</span>
-نقطة
-</div>
+نقconst SUPABASE_URL="https://jfpmniqxdwrvnpjlatkk.supabase.co";
+const SUPABASE_KEY="sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
 
-<div class="small">
-مرحباً <span id="currentUser"></span>
-</div>
+let user=null;
 
-</div>
+async function api(table,options={}){
+  const response=await fetch(
+    SUPABASE_URL+"/rest/v1/"+table,
+    {
+      ...options,
+      headers:{
+        "apikey":SUPABASE_KEY,
+        "Authorization":"Bearer "+SUPABASE_KEY,
+        "Content-Type":"application/json",
+        ...(options.headers||{})
+      }
+    }
+  );
 
+  if(!response.ok){
+    const errorText=await response.text();
+    throw new Error(errorText||"خطأ في قاعدة البيانات");
+  }
 
-<!-- الرئيسية -->
-<div id="homeSection" class="card">
-
-<h2>📋 المهام اليومية</h2>
-
-<div id="tasks"></div>
-
-</div>
-
-
-<!-- الإعلانات -->
-<div id="adsSection" class="card hidden">
-
-<h2>📺 مشاهدة الإعلانات</h2>
-
-<p style="text-align:center">
-شاهد الإعلان لمدة 10 ثوانٍ واحصل على 10 نقاط.
-</p>
-
-<button type="button" onclick="watchAd()">
-مشاهدة الإعلان
-</button>
-
-<div id="adMessage" class="message"></div>
-
-</div>
-
-
-<!-- الإحالة -->
-<div id="refSection" class="card hidden">
-
-<h2>👥 الإحالة</h2>
-
-<p>رمز الإحالة الخاص بك:</p>
-
-<input id="refCode" readonly>
-
-<p class="small">
-شارك الرمز مع أصدقائك واحصل على نقاط.
-</p>
-
-</div>
-
-
-<!-- السحب -->
-<div id="withdrawSection" class="card hidden">
-
-<h2>💳 سحب الأرباح</h2>
-
-<select id="withdrawMethod" onchange="changeMethod()">
-
-<option value="zain">
-Zain Cash
-</option>
-
-<option value="mastercard">
-Mastercard
-</option>
-
-</select>
-
-<input
-id="withdrawAccount"
-type="text"
-placeholder="رقم Zain Cash - 11 رقم"
->
-
-<input
-id="withdrawPoints"
-type="number"
-placeholder="عدد النقاط"
->
-
-<button type="button" onclick="withdraw()">
-طلب السحب
-</button>
-
-<div id="withdrawMessage" class="message"></div>
-
-</div>
-
-
-<!-- سجل السحب -->
-<div id="historySection" class="card hidden">
-
-<h2>📜 سجل السحب</h2>
-
-<div id="history"></div>
-
-</div>
-
-
-<!-- القائمة -->
-<div class="nav">
-
-<button type="button" onclick="showSection('home')">
-🏠 الرئيسية
-</button>
-
-<button type="button" onclick="showSection('ads')">
-📺 الإعلانات
-</button>
-
-<button type="button" onclick="showSection('ref')">
-👥 الإحالة
-</button>
-
-<button type="button" onclick="showSection('withdraw')">
-💳 السحب
-</button>
-
-<button type="button" onclick="showSection('history')">
-📜 السجل
-</button>
-
-<button type="button" class="danger" onclick="logout()">
-🚪 خروج
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<script>
-
-const SUPABASE_URL =
-"https://jfpmniqxdwrvnpjlatkk.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_u4ECIUzh0GhGkVil012xHQ_w_C7urtY";
-
-let user = null;
-
-
-/* الاتصال بقاعدة البيانات */
-
-async function api(table, options = {}) {
-
-const response = await fetch(
-SUPABASE_URL + "/rest/v1/" + table,
-{
-...options,
-headers:{
-"apikey":SUPABASE_KEY,
-"Authorization":"Bearer " + SUPABASE_KEY,
-"Content-Type":"application/json",
-...(options.headers || {})
+  const text=await response.text();
+  return text?JSON.parse(text):[];
 }
-}
-);
-
-if(!response.ok){
-
-const errorText = await response.text();
-
-throw new Error(
-errorText || "خطأ في قاعدة البيانات"
-);
-
-}
-
-const text = await response.text();
-
-return text ? JSON.parse(text) : [];
-
-}
-
-
-/* صفحة الدخول */
 
 function showLogin(){
-
-document
-.getElementById("loginPage")
-.classList.remove("hidden");
-
-document
-.getElementById("registerPage")
-.classList.add("hidden");
-
-document
-.getElementById("appPage")
-.classList.add("hidden");
-
+  document.getElementById("loginPage").classList.remove("hidden");
+  document.getElementById("registerPage").classList.add("hidden");
+  document.getElementById("appPage").classList.add("hidden");
 }
-
-
-/* صفحة التسجيل */
 
 function showRegister(){
-
-document
-.getElementById("loginPage")
-.classList.add("hidden");
-
-document
-.getElementById("registerPage")
-.classList.remove("hidden");
-
-document
-.getElementById("appPage")
-.classList.add("hidden");
-
-document
-.getElementById("registerMessage")
-.textContent="";
-
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("registerPage").classList.remove("hidden");
+  document.getElementById("appPage").classList.add("hidden");
+  document.getElementById("registerMessage").textContent="";
 }
-
-
-/* فتح التطبيق */
 
 function showApp(){
-
-document
-.getElementById("loginPage")
-.classList.add("hidden");
-
-document
-.getElementById("registerPage")
-.classList.add("hidden");
-
-document
-.getElementById("appPage")
-.classList.remove("hidden");
-
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("registerPage").classList.add("hidden");
+  document.getElementById("appPage").classList.remove("hidden");
 }
-
-
-/* إنشاء حساب */
 
 async function register(){
+  const username=document.getElementById("regUsername").value.trim();
+  const password=document.getElementById("regPassword").value.trim();
+  const msg=document.getElementById("registerMessage");
 
-const username =
-document.getElementById("regUsername")
-.value
-.trim();
+  if(!username||!password){
+    msg.textContent="يرجى إدخال اسم المستخدم وكلمة المرور";
+    return;
+  }
 
-const password =
-document.getElementById("regPassword")
-.value
-.trim();
+  if(username.length<3){
+    msg.textContent="اسم المستخدم يجب أن يكون 3 أحرف على الأقل";
+    return;
+  }
 
-const referral =
-document.getElementById("regReferral")
-.value
-.trim();
+  if(password.length<4){
+    msg.textContent="كلمة المرور يجب أن تكون 4 أحرف على الأقل";
+    return;
+  }
 
-const msg =
-document.getElementById("registerMessage");
+  msg.textContent="جارٍ إنشاء الحساب...";
 
+  try{
+    const oldUsers=await api(
+      "users?username=eq."+encodeURIComponent(username)+"&select=*"
+    );
 
-if(!username || !password){
+    if(oldUsers.length){
+      msg.textContent="اسم المستخدم مستخدم مسبقاً";
+      return;
+    }
 
-msg.textContent =
-"يرجى إدخال اسم المستخدم وكلمة المرور";
+    const created=await api("users",{
+      method:"POST",
+      headers:{"Prefer":"return=representation"},
+      body:JSON.stringify({
+        username:username,
+        password:password,
+        points:0
+      })
+    });
 
-return;
+    if(!created.length)throw new Error("لم يتم إنشاء الحساب");
+
+    user=created[0];
+
+    localStorage.setItem(
+      "ribh_user",
+      JSON.stringify(user)
+    );
+
+    msg.textContent="تم إنشاء الحساب بنجاح";
+
+    setTimeout(openApp,500);
+
+  }catch(error){
+    console.error(error);
+    msg.textContent="تعذر الاتصال بقاعدة البيانات";
+  }
 }
-
-
-if(username.length < 3){
-
-msg.textContent =
-"اسم المستخدم يجب أن يكون 3 أحرف على الأقل";
-
-return;
-}
-
-
-if(password.length < 4){
-
-msg.textContent =
-"كلمة المرور يجب أن تكون 4 أحرف على الأقل";
-
-return;
-}
-
-
-msg.textContent =
-"جارٍ إنشاء الحساب...";
-
-
-try{
-
-/* التأكد من عدم وجود المستخدم */
-
-const oldUsers = await api(
-"users?username=eq." +
-encodeURIComponent(username) +
-"&select=*"
-);
-
-
-if(oldUsers.length > 0){
-
-msg.textContent =
-"اسم المستخدم مستخدم مسبقاً";
-
-return;
-}
-
-
-/* إنشاء المستخدم */
-
-const newUser = {
-
-username:username,
-password:password,
-points:0
-
-};
-
-
-const created = await api(
-"users",
-{
-method:"POST",
-
-headers:{
-"Prefer":"return=representation"
-},
-
-body:JSON.stringify(newUser)
-
-}
-);
-
-
-if(!created || !created.length){
-
-throw new Error(
-"لم يتم إنشاء الحساب"
-);
-
-}
-
-
-user = created[0];
-
-
-/* حفظ تسجيل الدخول */
-
-localStorage.setItem(
-"ribh_user",
-JSON.stringify(user)
-);
-
-
-/* رسالة نجاح */
-
-msg.textContent =
-"تم إنشاء الحساب بنجاح";
-
-
-/* فتح التطبيق */
-
-setTimeout(function(){
-
-openApp();
-
-},500);
-
-
-}catch(error){
-
-console.error(error);
-
-msg.textContent =
-"تعذر الاتصال بقاعدة البيانات";
-
-}
-
-}
-
-
-/* تسجيل الدخول */
 
 async function login(){
+  const username=document.getElementById("loginUsername").value.trim();
+  const password=document.getElementById("loginPassword").value.trim();
+  const msg=document.getElementById("loginMessage");
 
-const username =
-document.getElementById("loginUsername")
-.value
-.trim();
+  if(!username||!password){
+    msg.textContent="يرجى إدخال اسم المستخدم وكلمة المرور";
+    return;
+  }
 
-const password =
-document.getElementById("loginPassword")
-.value
-.trim();
+  msg.textContent="جارٍ تسجيل الدخول...";
 
-const msg =
-document.getElementById("loginMessage");
+  try{
+    const users=await api(
+      "users?username=eq."+encodeURIComponent(username)+
+      "&password=eq."+encodeURIComponent(password)+
+      "&select=*"
+    );
 
+    if(!users.length){
+      msg.textContent="اسم المستخدم أو كلمة المرور غير صحيحة";
+      return;
+    }
 
-if(!username || !password){
+    user=users[0];
 
-msg.textContent =
-"يرجى إدخال اسم المستخدم وكلمة المرور";
+    localStorage.setItem(
+      "ribh_user",
+      JSON.stringify(user)
+    );
 
-return;
+    msg.textContent="تم تسجيل الدخول";
+
+    setTimeout(openApp,300);
+
+  }catch(error){
+    console.error(error);
+    msg.textContent="تعذر الاتصال بقاعدة البيانات";
+  }
 }
-
-
-msg.textContent =
-"جارٍ تسجيل الدخول...";
-
-
-try{
-
-const users = await api(
-"users?username=eq." +
-encodeURIComponent(username) +
-"&password=eq." +
-encodeURIComponent(password) +
-"&select=*"
-);
-
-
-if(!users.length){
-
-msg.textContent =
-"اسم المستخدم أو كلمة المرور غير صحيحة";
-
-return;
-
-}
-
-
-user = users[0];
-
-
-localStorage.setItem(
-"ribh_user",
-JSON.stringify(user)
-);
-
-
-msg.textContent =
-"تم تسجيل الدخول";
-
-
-setTimeout(function(){
-
-openApp();
-
-},300);
-
-
-}catch(error){
-
-console.error(error);
-
-msg.textContent =
-"تعذر الاتصال بقاعدة البيانات";
-
-}
-
-}
-
-
-/* فتح التطبيق */
 
 function openApp(){
+  if(!user)return;
 
-if(!user){
+  showApp();
 
-return;
+  document.getElementById("currentUser").textContent=user.username;
+  document.getElementById("balance").textContent=Number(user.points)||0;
+  document.getElementById("refCode").value="RAB7-"+user.username;
 
+  loadTasks();
+  loadHistory();
+  showSection("home");
 }
-
-
-showApp();
-
-
-document.getElementById(
-"currentUser"
-).textContent =
-user.username;
-
-
-document.getElementById(
-"balance"
-).textContent =
-Number(user.points) || 0;
-
-
-document.getElementById(
-"refCode"
-).value =
-"RAB7-" + user.username;
-
-
-loadTasks();
-
-loadHistory();
-
-showSection("home");
-
-}
-
-
-/* التنقل */
 
 function showSection(section){
+  [
+    "homeSection",
+    "adsSection",
+    "refSection",
+    "withdrawSection",
+    "historySection"
+  ].forEach(id=>{
+    document.getElementById(id).classList.add("hidden");
+  });
 
-document
-.getElementById("homeSection")
-.classList.add("hidden");
+  const names={
+    home:"homeSection",
+    ads:"adsSection",
+    ref:"refSection",
+    withdraw:"withdrawSection",
+    history:"historySection"
+  };
 
-document
-.getElementById("adsSection")
-.classList.add("hidden");
+  document.getElementById(names[section]).classList.remove("hidden");
 
-document
-.getElementById("refSection")
-.classList.add("hidden");
-
-document
-.getElementById("withdrawSection")
-.classList.add("hidden");
-
-document
-.getElementById("historySection")
-.classList.add("hidden");
-
-
-if(section === "home"){
-
-document
-.getElementById("homeSection")
-.classList.remove("hidden");
-
+  if(section==="history")loadHistory();
 }
 
-
-if(section === "ads"){
-
-document
-.getElementById("adsSection")
-.classList.remove("hidden");
-
-}
-
-
-if(section === "ref"){
-
-document
-.getElementById("refSection")
-.classList.remove("hidden");
-
-}
-
-
-if(section === "withdraw"){
-
-document
-.getElementById("withdrawSection")
-.classList.remove("hidden");
-
-}
-
-
-if(section === "history"){
-
-document
-.getElementById("historySection")
-.classList.remove("hidden");
-
-loadHistory();
-
-}
-
-}
-
-
-/* المهام */
-
-const taskPoints =
-[10,20,30,40,50,60];
-
+const taskPoints=[10,20,30,40,50,60];
 
 function getToday(){
-
-const d = new Date();
-
-return (
-d.getFullYear() +
-"-" +
-(d.getMonth()+1) +
-"-" +
-d.getDate()
-);
-
+  const d=new Date();
+  return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
 }
-
 
 function getDone(){
+  if(!user)return[];
 
-if(!user){
-
-return [];
-
+  return JSON.parse(
+    localStorage.getItem(
+      "ribh_tasks_"+user.username+"_"+getToday()
+    )||"[]"
+  );
 }
-
-
-return JSON.parse(
-localStorage.getItem(
-"ribh_tasks_" +
-user.username +
-"_" +
-getToday()
-) || "[]"
-);
-
-}
-
-
-/* عرض المهام */
 
 function loadTasks(){
+  const box=document.getElementById("tasks");
+  const done=getDone();
 
-const box =
-document.getElementById("tasks");
+  box.innerHTML="";
 
-const done =
-getDone();
+  taskPoints.forEach((points,index)=>{
+    const number=index+1;
+    const completed=done.includes(number);
 
+    const div=document.createElement("div");
+    div.className="task";
 
-box.innerHTML="";
+    const span=document.createElement("span");
+    span.textContent=
+      "المهمة "+number+" — "+points+" نقطة";
 
+    const button=document.createElement("button");
+    button.type="button";
+    button.disabled=completed;
+    button.textContent=completed?"تمت":"تنفيذ";
 
-taskPoints.forEach(
-function(points,index){
+    button.onclick=()=>{
+      completeTask(number,points);
+    };
 
-const taskNumber =
-index + 1;
-
-const completed =
-done.includes(taskNumber);
-
-
-const div =
-document.createElement("div");
-
-div.className="task";
-
-
-const span =
-document.createElement("span");
-
-span.textContent =
-"المهمة " +
-taskNumber +
-" — " +
-points +
-" نقطة";
-
-
-const button =
-document.createElement("button");
-
-button.type="button";
-
-button.disabled =
-completed;
-
-button.textContent =
-completed ? "تمت" : "تنفيذ";
-
-
-button.onclick =
-function(){
-
-completeTask(
-taskNumber,
-points
-);
-
-};
-
-
-div.appendChild(span);
-
-div.appendChild(button);
-
-box.appendChild(div);
-
-}
-);
-
+    div.appendChild(span);
+    div.appendChild(button);
+    box.appendChild(div);
+  });
 }
 
+async function completeTask(number,points){
+  const done=getDone();
 
-/* تنفيذ المهمة */
+  if(done.includes(number))return;
 
-async function completeTask(
-number,
-points
-){
+  try{
+    const newPoints=(Number(user.points)||0)+points;
 
-const done =
-getDone();
+    await api(
+      "users?id=eq."+encodeURIComponent(user.id),
+      {
+        method:"PATCH",
+        headers:{"Prefer":"return=minimal"},
+        body:JSON.stringify({points:newPoints})
+      }
+    );
 
+    user.points=newPoints;
 
-if(done.includes(number)){
+    localStorage.setItem(
+      "ribh_user",
+      JSON.stringify(user)
+    );
 
-return;
+    done.push(number);
 
+    localStorage.setItem(
+      "ribh_tasks_"+user.username+"_"+getToday(),
+      JSON.stringify(done)
+    );
+
+    document.getElementById("balance").textContent=newPoints;
+
+    loadTasks();
+
+  }catch(error){
+    console.error(error);
+    alert("تعذر إضافة النقاط");
+  }
+}async function watchAd(){
+  const msg=document.getElementById("adMessage");
+
+  msg.textContent="جارٍ مشاهدة الإعلان... 10 ثوانٍ";
+
+  await new Promise(resolve=>setTimeout(resolve,10000));
+
+  try{
+    const newPoints=(Number(user.points)||0)+10;
+
+    await api(
+      "users?id=eq."+encodeURIComponent(user.id),
+      {
+        method:"PATCH",
+        headers:{"Prefer":"return=minimal"},
+        body:JSON.stringify({points:newPoints})
+      }
+    );
+
+    user.points=newPoints;
+
+    localStorage.setItem(
+      "ribh_user",
+      JSON.stringify(user)
+    );
+
+    document.getElementById("balance").textContent=newPoints;
+
+    msg.textContent="تمت إضافة 10 نقاط إلى رصيدك";
+
+  }catch(error){
+    console.error(error);
+    msg.textContent="حدث خطأ أثناء إضافة النقاط";
+  }
 }
 
+function changeMethod(){
+  const method=document.getElementById("withdrawMethod").value;
 
-try{
-
-const newPoints =
-(Number(user.points) || 0) +
-points;
-
-
-await api(
-"users?id=eq." +
-encodeURIComponent(user.id),
-{
-method:"PATCH",
-
-headers:{
-"Prefer":"return=minimal"
-},
-
-body:JSON.stringify({
-points:newPoints
-})
-
-}
-);
-
-
-user.points =
-newPoints;
-
-
-localStorage.setItem(
-"ribh_user",
-JSON.stringify(user)
-);
-
-
-done.push(number);
-
-
-localStorage.setItem(
-"ribh_tasks_" +
-user.username +
-"_" +
-getToday(),
-
-JSON.stringify(done)
-);
-
-
-document.getElementById(
-"balance"
-).textContent =
-newPoints;
-
-
-loadTasks();
-
-
-}catch(error){
-
-console.error(error);
-
-alert(
-"تعذر إضافة النقاط"
-);
-
+  document.getElementById("withdrawAccount").placeholder=
+    method==="zain"
+    ?"رقم Zain Cash - 11 رقم"
+    :"رقم Mastercard - 16 رقم";
 }
 
+async function withdraw(){
+  const method=document.getElementById("withdrawMethod").value;
+  const account=document.getElementById("withdrawAccount").value.trim();
+  const points=Number(
+    document.getElementById("withdrawPoints").value
+  );
+  const msg=document.getElementById("withdrawMessage");
+
+  if(!Number.isFinite(points)||points<100){
+    msg.textContent="الحد الأدنى للسحب هو 100 نقطة";
+    return;
+  }
+
+  if(points>(Number(user.points)||0)){
+    msg.textContent="رصيدك غير كافٍ";
+    return;
+  }
+
+  if(
+    method==="zain" &&
+    !/^07[0-9]{9}$/.test(account)
+  ){
+    msg.textContent=
+      "رقم Zain Cash يجب أن يكون 11 رقماً ويبدأ بـ 07";
+    return;
+  }
+
+  if(
+    method==="mastercard" &&
+    !/^[0-9]{16}$/.test(account)
+  ){
+    msg.textContent=
+      "رقم Mastercard يجب أن يكون 16 رقماً";
+    return;
+  }
+
+  msg.textContent="جارٍ إرسال الطلب...";
+
+  try{
+    await api("withdrawals",{
+      method:"POST",
+      headers:{
+        "Prefer":"return=representation"
+      },
+      body:JSON.stringify({
+        user_id:user.id,
+        username:user.username,
+        method:method,
+        account:account,
+        points:points,
+        status:"قيد المراجعة"
+      })
+    });
+
+    const newPoints=
+      (Number(user.points)||0)-points;
+
+    await api(
+      "users?id=eq."+encodeURIComponent(user.id),
+      {
+        method:"PATCH",
+        headers:{"Prefer":"return=minimal"},
+        body:JSON.stringify({
+          points:newPoints
+        })
+      }
+    );
+
+    user.points=newPoints;
+
+    localStorage.setItem(
+      "ribh_user",
+      JSON.stringify(user)
+    );
+
+    document.getElementById("balance").textContent=
+      newPoints;
+
+    document.getElementById(
+      "withdrawAccount"
+    ).value="";
+
+    document.getElementById(
+      "withdrawPoints"
+    ).value="";
+
+    msg.textContent=
+      "تم إرسال طلب السحب وقيد المراجعة";
+
+    loadHistory();
+
+  }catch(error){
+    console.error(error);
+    msg.textContent=
+      "تعذر إرسال طلب السحب";
+  }
 }
 
+async function loadHistory(){
+  if(!user)return;
 
-/* الإعلان */
+  const box=document.getElementById("history");
 
-async function watchAd(){
+  box.innerHTML="جارٍ تحميل السجل...";
 
-const msg =
-document.getElementById(
-"adMessage"
-);
+  try{
+    const rows=await api(
+      "withdrawals?user_id=eq."+
+      encodeURIComponent(user.id)+
+      "&select=*&order=created_at.desc"
+    );
 
+    if(!rows.length){
+      box.innerHTML=
+        "<p style='text-align:center'>لا توجد عمليات سحب</p>";
+      return;
+    }
 
-msg.textContent =
-"جارٍ مشاهدة الإعلان... 10 ثوانٍ
+    box.innerHTML="";
+
+    rows.forEach(row=>{
+      const div=document.createElement("div");
+
+      div.className="task";
+
+      div.innerHTML=
+        "<div>"+
+        "<b>"+(row.method||"")+"</b><br>"+
+        (row.points||0)+" نقطة<br>"+
+        "<small>"+(row.status||"")+"</small
